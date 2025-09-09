@@ -1,5 +1,5 @@
-import Navbar from "@/components/molecules/navbar";
-import Sidebar from "@/components/molecules/sidebar";
+import Navbar from '@/components/molecules/navbar';
+import Sidebar from '@/components/molecules/sidebar';
 
 export default function PrivateLayout({
   children,
