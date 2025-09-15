@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { CreateContractProvider } from './hooks';
 
 export default function Layout({
@@ -7,7 +8,9 @@ export default function Layout({
 }>) {
   return (
     <>
-      <CreateContractProvider>{children}</CreateContractProvider>
+      <Suspense>
+        <CreateContractProvider>{children}</CreateContractProvider>
+      </Suspense>
     </>
   );
 }

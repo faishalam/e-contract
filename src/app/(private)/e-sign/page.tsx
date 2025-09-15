@@ -2,9 +2,6 @@
 import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CAutoComplete from '@/components/atoms/auto-complete';
-import CInput from '@/components/atoms/input';
-import SearchIcon from '@mui/icons-material/Search';
-import { useMemo } from 'react';
 import DataGrid from '@/components/molecules/datagrid';
 import useEsign from './hooks';
 import QuotaCard from './components/quotaCard';
@@ -65,9 +62,9 @@ export default function EsignManagementPage() {
                     {option.label}
                   </li>
                 )}
-                onChange={(_, status) => {
-                  // setFilter({ ...filter, status });
-                }}
+                // onChange={(_, status) => {
+                // setFilter({ ...filter, status });
+                // }}
                 getOptionLabel={option => option.label}
                 placeholder="All Type"
               />
@@ -80,9 +77,9 @@ export default function EsignManagementPage() {
                     {option.label}
                   </li>
                 )}
-                onChange={(_, status) => {
-                  // setFilter({ ...filter, status });
-                }}
+                // onChange={(_, status) => {
+                // setFilter({ ...filter, status });
+                // }}
                 getOptionLabel={option => option.label}
                 placeholder="All Status"
               />

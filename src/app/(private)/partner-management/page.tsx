@@ -4,7 +4,6 @@ import AddIcon from '@mui/icons-material/Add';
 import CAutoComplete from '@/components/atoms/auto-complete';
 import CInput from '@/components/atoms/input';
 import SearchIcon from '@mui/icons-material/Search';
-import { useMemo } from 'react';
 import DataGrid from '@/components/molecules/datagrid';
 import usePartnerManagement from './hooks';
 
@@ -60,9 +59,9 @@ export default function PartnerManagementPage() {
                     {option.label}
                   </li>
                 )}
-                onChange={(_, status) => {
-                  // setFilter({ ...filter, status });
-                }}
+                // onChange={(_, status) => {
+                // setFilter({ ...filter, status });
+                // }}
                 getOptionLabel={option => option.label}
                 placeholder="Status"
               />
@@ -75,9 +74,9 @@ export default function PartnerManagementPage() {
                     {option.label}
                   </li>
                 )}
-                onChange={(_, status) => {
-                  // setFilter({ ...filter, status });
-                }}
+                // onChange={(_, status) => {
+                // setFilter({ ...filter, status });
+                // }}
                 getOptionLabel={option => option.label}
                 placeholder="Sort By"
               />

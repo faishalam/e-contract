@@ -1,13 +1,9 @@
 'use client';
 
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import GestureIcon from '@mui/icons-material/Gesture';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import EventBusyIcon from '@mui/icons-material/EventBusy';
 import DescriptionIcon from '@mui/icons-material/Description';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 

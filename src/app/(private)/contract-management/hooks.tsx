@@ -2,8 +2,6 @@
 
 import { createContext, useContext, useMemo } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import GestureIcon from '@mui/icons-material/Gesture';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import EventBusyIcon from '@mui/icons-material/EventBusy';
 import DescriptionIcon from '@mui/icons-material/Description';

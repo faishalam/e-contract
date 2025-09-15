@@ -7,7 +7,6 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import GestureIcon from '@mui/icons-material/Gesture';
 import ErrorIcon from '@mui/icons-material/Error';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import BusinessIcon from '@mui/icons-material/Business';
 import DescriptionIcon from '@mui/icons-material/Description';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';

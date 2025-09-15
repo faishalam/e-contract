@@ -4,9 +4,6 @@ import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 import DescriptionIcon from '@mui/icons-material/Description';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import ArticleIcon from '@mui/icons-material/Article';
-import HandshakeIcon from '@mui/icons-material/Handshake';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
 import GroupIcon from '@mui/icons-material/Group';
 import PieChartIcon from '@mui/icons-material/PieChart';
 

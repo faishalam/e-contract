@@ -1,25 +1,16 @@
 'use client';
 import Image from 'next/image';
 import { TProps } from './types';
-import { useRouter } from 'next/navigation';
 import SearchIcon from '@mui/icons-material/Search';
-import { Badge } from '@mui/material';
-import LogoutAccountIcon from '@mui/icons-material/Logout';
-import UserAccountIcon from '@mui/icons-material/AccountCircle';
 import NotificationIcon from '@mui/icons-material/Notifications';
-import ChatIcon from '@mui/icons-material/QuestionAnswer';
-import DropdownButton from '@/components/atoms/dropdown-button';
-import CLink from '@/components/atoms/link';
-import CIconButton from '@/components/atoms/icon-button';
-import { Loader } from '@/components/atoms/loader';
 import CInput from '@/components/atoms/input';
 
 const Navbar: React.FC<TProps> = ({ showRightMenu = true }) => {
-  const router = useRouter();
+  // const router = useRouter();
 
-  const onLogout = () => {
-    router.push('/login');
-  };
+  // const onLogout = () => {
+  //   router.push('/login');
+  // };
 
   return (
     <div className="flex items-center sticky h-[55px] top-0 justify-between px-8 py-2 w-full m-0 p-0 z-50 bg-[#f9fafb] text-black">

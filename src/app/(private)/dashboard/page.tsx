@@ -5,9 +5,7 @@ import PlatformActivityChart from './components/platformActivityChart';
 import RecentActivity from './components/recentActivity';
 import useDashboard from './hooks';
 import CAutoComplete from '@/components/atoms/auto-complete';
-import CInput from '@/components/atoms/input';
-import { Button, LinearProgress } from '@mui/material';
-import BusinessIcon from '@mui/icons-material/Business';
+import { Button } from '@mui/material';
 import RecentPartners from './components/recentPartners';
 import QuickAccess from './components/quickAccess';
 
@@ -52,9 +50,9 @@ export default function DashboardPage() {
                     {option.label}
                   </li>
                 )}
-                onChange={(_, status) => {
-                  // setFilter({ ...filter, status });
-                }}
+                // onChange={(_, status) => {
+                // setFilter({ ...filter, status });
+                // }}
                 getOptionLabel={option => option.label}
                 placeholder="Status"
               />
@@ -67,9 +65,9 @@ export default function DashboardPage() {
                     {option.label}
                   </li>
                 )}
-                onChange={(_, status) => {
-                  // setFilter({ ...filter, status });
-                }}
+                // onChange={(_, status) => {
+                // setFilter({ ...filter, status });
+                // }}
                 getOptionLabel={option => option.label}
                 placeholder="Status"
               />

@@ -2,8 +2,6 @@ import CAutoComplete from '@/components/atoms/auto-complete';
 import CInput from '@/components/atoms/input';
 import TemplateSelector from './templateSelector';
 import { TextArea } from '@/components/atoms/Input-text-area';
-import { Button } from '@mui/material';
-import StepButtons from './buttonNav';
 
 export default function MetadataForm() {
   return (
@@ -35,9 +33,9 @@ export default function MetadataForm() {
                 {option.label}
               </li>
             )}
-            onChange={(_, status) => {
-              // setFilter({ ...filter, status });
-            }}
+            // onChange={(_, status) => {
+            // setFilter({ ...filter, status });
+            // }}
             getOptionLabel={option => option.label}
             placeholder="Pihak pertama*"
           />
@@ -51,9 +49,9 @@ export default function MetadataForm() {
                 {option.label}
               </li>
             )}
-            onChange={(_, status) => {
-              // setFilter({ ...filter, status });
-            }}
+            // onChange={(_, status) => {
+            // setFilter({ ...filter, status });
+            // }}
             getOptionLabel={option => option.label}
             placeholder="Pihak kedua*"
           />
@@ -67,9 +65,9 @@ export default function MetadataForm() {
                 {option.label}
               </li>
             )}
-            onChange={(_, status) => {
-              // setFilter({ ...filter, status });
-            }}
+            // onChange={(_, status) => {
+            // setFilter({ ...filter, status });
+            // }}
             getOptionLabel={option => option.label}
             placeholder="Tipe kontrak*"
           />
@@ -103,9 +101,9 @@ export default function MetadataForm() {
                 {option.label}
               </li>
             )}
-            onChange={(_, status) => {
-              // setFilter({ ...filter, status });
-            }}
+            // onChange={(_, status) => {
+            // setFilter({ ...filter, status });
+            // }}
             getOptionLabel={option => option.label}
             placeholder="PIC Internal*"
           />
@@ -120,9 +118,9 @@ export default function MetadataForm() {
                 {option.label}
               </li>
             )}
-            onChange={(_, status) => {
-              // setFilter({ ...filter, status });
-            }}
+            // onChange={(_, status) => {
+            // setFilter({ ...filter, status });
+            // }}
             getOptionLabel={option => option.label}
             placeholder="Pihak pertama*"
           />

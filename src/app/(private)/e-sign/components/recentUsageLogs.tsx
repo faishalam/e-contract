@@ -1,4 +1,4 @@
-import { CheckCircle, Cancel, Description, LocalOffer } from '@mui/icons-material';
+import { Description, LocalOffer } from '@mui/icons-material';
 
 const usageLogs = [
   {

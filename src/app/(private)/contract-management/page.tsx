@@ -81,9 +81,9 @@ export default function ContractManagement() {
                     {option.label}
                   </li>
                 )}
-                onChange={(_, status) => {
-                  // setFilter({ ...filter, status });
-                }}
+                // onChange={(_, status) => {
+                // setFilter({ ...filter, status });
+                // }}
                 getOptionLabel={option => option.label}
                 placeholder="Status"
               />
@@ -96,9 +96,9 @@ export default function ContractManagement() {
                     {option.label}
                   </li>
                 )}
-                onChange={(_, status) => {
-                  // setFilter({ ...filter, status });
-                }}
+                // onChange={(_, status) => {
+                // setFilter({ ...filter, status });
+                // }}
                 getOptionLabel={option => option.label}
                 placeholder="Status"
               />

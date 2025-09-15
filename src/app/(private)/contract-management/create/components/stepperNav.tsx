@@ -23,7 +23,7 @@ const steps = [
 ];
 
 // 🔹 Custom Connector
-const CustomStepConnector = styled(StepConnector)(({ theme }) => ({
+const CustomStepConnector = styled(StepConnector)(() => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
     top: 22,
   },
