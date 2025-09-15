@@ -1,6 +1,6 @@
-"use client";
-import { IconButton, IconButtonProps } from "@mui/material";
-import { useId } from "react";
+'use client';
+import { IconButton, IconButtonProps } from '@mui/material';
+import { useId } from 'react';
 
 type TProps = IconButtonProps & {
   children?: React.ReactNode;
@@ -9,11 +9,10 @@ type TProps = IconButtonProps & {
 const CIconButton: React.FC<TProps> = ({ children, ...props }) => {
   const reactId = useId(); // SSR-safe ID
   const id = props.id || `custom-icon-button-${reactId}`;
-  const ariaLabel = props["aria-label"] || `custom-icon-button-${reactId}`;
+  const ariaLabel = props['aria-label'] || `custom-icon-button-${reactId}`;
   const title = props.title || `custom-icon-button-${reactId}`;
-  const ariaLabelledBy =
-    props["aria-labelledby"] || `custom-icon-button-${reactId}`;
-  const role = props.role || "button";
+  const ariaLabelledBy = props['aria-labelledby'] || `custom-icon-button-${reactId}`;
+  const role = props.role || 'button';
 
   return (
     <IconButton

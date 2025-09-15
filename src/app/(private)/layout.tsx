@@ -9,10 +9,12 @@ export default function PrivateLayout({
   return (
     <>
       <div className="h-screen w-screen no-scrollbar">
-        <Navbar />
-        <div className="flex h-[calc(100vh-4.25rem)] overflow-y-hidden">
+        <div className="flex h-full overflow-y-hidden">
           <Sidebar />
-          <div className="w-full h-full overflow-y-auto">{children}</div>
+          <div className="flex flex-col w-full overflow-y-auto">
+            <Navbar />
+            <div className="w-full px-6 py-4 bg-[#f9fafb]">{children}</div>
+          </div>
         </div>
       </div>
     </>

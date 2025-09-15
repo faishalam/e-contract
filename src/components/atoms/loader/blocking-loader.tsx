@@ -1,4 +1,4 @@
-import { ThreeDot } from 'react-loading-indicators'
+import { ThreeDot } from 'react-loading-indicators';
 const BlockingLoader: React.FC<{ text?: string }> = ({ text }) => {
   return (
     <div
@@ -13,6 +13,6 @@ const BlockingLoader: React.FC<{ text?: string }> = ({ text }) => {
         textColor="#006766"
       />
     </div>
-  )
-}
-export default BlockingLoader
+  );
+};
+export default BlockingLoader;
