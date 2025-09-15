@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { TextFieldProps, TextField, InputAdornment, MenuItem } from '@mui/material';
 
 type CInputProps = {
@@ -20,8 +20,8 @@ const CInput: React.FC<CInputProps> = ({
   required,
   ...props
 }) => {
-  const generatedID = Math.random().toString(36).substring(7);
-  const id = props.id || generatedID;
+  const reactId = useId();
+  const id = props.id || reactId;
 
   return (
     <div className={props.className}>

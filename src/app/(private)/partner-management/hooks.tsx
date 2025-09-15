@@ -1,8 +1,10 @@
 'use client';
-
-import { createContext, useContext, useMemo } from 'react';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import { createContext, useContext, useMemo, useState } from 'react';
 
 const usePartnerManagementHooks = () => {
+  const [openModal, setOpenModal] = useState<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const partnerColumnDef: any[] = useMemo(
     () => [
@@ -41,16 +43,18 @@ const usePartnerManagementHooks = () => {
         ),
       },
       { headerName: 'Active Contract', field: 'activeContract', flex: 1 },
-      { headerName: 'Expiry', field: 'expiry', flex: 1 },
       {
         headerName: 'Actions',
         field: 'actions',
         flex: 1,
         cellRenderer: () => (
-          <div className="flex gap-2">
-            <button title="View">👁️</button>
-            <button title="Download">⬇️</button>
-            <button title="Edit">✏️</button>
+          <div className="flex gap-1 py-1 items-center justify-center">
+            <div className="cursor-pointer w-6 h-6 bg-[#dbe9fe] rounded-md flex items-center justify-center">
+              <VisibilityIcon className="text-[#2f63ea]" style={{ fontSize: '1rem' }} />
+            </div>
+            <div className="cursor-pointer w-6 h-6 bg-[#feedd5] rounded-md flex items-center justify-center">
+              <BorderColorIcon className="text-[#e9580b]" style={{ fontSize: '1rem' }} />
+            </div>
           </div>
         ),
       },
@@ -118,6 +122,8 @@ const usePartnerManagementHooks = () => {
   return {
     partnerColumnDef,
     partnersData,
+    openModal,
+    setOpenModal,
   };
 };
 

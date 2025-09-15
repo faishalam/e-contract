@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useId } from 'react';
 import { TextField, TextFieldProps } from '@mui/material';
 
 interface TextAreaProps extends Omit<TextFieldProps, 'multiline'> {
@@ -10,7 +10,7 @@ interface TextAreaProps extends Omit<TextFieldProps, 'multiline'> {
 }
 
 export function TextArea({ label, required = false, inputClassName, ...props }: TextAreaProps) {
-  const generatedID = Math.random().toString(36).substring(7);
+  const generatedID = useId();
   const id = props.id || generatedID;
   return (
     <div className={props.className}>

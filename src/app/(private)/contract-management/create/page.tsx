@@ -16,7 +16,7 @@ export default function Page() {
           <StepperNav />
         </div>
 
-        <div className="w-full">
+        <div className="w-full h-full">
           {step === 'metadata' && <MetadataForm />}
           {step === 'content' && <ContentForm />}
 

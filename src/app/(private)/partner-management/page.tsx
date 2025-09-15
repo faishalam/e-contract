@@ -6,9 +6,10 @@ import CInput from '@/components/atoms/input';
 import SearchIcon from '@mui/icons-material/Search';
 import DataGrid from '@/components/molecules/datagrid';
 import usePartnerManagement from './hooks';
+import ModalPartner from './components/modal';
 
 export default function PartnerManagementPage() {
-  const { partnerColumnDef, partnersData } = usePartnerManagement();
+  const { partnerColumnDef, partnersData, openModal, setOpenModal } = usePartnerManagement();
 
   return (
     <>
@@ -23,6 +24,7 @@ export default function PartnerManagementPage() {
               variant="contained"
               startIcon={<AddIcon />}
               className="!bg-orange-500 !capitalize !shadow-sm w-40"
+              onClick={() => setOpenModal(!openModal)}
             >
               Add Partner
             </Button>
@@ -52,7 +54,7 @@ export default function PartnerManagementPage() {
               />
               <CAutoComplete
                 options={[]}
-                className="w-full"
+                className="w-1/3"
                 getOptionKey={option => option.value}
                 renderOption={(props, option) => (
                   <li {...props} key={option.value}>
@@ -67,7 +69,7 @@ export default function PartnerManagementPage() {
               />
               <CAutoComplete
                 options={[]}
-                className="w-full"
+                className="w-1/3"
                 getOptionKey={option => option.value}
                 renderOption={(props, option) => (
                   <li {...props} key={option.value}>
@@ -87,6 +89,7 @@ export default function PartnerManagementPage() {
             <DataGrid columnDefs={partnerColumnDef} rowData={partnersData} />
           </div>
         </div>
+        <ModalPartner />
       </div>
     </>
   );

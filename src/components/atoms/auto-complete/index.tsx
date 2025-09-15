@@ -3,6 +3,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 
 import { AutocompleteProps } from '@mui/material/Autocomplete';
 import { InputAdornment } from '@mui/material';
+import { useId } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface TProps extends AutocompleteProps<any, any, any, any> {
@@ -13,7 +14,7 @@ interface TProps extends AutocompleteProps<any, any, any, any> {
   required?: boolean;
 }
 const CAutoComplete: React.FC<Omit<TProps, 'renderInput'>> = props => {
-  const generatedID = Math.random().toString(36).substring(7);
+  const generatedID = useId();
   const id = props.id || generatedID;
   return (
     <div className={props.className}>
