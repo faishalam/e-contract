@@ -13,7 +13,7 @@ const Navbar: React.FC<TProps> = ({ showRightMenu = true }) => {
   // };
 
   return (
-    <div className="flex items-center sticky h-[55px] top-0 justify-between px-8 py-2 w-full m-0 p-0 z-50 bg-[#f9fafb] text-black">
+    <div className="flex items-center sticky top-0 justify-between px-8 py-2 m-0 p-0 z-50 bg-[#f9fafb] text-black">
       {showRightMenu && (
         <div className="w-full flex justify-between items-end">
           <div className="w-full text-sm">

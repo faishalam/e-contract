@@ -10,17 +10,18 @@ export default function PrivateLayout({
   return (
     <>
       <AppRouterCacheProvider>
-        <div className="h-screen w-screen no-scrollbar">
-          <div className="flex h-full overflow-y-hidden">
-            <Sidebar />
-            <div className="flex flex-col w-full overflow-y-auto">
-              <Navbar />
-              <div className="w-full px-6 py-4 bg-[#f9fafb]">{children}</div>
+        <div className="w-screen h-screen no-scrollbar">
+          <div className="w-full h-full">
+            <div className="flex w-full h-full">
+              <Sidebar />
+              <div className="flex flex-col w-full overflow-y-auto">
+                <Navbar />
+                <div className="w-full px-6 py-4 bg-[#f9fafb]">{children}</div>
+              </div>
             </div>
           </div>
         </div>
       </AppRouterCacheProvider>
-      F
     </>
   );
 }
