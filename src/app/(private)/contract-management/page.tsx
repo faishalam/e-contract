@@ -48,6 +48,7 @@ export default function ContractManagement() {
                 fullWidth
                 startIcon={<UploadIcon />}
                 className="!bg-white !capitalize !shadow-md !text-black !border !border-gray-300"
+                onClick={() => router.push('/contract-management/import?step=sumber')}
               >
                 Import
               </Button>

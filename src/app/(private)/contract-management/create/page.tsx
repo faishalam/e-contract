@@ -13,7 +13,9 @@ export default function Page() {
       <div className="w-full h-full flex flex-col gap-6">
         {/* Stepper full width, keluar dari padding */}
         <div className="-mx-6 -my-4 bg-white border-b border-t p-4">
-          <StepperNav />
+          <div className="max-w-full w-full">
+            <StepperNav />
+          </div>
         </div>
 
         <div className="w-full h-full">
