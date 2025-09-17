@@ -21,8 +21,11 @@ export default function Page() {
         <div className="w-full h-full">
           {step === 'metadata' && <MetadataForm />}
           {step === 'content' && <ContentForm />}
-
-          <StepButtons />
+          <div className="w-full flex justify-center items-center">
+            <div className="lg:max-w-6xl md:max-w-lg max-w-sm w-full flex flex-col justify-center gap-6">
+              <StepButtons />
+            </div>
+          </div>
         </div>
       </div>
     </>

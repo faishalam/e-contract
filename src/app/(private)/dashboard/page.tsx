@@ -26,11 +26,11 @@ export default function DashboardPage() {
           ))}
         </div>
 
-        <div className="h-full grid sm:grid-cols-2 lg:grid-cols-3 grid-cols-1 gap-4 items-stretch">
-          <div className="col-span-2 h-full">
+        <div className="h-full w-full flex flex-col lg:flex-row gap-4 items-stretch">
+          <div className="col-span-2 h-full w-full">
             <PlatformActivityChart />
           </div>
-          <div className="h-full">
+          <div className="h-full w-full lg:w-1/2">
             <RecentActivity />
           </div>
         </div>

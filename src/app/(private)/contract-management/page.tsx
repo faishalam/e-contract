@@ -72,7 +72,7 @@ export default function ContractManagement() {
               </Button>
             </div>
             {/* filter */}
-            <div className="w-full flex gap-2 justify-center items-center">
+            <div className="w-full max-w-full overflow-auto flex gap-2 justify-center items-center">
               <CAutoComplete
                 options={[]}
                 className="w-full"

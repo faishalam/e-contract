@@ -15,7 +15,7 @@ export default function ActivityTabs() {
 
   return (
     <>
-      <div className="flex space-x-8">
+      <div className="flex space-x-8 max-w-full w-full overflow-x-auto">
         {labels.map(item => (
           <button
             key={item.label}

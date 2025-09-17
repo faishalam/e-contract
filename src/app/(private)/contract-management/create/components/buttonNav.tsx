@@ -27,7 +27,7 @@ export default function StepButtons() {
   };
 
   return (
-    <div className="w-full flex justify-between items-center">
+    <div className="w-full flex flex-col md:flex-row justify-between items-center">
       {/* Kiri: Simpan Draft */}
       <div className="w-full">
         <Button
@@ -39,7 +39,7 @@ export default function StepButtons() {
       </div>
 
       {/* Kanan: Back / Next */}
-      <div className="w-full flex justify-end items-center gap-4">
+      <div className="w-full flex-col md:flex-row justify-center items-center flex md:justify-end md:items-center gap-4">
         <Button
           onClick={handleBack}
           disabled={currentIndex === 0}

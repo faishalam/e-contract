@@ -39,7 +39,7 @@ export default function UserManagementPage() {
             </Button>
           </div>
         </div>
-        <div className="flex items-center bg-white rounded-md shadow p-4 w-full">
+        <div className="flex max-w-full overflow-x-auto items-center bg-white rounded-md shadow p-4 w-full">
           <StatsCard />
         </div>
 
@@ -48,7 +48,7 @@ export default function UserManagementPage() {
         </div>
 
         <div className="flex flex-col gap-6 bg-white p-4 rouonded-md shadow-sm">
-          <div className="w-full flex justify-center items-center">
+          <div className="w-full flex justify-center items-center overflow-x-auto max-w-full">
             <div className="w-full flex gap-2">
               <CAutoComplete
                 options={[]}

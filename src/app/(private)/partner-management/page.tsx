@@ -31,7 +31,7 @@ export default function PartnerManagementPage() {
           </div>
         </div>
         <div className="flex flex-col gap-6 p-4 bg-white rouonded-md shadow-sm">
-          <div className="w-full flex justify-center">
+          <div className="w-full flex justify-center overflow-auto max-w-full">
             <div className="w-full flex gap-2">
               <Button variant="contained" className="!bg-orange-500 !capitalize !shadow-sm w-40">
                 Corporate
