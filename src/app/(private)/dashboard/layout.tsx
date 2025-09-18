@@ -1,7 +1,13 @@
+import { DashboardProvider } from './hooks';
+
 export default function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <>{children}</>;
+  return (
+    <>
+      <DashboardProvider>{children}</DashboardProvider>
+    </>
+  );
 }

@@ -1,51 +1,90 @@
-"use client";
-import CLink from "@/components/atom/link";
-import { usePathname } from "next/navigation";
-import { useMemo } from "react";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import PeopleIcon from "@mui/icons-material/People";
-import DescriptionIcon from "@mui/icons-material/Description";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+'use client';
+import CLink from '@/components/atoms/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { useMemo } from 'react';
+import DescriptionIcon from '@mui/icons-material/Description';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import GroupIcon from '@mui/icons-material/Group';
+import PieChartIcon from '@mui/icons-material/PieChart';
+import LogoutIcon from '@mui/icons-material/Logout';
+import Cookies from 'js-cookie';
+import useLogoutUser from '@/services/auth/logout';
 
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
+  const router = useRouter();
+  const { mutate } = useLogoutUser();
 
   const sidebarClass = useMemo(() => {
-    if (pathname.includes("/messages")) return "hidden";
-    return "w-[260px] sticky top-[var(--header-height)] h-full bg-white shadow shadow-[0px_6px_20px_0px_rgba(0,0,0,0.05)]";
+    if (pathname.includes('/messages')) return 'hidden';
+    return 'w-[260px] sticky top-[var(--header-height)] h-[calc(100vh-var(--header-height))] bg-white border-r flex flex-col justify-between';
   }, [pathname]);
 
+  const handleLogout = () => {
+    mutate();
+    Cookies.remove('accessToken');
+    router.push('/login');
+  };
+
   return (
-    <>
-      <div className={sidebarClass}>
+    <div className={sidebarClass}>
+      <div>
+        <div className="h-[55px] justify-start p-3 items-center flex gap-2 border-b mb-4">
+          <div className="flex gap-4 justify-center items-center w-6 h-6 border bg-[#2784c7] rounded-md">
+            <DescriptionIcon sx={{ color: 'white', fontSize: '0.8rem' }} />
+          </div>
+          <p className="text-[#2784c7] font-bold">eContract</p>
+        </div>
+
         <MenuItems
           Icon={DashboardIcon}
           title="Dashboard"
-          selected={pathname.startsWith("/dashboard")}
+          selected={pathname.startsWith('/dashboard')}
           href="/dashboard"
         />
         <MenuItems
-          Icon={PeopleIcon}
-          title="User Management"
-          selected={pathname.startsWith("/user-management")}
-          href="/user-management"
+          Icon={DescriptionIcon}
+          title="Contract Management"
+          selected={pathname.startsWith('/contract-management')}
+          href="/contract-management"
         />
         <MenuItems
           Icon={DescriptionIcon}
-          title="E-Contract"
-          selected={pathname.startsWith("/e-contract")}
-          href="/e-contract"
+          title="Partner Management"
+          selected={pathname.startsWith('/partner-management')}
+          href="/partner-management"
         />
         <MenuItems
-          Icon={HelpOutlineIcon}
-          title="Helpdesk"
-          selected={pathname.startsWith("/helpdesk")}
+          Icon={DescriptionIcon}
+          title="e-Sign & e-stamp Quota"
+          selected={pathname.startsWith('/e-sign')}
+          href="/e-sign"
+        />
+        <MenuItems
+          Icon={GroupIcon}
+          title="User Management"
+          selected={pathname.startsWith('/user-management')}
+          href="/user-management"
+        />
+        <MenuItems
+          Icon={PieChartIcon}
+          title="Reports & Analytics"
+          selected={pathname.startsWith('/helpdesk')}
           href="/helpdesk"
         />
       </div>
-    </>
+
+      <button
+        className="border-t w-full p-3 cursor-pointer hover:bg-gray-50 flex items-center gap-2 text-black border-gray-200"
+        onClick={() => handleLogout()}
+      >
+        <LogoutIcon />
+        <small className="font-medium">Logout</small>
+      </button>
+    </div>
   );
 };
+
 export default Sidebar;
 
 type TMenuItemProps = {
@@ -55,21 +94,19 @@ type TMenuItemProps = {
   href?: string;
 };
 
-const MenuItems: React.FC<TMenuItemProps> = ({
-  selected,
-  title,
-  Icon,
-  href,
-}) => {
+const MenuItems: React.FC<TMenuItemProps> = ({ selected, title, Icon, href }) => {
   return (
-    <CLink href={href ?? ""} prefetch>
+    <CLink href={href ?? ''} prefetch>
       <div
-        className={`flex hover:bg-[#CCE1E0] p-3 gap-2 items-center cursor-pointer ${
-          selected ? "bg-[#CCE1E0]" : ""
+        className={`flex hover:bg-[#fef7ed] p-3 gap-2 items-center cursor-pointer ${
+          selected ? 'bg-[#fef7ed]' : ''
         }`}
       >
-        <Icon color={selected ? "primary" : "inherit"} />
-        <small className="font-bold text-[#006766]">{title}</small>
+        <Icon sx={{ color: selected ? '#f46e31' : 'black', fontSize: '1rem' }} />
+
+        <small className={`font-medium ${selected ? 'text-[#f46e31]' : 'text-black'}`}>
+          {title}
+        </small>
       </div>
     </CLink>
   );

@@ -1,0 +1,98 @@
+'use client';
+
+import { createContext, useContext, useEffect } from 'react';
+import { FieldErrors, SubmitHandler, useForm } from 'react-hook-form';
+import { TLoginForm } from './types';
+import { zodResolver } from '@hookform/resolvers/zod';
+// import { useQueryClient } from '@tanstack/react-query';
+import useLoginUser, { TLoginResponse } from '@/services/auth/login';
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
+import { loginSchema } from './validator';
+import { toast } from 'react-toastify';
+
+const useLoginHooks = () => {
+  // const queryClient = useQueryClient();
+  const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    control,
+    resetField,
+  } = useForm<TLoginForm>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      username: '',
+      password: '',
+    },
+  });
+
+  const { mutate: mutateLogin, isPending: isLoadingLogin } = useLoginUser({
+    onSuccess: (data: TLoginResponse) => {
+      if (!data) return;
+      Cookies.set('accessToken', data.tokens.accessToken, {
+        expires: 7,
+        sameSite: 'strict',
+        secure: true,
+      });
+      router.push('/dashboard');
+    },
+    onError: (error: unknown) => {
+      toast.error(error as string);
+      // reset();
+    },
+  });
+
+  const onSubmit: SubmitHandler<TLoginForm> = data => {
+    mutateLogin(data);
+  };
+
+  const onInvalid = (errors: FieldErrors<TLoginForm>) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    Object.entries(errors).forEach(([_, error]) => {
+      // console.log(key);
+      if (error?.message) {
+        // toast.error(error.message);
+      }
+    });
+    console.log(errors);
+  };
+
+  useEffect(() => {
+    const token = Cookies.get('accessToken');
+    if (!token) {
+      router.replace('/login');
+    }
+  }, []);
+
+  return {
+    isLoadingLogin,
+    register,
+    handleSubmit,
+    errors,
+    reset,
+    control,
+    resetField,
+    onSubmit,
+    onInvalid,
+  };
+};
+
+const LoginContext = createContext<ReturnType<typeof useLoginHooks> | undefined>(undefined);
+
+export const LoginProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const value = useLoginHooks();
+  return <LoginContext.Provider value={value}>{children}</LoginContext.Provider>;
+};
+
+export const useLogin = () => {
+  const context = useContext(LoginContext);
+  if (context === undefined) {
+    throw new Error('useLogin must be used within a LoginProvider');
+  }
+  return context;
+};
+
+export default useLogin;
