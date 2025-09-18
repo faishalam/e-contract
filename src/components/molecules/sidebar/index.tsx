@@ -1,23 +1,34 @@
 'use client';
 import CLink from '@/components/atoms/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import DescriptionIcon from '@mui/icons-material/Description';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import GroupIcon from '@mui/icons-material/Group';
 import PieChartIcon from '@mui/icons-material/PieChart';
+import LogoutIcon from '@mui/icons-material/Logout';
+import Cookies from 'js-cookie';
+import useLogoutUser from '@/services/auth/logout';
 
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
+  const router = useRouter();
+  const { mutate } = useLogoutUser();
 
   const sidebarClass = useMemo(() => {
     if (pathname.includes('/messages')) return 'hidden';
-    return 'w-[260px] sticky top-[var(--header-height)] h-full bg-white border-r';
+    return 'w-[260px] sticky top-[var(--header-height)] h-[calc(100vh-var(--header-height))] bg-white border-r flex flex-col justify-between';
   }, [pathname]);
 
+  const handleLogout = () => {
+    mutate();
+    Cookies.remove('accessToken');
+    router.push('/login');
+  };
+
   return (
-    <>
-      <div className={sidebarClass}>
+    <div className={sidebarClass}>
+      <div>
         <div className="h-[55px] justify-start p-3 items-center flex gap-2 border-b mb-4">
           <div className="flex gap-4 justify-center items-center w-6 h-6 border bg-[#2784c7] rounded-md">
             <DescriptionIcon sx={{ color: 'white', fontSize: '0.8rem' }} />
@@ -62,9 +73,18 @@ const Sidebar: React.FC = () => {
           href="/helpdesk"
         />
       </div>
-    </>
+
+      <button
+        className="border-t w-full p-3 cursor-pointer hover:bg-gray-50 flex items-center gap-2 text-black border-gray-200"
+        onClick={() => handleLogout()}
+      >
+        <LogoutIcon />
+        <small className="font-medium">Logout</small>
+      </button>
+    </div>
   );
 };
+
 export default Sidebar;
 
 type TMenuItemProps = {
