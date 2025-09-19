@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { NetworkAPIError, TResponseType } from '@/utils/response-type';
 import { AxiosError } from 'axios';
-import { HeroServices } from '../heroServices';
+import { HeroServices } from '../HeroServices';
 
 const useLogoutUser = () => {
   const useLogoutUserFn = async () => {

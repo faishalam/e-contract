@@ -12,7 +12,7 @@ export default function MyEditor() {
       apiKey="4m6tkiusclhh3zxgknr72oy49wj2l4jvbi2ue29ytrmh2an1"
       initialValue="<p>Tulis sesuatu di sini...</p>"
       init={{
-        height: 400,
+        height: '100vh',
         menubar: false,
         plugins:
           'advlist autolink lists link image charmap preview anchor ' +
