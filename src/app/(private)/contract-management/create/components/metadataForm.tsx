@@ -1,6 +1,6 @@
 import CAutoComplete from '@/components/atoms/auto-complete';
 import CInput from '@/components/atoms/input';
-import TemplateSelector from './templateSelector';
+import TemplateSelector from './metadataForm/templateSelector';
 import { TextArea } from '@/components/atoms/Input-text-area';
 
 export default function MetadataForm() {

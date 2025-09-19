@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@mui/material';
-import useCreateContract from '../hooks';
+import useCreateContract from '../../hooks';
 
 export default function StepButtons() {
   const { steps } = useCreateContract();
@@ -29,7 +29,7 @@ export default function StepButtons() {
   return (
     <div className="w-full flex flex-col md:flex-row justify-between items-center">
       {/* Kiri: Simpan Draft */}
-      <div className="w-full">
+      <div className="w-full md:mb-4">
         <Button
           variant="contained"
           className="!bg-[#f9fafb] w-60 !border !text-black !capitalize !shadow-sm"
