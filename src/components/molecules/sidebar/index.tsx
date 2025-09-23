@@ -23,6 +23,7 @@ const Sidebar: React.FC = () => {
   const handleLogout = () => {
     mutate();
     Cookies.remove('accessToken');
+    Cookies.remove('refreshToken');
     router.push('/login');
   };
 
