@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect } from 'react';
+import { createContext, useContext } from 'react';
 import { FieldErrors, SubmitHandler, useForm } from 'react-hook-form';
 import { TLoginForm } from './types';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -34,8 +34,15 @@ const useLoginHooks = () => {
       if (!data) return;
       Cookies.set('accessToken', data.tokens.accessToken, {
         expires: 7,
-        sameSite: 'strict',
-        secure: true,
+        sameSite: 'lax',
+        // secure: process.env.NODE_ENV === 'production',
+        path: '/',
+      });
+      Cookies.set('refreshToken', data.tokens.refreshToken, {
+        expires: 7,
+        sameSite: 'lax',
+        // secure: process.env.NODE_ENV === 'production',
+        path: '/',
       });
       router.push('/dashboard');
     },
@@ -59,14 +66,6 @@ const useLoginHooks = () => {
     });
     console.log(errors);
   };
-
-  useEffect(() => {
-    const token = Cookies.get('accessToken');
-    if (!token) {
-      router.replace('/login');
-    }
-  }, []);
-
   return {
     isLoadingLogin,
     register,
