@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-const baseURL = 'https://api.ganipedia.xyz/auth/';
+const baseURL = `${process.env.NEXT_PUBLIC_API_URL}/auth`;
 
 export const AuthServices = Axios.create({
   baseURL: baseURL,

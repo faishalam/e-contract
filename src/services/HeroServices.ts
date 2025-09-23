@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import Cookies from 'js-cookie';
 
-const baseURL = 'https://api.ganipedia.xyz/';
+const baseURL = `${process.env.NEXT_PUBLIC_API_URL}`;
 
 export const HeroServices = Axios.create({
   baseURL: baseURL,
