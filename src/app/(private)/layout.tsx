@@ -2,28 +2,12 @@
 import Navbar from '@/components/molecules/navbar';
 import Sidebar from '@/components/molecules/sidebar';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import Cookies from 'js-cookie';
 
 export default function PrivateLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const router = useRouter();
-  const [isChecking, setIsChecking] = useState(true);
-
-  useEffect(() => {
-    const token = Cookies.get('accessToken');
-    if (!token) {
-      router.replace('/login');
-    } else {
-      setIsChecking(false);
-    }
-  }, []);
-
-  if (isChecking) return null;
   return (
     <>
       <AppRouterCacheProvider>
