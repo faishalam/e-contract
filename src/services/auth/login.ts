@@ -3,26 +3,7 @@ import { NetworkAPIError, TResponseType } from '@/utils/response-type';
 import { AxiosError } from 'axios';
 import { AuthServices } from '../authServices';
 import { TLoginForm } from '@/app/(public)/login/types';
-
-export interface TLoginResponse {
-  tokens: Tokens;
-  user: User;
-}
-
-export interface Tokens {
-  accessToken: string;
-  refreshToken: string;
-}
-
-export interface User {
-  esign_id: string;
-  esign_status_id: string;
-  full_name: string;
-  id: string;
-  register_date: string;
-  role: string;
-  username: string;
-}
+import { TLoginResponse } from './types';
 
 type TUseLoginProps = {
   onSuccess?: (data: TLoginResponse) => void;

@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import { handleGlobalError } from '@/utils/globalErrorHandler';
 
 const baseURL = `${process.env.NEXT_PUBLIC_API_URL}/auth`;
 
@@ -8,3 +9,12 @@ export const AuthServices = Axios.create({
     'Content-Type': 'application/json',
   },
 });
+
+// Global error interceptor for AuthServices
+AuthServices.interceptors.response.use(
+  response => response,
+  error => {
+    handleGlobalError(error);
+    return Promise.reject(error);
+  },
+);

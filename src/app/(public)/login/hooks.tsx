@@ -5,11 +5,12 @@ import { FieldErrors, SubmitHandler, useForm } from 'react-hook-form';
 import { TLoginForm } from './types';
 import { zodResolver } from '@hookform/resolvers/zod';
 // import { useQueryClient } from '@tanstack/react-query';
-import useLoginUser, { TLoginResponse } from '@/services/auth/login';
+import useLoginUser from '@/services/auth/login';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { loginSchema } from './validator';
 import { toast } from 'react-toastify';
+import { TLoginResponse } from '@/services/auth/types';
 
 const useLoginHooks = () => {
   // const queryClient = useQueryClient();
