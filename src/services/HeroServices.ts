@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import Cookies from 'js-cookie';
+import { handleGlobalError } from '@/utils/globalErrorHandler';
 
 const baseURL = `${process.env.NEXT_PUBLIC_API_URL}`;
 
@@ -32,6 +33,7 @@ HeroServices.interceptors.response.use(
     const originalRequest = error.config;
     const status = error?.response?.status;
 
+    // Handle 401 (token refresh logic)
     if (status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
@@ -81,6 +83,10 @@ HeroServices.interceptors.response.use(
       } finally {
         isRefreshing = false;
       }
+    }
+
+    if (status !== 401) {
+      handleGlobalError(error);
     }
 
     return Promise.reject(error);
