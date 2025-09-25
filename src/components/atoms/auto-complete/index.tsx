@@ -20,7 +20,7 @@ const CAutoComplete: React.FC<Omit<TProps, 'renderInput'>> = props => {
     <div className={props.className}>
       {typeof props?.label === 'string' ? (
         <small>
-          <label htmlFor={id}>
+          <label htmlFor={id} className="font-medium">
             {props?.label.replace(/\*$/, '')}
             {(props?.required || props?.label.endsWith('*')) && (
               <span style={{ color: 'red' }}>*</span>
@@ -29,7 +29,9 @@ const CAutoComplete: React.FC<Omit<TProps, 'renderInput'>> = props => {
         </small>
       ) : (
         <small>
-          <label htmlFor={id}>{props?.label}</label>
+          <label htmlFor={id} className="font-medium">
+            {props?.label}
+          </label>
         </small>
       )}
       <Autocomplete

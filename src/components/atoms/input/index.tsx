@@ -27,14 +27,16 @@ const CInput: React.FC<CInputProps> = ({
     <div className={props.className}>
       {typeof label === 'string' ? (
         <small>
-          <label htmlFor={id}>
+          <label htmlFor={id} className="font-medium">
             {label.replace(/\*$/, '')}
             {(required || label.endsWith('*')) && <span style={{ color: 'red' }}>*</span>}
           </label>
         </small>
       ) : (
         <small>
-          <label htmlFor={id}>{label}</label>
+          <label htmlFor={id} className="font-medium">
+            {label}
+          </label>
         </small>
       )}
       <TextField
@@ -75,7 +77,12 @@ const CInput: React.FC<CInputProps> = ({
           '& .MuiInputBase-input': {
             fontSize: '12px',
             height: '36px',
-            padding: '8px 14px',
+            // padding: '8px 14px',
+          },
+          '& input:-webkit-autofill': {
+            WebkitBoxShadow: '0 0 0 1000px white inset',
+            WebkitTextFillColor: 'black',
+            transition: '5000s ease-in-out 0s',
           },
           ...props.sx,
         }}
