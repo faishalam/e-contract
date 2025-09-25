@@ -16,14 +16,16 @@ export function TextArea({ label, required = false, inputClassName, ...props }: 
     <div className={props.className}>
       {typeof label === 'string' ? (
         <small>
-          <label htmlFor={id}>
+          <label htmlFor={id} className="font-medium">
             {label.replace(/\*$/, '')}
             {(required || label.endsWith('*')) && <span style={{ color: 'red' }}>*</span>}
           </label>
         </small>
       ) : (
         <small>
-          <label htmlFor={id}>{label}</label>
+          <label htmlFor={id} className="font-medium">
+            {label}
+          </label>
         </small>
       )}
       <TextField

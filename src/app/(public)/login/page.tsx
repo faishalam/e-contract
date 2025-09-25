@@ -9,6 +9,8 @@ import { Controller } from 'react-hook-form';
 import useLogin from './hooks';
 import { useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import LockOutlineIcon from '@mui/icons-material/LockOutline';
 
 export default function LoginPage() {
   const { control, handleSubmit, onSubmit, onInvalid, errors, isLoadingLogin } = useLogin();
@@ -91,6 +93,16 @@ export default function LoginPage() {
                         {...field}
                         required
                         autoComplete="off"
+                        slotProps={{
+                          input: {
+                            startAdornment: (
+                              <PermIdentityIcon
+                                className="text-gray-500"
+                                style={{ fontSize: '1.3rem' }}
+                              />
+                            ),
+                          },
+                        }}
                       />
                     )}
                   />
@@ -119,6 +131,12 @@ export default function LoginPage() {
                                 {showPassword ? <VisibilityOff /> : <Visibility />}
                               </CIconButton>
                             ),
+                            startAdornment: (
+                              <LockOutlineIcon
+                                className="text-gray-500"
+                                style={{ fontSize: '1.3rem' }}
+                              />
+                            ),
                           },
                         }}
                       />
@@ -134,7 +152,8 @@ export default function LoginPage() {
                   variant="contained"
                   fullWidth
                   loading={isLoadingLogin}
-                  className="!capitalize !shadow-sm !bg-blue-800 !text-md"
+                  // className="!capitalize !shadow-sm !bg-blue-800 !text-md"
+                  color="secondary"
                   loadingIndicator={<CircularProgress className="text-white" size={20} />}
                 >
                   Masuk

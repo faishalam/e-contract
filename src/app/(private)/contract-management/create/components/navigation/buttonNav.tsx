@@ -44,7 +44,7 @@ export default function StepButtons() {
           onClick={handleBack}
           disabled={currentIndex === 0}
           variant="contained"
-          className="!bg-[#f9fafb] w-60 !border !text-black !capitalize !shadow-sm disabled:!opacity-50"
+          className="!bg-[#f9fafb] w-50 !border !text-black !capitalize !shadow-sm disabled:!opacity-50"
         >
           Batal
         </Button>
@@ -52,7 +52,8 @@ export default function StepButtons() {
           onClick={handleNext}
           disabled={currentIndex === steps.length - 1}
           variant="contained"
-          className="!capitalize w-60 !shadow-sm disabled:!opacity-50"
+          className="!capitalize w-50 !shadow-sm disabled:!opacity-50"
+          color="secondary"
         >
           {currentIndex === steps.length - 1
             ? 'Selesai'

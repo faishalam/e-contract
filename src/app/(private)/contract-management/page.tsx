@@ -37,7 +37,8 @@ export default function ContractManagement() {
                 variant="contained"
                 fullWidth
                 startIcon={<AddIcon />}
-                className="!bg-orange-500 !capitalize !shadow-sm"
+                color="primary"
+                className="!shadow"
                 onClick={() => router.push('/contract-management/create?step=metadata')}
               >
                 Contract
@@ -47,7 +48,7 @@ export default function ContractManagement() {
                 variant="contained"
                 fullWidth
                 startIcon={<UploadIcon />}
-                className="!bg-white !capitalize !shadow-md !text-black !border !border-gray-300"
+                className="!bg-white !shadow-md !text-black !border !border-gray-300"
                 onClick={() => router.push('/contract-management/import?step=sumber')}
               >
                 Import

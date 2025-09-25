@@ -71,11 +71,7 @@ export default function DashboardPage() {
                 getOptionLabel={option => option.label}
                 placeholder="Status"
               />
-              <Button
-                variant="contained"
-                fullWidth
-                className="!bg-orange-500 !capitalize !shadow-sm"
-              >
+              <Button variant="contained" fullWidth color="primary">
                 New Contract
               </Button>
             </div>

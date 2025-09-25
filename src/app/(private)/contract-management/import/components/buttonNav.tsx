@@ -41,7 +41,8 @@ export default function StepButtons() {
           onClick={handleNext}
           disabled={currentIndex === steps.length - 1}
           variant="contained"
-          className="!capitalize w-50 !shadow-sm disabled:!opacity-50"
+          // className="!capitalize w-50 !shadow-sm disabled:!opacity-50"
+          color="secondary"
         >
           {currentIndex === steps.length - 1
             ? 'Selesai'
