@@ -2,10 +2,10 @@
 import StepButtons from './components/navigation/buttonNav';
 import StepperNav from './components/navigation/stepperNav';
 import MetadataForm from './components/metadataForm';
-import useCreateContract from './hooks';
 import ContentForm from './components/contentForm';
 import ApprovalForm from './components/approvalForm';
 import FinalForm from './components/finalForm';
+import { useCreateContract } from './hooks';
 
 export default function Page() {
   const { step } = useCreateContract();
