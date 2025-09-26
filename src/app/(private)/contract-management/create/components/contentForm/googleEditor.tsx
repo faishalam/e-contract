@@ -1,9 +1,8 @@
 import { useModalWarningInfo } from '@/components/atoms/modal-warning';
-import useCreateContract from '../../hooks';
 import { Button } from '@mui/material';
 import { LoaderIcon } from 'lucide-react';
-import { useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
+import useGoogleDocs from '../../context/useGoogleDocs';
 
 export default function GoogleEditor() {
   const {
@@ -16,7 +15,7 @@ export default function GoogleEditor() {
     getAccessToken,
     clearTokens,
     deleteGoogleDoc,
-  } = useCreateContract();
+  } = useGoogleDocs();
   const modalWarningInfo = useModalWarningInfo();
 
   const handleConnectDocs = () => {

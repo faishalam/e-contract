@@ -1,7 +1,8 @@
-// // import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+// import type { NextRequest } from 'next/server';
 
-export async function middleware(request: NextRequest) {
+// export async function middleware(request: NextRequest) {
+export async function middleware() {
   //   // const { pathname } = request.nextUrl;
   //   // const token = request.cookies.get('accessToken')?.value;
 
@@ -40,7 +41,7 @@ export async function middleware(request: NextRequest) {
   //   // }
 
   //   // return NextResponse.next();
-  console.log(request);
+  return NextResponse.next();
 }
 
 // export const config = {

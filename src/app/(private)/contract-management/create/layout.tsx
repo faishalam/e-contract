@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import { CreateContractProvider } from './hooks';
+import { GoogleDocsProvider } from './context/useGoogleDocs';
 
 export default function Layout({
   children,
@@ -9,7 +10,9 @@ export default function Layout({
   return (
     <>
       <Suspense>
-        <CreateContractProvider>{children}</CreateContractProvider>
+        <CreateContractProvider>
+          <GoogleDocsProvider>{children}</GoogleDocsProvider>
+        </CreateContractProvider>
       </Suspense>
     </>
   );
