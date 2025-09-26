@@ -174,11 +174,12 @@ const useGoogleDocsHooks = () => {
   const lastUpdateHash = useRef<string>('');
 
   const { getValues } = useCreateContract();
+  const values = getValues();
 
   // Memoize formData untuk menghindari infinite loop
   const formData = useMemo(() => {
-    return getValues();
-  }, [getValues]);
+    return values;
+  }, [getValues, values]);
 
   // Generate hash dari formData untuk tracking perubahan
   const formDataHash = useMemo(() => {
@@ -278,6 +279,7 @@ const useGoogleDocsHooks = () => {
       }
     };
 
+    console.log(formData.party1, formData.party2, 'Generating template variables with form data');
     return {
       FIRST_PARTY_NAME: formData.party1?.label || 'PT. POS Indonesia',
       SECOND_PARTY_NAME: formData.party2?.label || '[Nama Perusahaan Partner]',
@@ -371,6 +373,7 @@ const useGoogleDocsHooks = () => {
         setAuthError(null);
 
         // Generate variabel dari form
+        console.log(formData);
         const variables = generateTemplateVariables(formData);
 
         // Ambil template sesuai tipe
