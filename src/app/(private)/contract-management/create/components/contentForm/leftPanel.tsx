@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import CodeOffIcon from '@mui/icons-material/CodeOff';
+import useCreateContract from '../../hooks';
 
 type TVariableGroup = {
   title: string;
@@ -13,25 +14,6 @@ type TOutlineItem = {
   children?: TOutlineItem[];
 };
 
-const dummyGroups: TVariableGroup[] = [
-  {
-    title: 'PARTIES',
-    variables: ['{{FIRST_PARTY_NAME}}', '{{SECOND_PARTY_NAME}}', '{{SECOND_PARTY_ADDRESS}}'],
-  },
-  {
-    title: 'DATES',
-    variables: ['{{EFFECTIVE_DATE}}', '{{EXPIRY_DATE}}', '{{CURRENT_DATE}}'],
-  },
-  {
-    title: 'FINANCIAL',
-    variables: ['{{CONTRACT_VALUE}}', '{{CURRENCY}}', '{{PAYMENT_TERMS}}'],
-  },
-  {
-    title: 'SERVICE DETAILS',
-    variables: ['{{SERVICE_DESCRIPTION}}', '{{DELIVERY_TIMEFRAME}}'],
-  },
-];
-
 const dummyOutline: TOutlineItem[] = [
   { id: '1', title: '1. Introduction', children: [{ id: '1.1', title: '1.1 Purpose' }] },
   { id: '2', title: '2. Scope of Services' },
@@ -43,6 +25,41 @@ const dummyOutline: TOutlineItem[] = [
 
 const LeftPanel = () => {
   const [expanded, setExpanded] = useState<string | null>('1');
+  const { getValues } = useCreateContract();
+  const values = getValues();
+
+  const dummyGroups: TVariableGroup[] = [
+    {
+      title: 'PARTIES',
+      variables: [
+        values.party1 ? `${values.party1.label}` : null,
+        values.party2 ? `${values.party2.label}` : null,
+      ].filter(Boolean) as string[],
+    },
+    {
+      title: 'DATES',
+      variables: [
+        values.startDate ? `${values.startDate}` : null,
+        values.endDate ? `${values.endDate}` : null,
+        // '{{CURRENT_DATE}}',
+      ].filter(Boolean) as string[],
+    },
+    {
+      title: 'FINANCIAL',
+      variables: [
+        values.contractValue ? `${values.contractValue}` : null,
+        // '{{CURRENCY}}',
+        // '{{PAYMENT_TERMS}}',
+      ].filter(Boolean) as string[],
+    },
+    {
+      title: 'SERVICE DETAILS',
+      variables: [
+        values.description ? `${values.description}` : null,
+        // '{{DELIVERY_TIMEFRAME}}',
+      ].filter(Boolean) as string[],
+    },
+  ];
 
   const toggleExpand = (id: string) => {
     setExpanded(expanded === id ? null : id);

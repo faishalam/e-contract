@@ -3,16 +3,44 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@mui/material';
 import useCreateContract from '../../hooks';
+import { toast } from 'react-toastify';
+import { TContractForm } from '../../types';
 
 export default function StepButtons() {
-  const { steps } = useCreateContract();
+  const { steps, trigger } = useCreateContract();
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const currentStep = searchParams.get('step') || steps[0].path;
   const currentIndex = steps.findIndex(s => s.path === currentStep);
 
-  const handleNext = () => {
+  const stepFields: Record<string, (keyof TContractForm)[]> = {
+    metadata: [
+      'title',
+      'party1',
+      'party2',
+      'contractType',
+      'contractValue',
+      'startDate',
+      'endDate',
+      'picInternal',
+      'department',
+    ],
+    content: [], // isi kalau ada field di step "content"
+    approval: [], // isi sesuai kebutuhan
+    final: [], // biasanya kosong
+  };
+
+  const handleNext = async () => {
+    const fieldsToValidate = stepFields[currentStep] || [];
+    if (fieldsToValidate.length > 0) {
+      const valid = await trigger(fieldsToValidate as (keyof TContractForm)[]);
+      if (!valid) {
+        toast.error('Lengkapi form sebelum lanjut!');
+        return;
+      }
+    }
+
     if (currentIndex < steps.length - 1) {
       const nextStep = steps[currentIndex + 1].path;
       router.push(`/contract-management/create?step=${nextStep}`);
