@@ -40,7 +40,7 @@ const mockDepartments: TOption[] = [
 ];
 
 export default function MetadataForm() {
-  const { control } = useCreateContract();
+  const { control, errors } = useCreateContract();
 
   const formatCurrency = (value: string) => {
     const numericValue = value.replace(/[^\d]/g, '');
@@ -70,6 +70,7 @@ export default function MetadataForm() {
                     className="w-full"
                     type="text"
                     placeholder="Masukkan judul kontrak"
+                    error={!!errors.title}
                   />
                 )}
               />
@@ -83,14 +84,10 @@ export default function MetadataForm() {
                     className="w-full"
                     value={value}
                     onChange={(_, newValue) => onChange(newValue)}
-                    getOptionKey={option => option.value}
-                    renderOption={(props, option) => (
-                      <li {...props} key={option.value}>
-                        {option.label}
-                      </li>
-                    )}
-                    getOptionLabel={option => option.label}
+                    getOptionLabel={option => option?.label ?? ''}
+                    isOptionEqualToValue={(option, val) => option.value === val?.value}
                     placeholder="Pilih pihak pertama*"
+                    error={!!errors.party1}
                   />
                 )}
               />
@@ -105,13 +102,10 @@ export default function MetadataForm() {
                     value={value}
                     onChange={(_, newValue) => onChange(newValue)}
                     getOptionKey={option => option.value}
-                    renderOption={(props, option) => (
-                      <li {...props} key={option.value}>
-                        {option.label}
-                      </li>
-                    )}
                     getOptionLabel={option => option.label}
+                    isOptionEqualToValue={(option, val) => option.value === val?.value}
                     placeholder="Pilih pihak kedua*"
+                    error={!!errors.party2}
                   />
                 )}
               />
@@ -126,13 +120,10 @@ export default function MetadataForm() {
                     value={value}
                     onChange={(_, newValue) => onChange(newValue)}
                     getOptionKey={option => option.value}
-                    renderOption={(props, option) => (
-                      <li {...props} key={option.value}>
-                        {option.label}
-                      </li>
-                    )}
+                    isOptionEqualToValue={(option, val) => option.value === val?.value}
                     getOptionLabel={option => option.label}
                     placeholder="Pilih tipe kontrak*"
+                    error={!!errors.contractType}
                   />
                 )}
               />
@@ -153,6 +144,7 @@ export default function MetadataForm() {
                       onChange(formatted);
                     }}
                     placeholder="0"
+                    error={!!errors.contractValue}
                   />
                 )}
               />
@@ -161,14 +153,26 @@ export default function MetadataForm() {
                   name="startDate"
                   control={control}
                   render={({ field }) => (
-                    <CInput {...field} type="date" className="w-full" label="Tanggal Mulai*" />
+                    <CInput
+                      {...field}
+                      label="Tanggal Mulai*"
+                      className="w-full"
+                      type="date"
+                      error={!!errors.startDate}
+                    />
                   )}
                 />
                 <Controller
                   name="endDate"
                   control={control}
                   render={({ field }) => (
-                    <CInput {...field} type="date" className="w-full" label="Tanggal Selesai*" />
+                    <CInput
+                      {...field}
+                      type="date"
+                      className="w-full"
+                      label="Tanggal Selesai*"
+                      error={!!errors.endDate}
+                    />
                   )}
                 />
               </div>
@@ -183,13 +187,10 @@ export default function MetadataForm() {
                     value={value}
                     onChange={(_, newValue) => onChange(newValue)}
                     getOptionKey={option => option.value}
-                    renderOption={(props, option) => (
-                      <li {...props} key={option.value}>
-                        {option.label}
-                      </li>
-                    )}
+                    isOptionEqualToValue={(option, val) => option.value === val?.value}
                     getOptionLabel={option => option.label}
                     placeholder="Pilih PIC Internal*"
+                    error={!!errors.picInternal}
                   />
                 )}
               />
@@ -204,13 +205,10 @@ export default function MetadataForm() {
                     value={value}
                     onChange={(_, newValue) => onChange(newValue)}
                     getOptionKey={option => option.value}
-                    renderOption={(props, option) => (
-                      <li {...props} key={option.value}>
-                        {option.label}
-                      </li>
-                    )}
+                    isOptionEqualToValue={(option, val) => option.value === val?.value}
                     getOptionLabel={option => option.label}
                     placeholder="Pilih department*"
+                    error={!!errors.department}
                   />
                 )}
               />

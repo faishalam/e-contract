@@ -49,6 +49,7 @@ const useCreateContractHooks = () => {
       description: '',
       tags: '',
     },
+    mode: 'onChange',
   });
 
   const validateStep = async (currentStep: string) => {
