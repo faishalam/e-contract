@@ -10,5 +10,6 @@ type TExpressError = {
   path?: string;
   type?: string;
   value?: string;
+  message?: string;
 };
-export type NetworkAPIError = { errors: TExpressError[] };
+export type NetworkAPIError = { errors: TExpressError[]; message?: string };

@@ -23,3 +23,13 @@ export type TRoles = {
   created_at: string;
   updated_at: string;
 };
+
+export interface TUserProfile {
+  id: string;
+  email: string;
+  username: string;
+  name: string;
+  phone: string;
+  is_active: boolean;
+  roles: TRoles[];
+}
