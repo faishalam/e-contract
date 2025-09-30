@@ -1,8 +1,6 @@
 'use client';
 import Navbar from '@/components/molecules/navbar';
 import Sidebar from '@/components/molecules/sidebar';
-import { theme } from '@/styles/theme';
-import { ThemeProvider } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 
 export default function PrivateLayout({
@@ -19,9 +17,7 @@ export default function PrivateLayout({
               <Sidebar />
               <div className="flex flex-col w-full overflow-y-auto">
                 <Navbar />
-                <div className="w-full px-6 py-4 bg-[#f9fafb]">
-                  <ThemeProvider theme={theme}>{children}</ThemeProvider>
-                </div>
+                <div className="w-full px-6 py-4 bg-[#f9fafb]">{children}</div>
               </div>
             </div>
           </div>

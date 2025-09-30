@@ -1,14 +1,12 @@
-export interface TLoginResponse {
-  tokens: Tokens;
+export type TLoginResponse = {
   user: User;
-}
+  access_token: string;
+  refresh_token: string;
+  token_type: string;
+  expires_in: number;
+};
 
-export interface Tokens {
-  accessToken: string;
-  refreshToken: string;
-}
-
-export interface User {
+export type TUser = {
   esign_id: string;
   esign_status_id: string;
   full_name: string;
@@ -16,4 +14,12 @@ export interface User {
   register_date: string;
   role: string;
   username: string;
-}
+};
+
+export type TRoles = {
+  id: string;
+  name: string;
+  description: string;
+  created_at: string;
+  updated_at: string;
+};

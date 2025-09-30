@@ -3,28 +3,41 @@ import { NetworkAPIError, TResponseType } from '@/utils/response-type';
 import { AxiosError } from 'axios';
 import { HeroServices } from '../heroServices';
 
-const useLogoutUser = () => {
-  const useLogoutUserFn = async () => {
+type TLogoutUserProps = {
+  onSuccess?: (data: null) => void;
+  onError?: (error: string) => void;
+};
+
+const useLogoutUser = (props?: TLogoutUserProps) => {
+  const logoutUserFn = async (refreshToken: string): Promise<null> => {
     try {
-      const response = await HeroServices.post<TResponseType<null>>(`auth/logout`);
+      const response = await HeroServices.post<TResponseType<null>>(`/api/v1/auth/logout`, {
+        refresh_token: refreshToken,
+      });
 
-      const { status, data } = response;
+      if (response.status !== 200) {
+        return null;
+      }
 
-      if (status !== 200) return;
-
-      return data?.data;
+      return response.data.data;
     } catch (error) {
       const err = error as AxiosError<NetworkAPIError>;
       throw err?.response?.data;
     }
   };
 
-  const mutation = useMutation({
+  const mutation = useMutation<null, Error, string>({
     mutationKey: ['useLogoutUser'],
-    mutationFn: useLogoutUserFn,
+    mutationFn: logoutUserFn,
+    onSuccess: data => {
+      props?.onSuccess?.(data);
+    },
+    onError: error => {
+      props?.onError?.(error.message);
+    },
   });
 
-  return { ...mutation };
+  return mutation;
 };
 
 export default useLogoutUser;

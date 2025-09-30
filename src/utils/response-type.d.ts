@@ -1,9 +1,8 @@
 export type TResponseType<T> = {
-  data: T;
   status: string;
-  success: boolean;
+  code: number;
   message: string;
-  status?: number;
+  data: T;
 };
 type TExpressError = {
   location?: string;

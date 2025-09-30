@@ -22,10 +22,11 @@ const useLoginHooks = () => {
     reset,
     control,
     resetField,
+    getValues,
   } = useForm<TLoginForm>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      username: '',
+      email: '',
       password: '',
     },
   });
@@ -33,16 +34,14 @@ const useLoginHooks = () => {
   const { mutate: mutateLogin, isPending: isLoadingLogin } = useLoginUser({
     onSuccess: (data: TLoginResponse) => {
       if (!data) return;
-      Cookies.set('accessToken', data.tokens.accessToken, {
+      Cookies.set('accessToken', data.access_token, {
         expires: 7,
         sameSite: 'lax',
-        // secure: process.env.NODE_ENV === 'production',
         path: '/',
       });
-      Cookies.set('refreshToken', data.tokens.refreshToken, {
+      Cookies.set('refreshToken', data.refresh_token, {
         expires: 7,
         sameSite: 'lax',
-        // secure: process.env.NODE_ENV === 'production',
         path: '/',
       });
       router.push('/dashboard');
@@ -62,7 +61,7 @@ const useLoginHooks = () => {
     Object.entries(errors).forEach(([_, error]) => {
       // console.log(key);
       if (error?.message) {
-        // toast.error(error.message);
+        toast.error(error.message);
       }
     });
     console.log(errors);
@@ -77,6 +76,7 @@ const useLoginHooks = () => {
     resetField,
     onSubmit,
     onInvalid,
+    getValues,
   };
 };
 
