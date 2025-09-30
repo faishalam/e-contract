@@ -5,7 +5,6 @@ import './globals.css';
 import { QueryProviders } from '@/providers/queryProviders';
 import { ThemeProvider } from '@mui/material';
 import { theme } from '@/styles/theme';
-import { LoginProvider } from './(public)/login/hooks';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '700'] });
 
@@ -31,9 +30,7 @@ export default function RootLayout({
       >
         <ToastContainer />
         <QueryProviders>
-          <ThemeProvider theme={theme}>
-            <LoginProvider>{children}</LoginProvider>
-          </ThemeProvider>
+          <ThemeProvider theme={theme}>{children}</ThemeProvider>
         </QueryProviders>
       </body>
     </html>

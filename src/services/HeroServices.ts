@@ -2,12 +2,13 @@ import Axios from 'axios';
 import Cookies from 'js-cookie';
 // import { handleGlobalError } from '@/utils/globalErrorHandler';
 
-const baseURL = `${process.env.NEXT_PUBLIC_API_URL}`;
+const baseURL = `${process.env.NEXT_PUBLIC_API_URL}/api/v1`;
 
 export const HeroServices = Axios.create({
   baseURL: baseURL,
   headers: {
     'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true',
   },
 });
 
