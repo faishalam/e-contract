@@ -24,7 +24,7 @@ export type TRoles = {
   updated_at: string;
 };
 
-export interface TUserProfile {
+export type TUserProfile = {
   id: string;
   email: string;
   username: string;
@@ -32,4 +32,8 @@ export interface TUserProfile {
   phone: string;
   is_active: boolean;
   roles: TRoles[];
-}
+};
+
+export type TVerifyUserToken = {
+  valid: boolean;
+};

@@ -14,15 +14,14 @@ export default function PrivateLayout({
 }>) {
   const router = useRouter();
   const accessToken = Cookies.get('accessToken');
+  const refreshToken = Cookies.get('refreshToken');
 
   useEffect(() => {
-    if (accessToken !== null) {
-      // verify(token);
-    } else {
-      router.push('/login');
+    if (!accessToken && !refreshToken) {
+      router.replace('/login');
+      return;
     }
-  }, [router, accessToken]);
-
+  }, [accessToken, refreshToken, router]);
   return (
     <>
       <AppRouterCacheProvider>
