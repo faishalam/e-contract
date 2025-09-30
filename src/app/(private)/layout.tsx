@@ -1,14 +1,28 @@
 'use client';
 import Navbar from '@/components/molecules/navbar';
 import Sidebar from '@/components/molecules/sidebar';
-import { AuthProvider } from '@/context/hooks';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import { useEffect } from 'react';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
+import { AuthProvider } from '@/context/hooks';
 
 export default function PrivateLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const router = useRouter();
+  const accessToken = Cookies.get('accessToken');
+
+  useEffect(() => {
+    if (accessToken !== null) {
+      // verify(token);
+    } else {
+      router.push('/login');
+    }
+  }, [router, accessToken]);
+
   return (
     <>
       <AppRouterCacheProvider>
