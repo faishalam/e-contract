@@ -13,7 +13,10 @@ type TUseLoginProps = {
 const useLoginUser = (props?: TUseLoginProps) => {
   const useLoginUserFn = async (formLogin: TLoginForm) => {
     try {
-      const response = await AuthServices.post<TResponseType<TLoginResponse>>(`/login`, formLogin);
+      const response = await AuthServices.post<TResponseType<TLoginResponse>>(
+        `/api/v1/auth/login`,
+        formLogin,
+      );
 
       const { status, data } = response;
 

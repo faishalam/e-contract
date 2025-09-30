@@ -9,22 +9,32 @@ import PieChartIcon from '@mui/icons-material/PieChart';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Cookies from 'js-cookie';
 import useLogoutUser from '@/services/auth/logout';
+import { toast } from 'react-toastify';
 
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const { mutate } = useLogoutUser();
+  const { mutate } = useLogoutUser({
+    onSuccess: () => {
+      router.push('/login');
+      Cookies.remove('accessToken');
+      Cookies.remove('refreshToken');
+      router.push('/login');
+      toast.success('Logout Success');
+    },
+    onError: error => {
+      toast.error(error as string);
+    },
+  });
+  const refreshToken = Cookies.get('refreshToken');
 
   const sidebarClass = useMemo(() => {
     if (pathname.includes('/messages')) return 'hidden';
     return 'w-[260px] sticky top-[var(--header-height)] h-[calc(100vh-var(--header-height))] bg-white border-r flex flex-col justify-between';
   }, [pathname]);
 
-  const handleLogout = () => {
-    mutate();
-    Cookies.remove('accessToken');
-    Cookies.remove('refreshToken');
-    router.push('/login');
+  const handleLogout = (refreshToken: string) => {
+    mutate(refreshToken);
   };
 
   return (
@@ -77,7 +87,7 @@ const Sidebar: React.FC = () => {
 
       <button
         className="border-t w-full p-3 cursor-pointer hover:bg-gray-50 flex items-center gap-2 text-black border-gray-200"
-        onClick={() => handleLogout()}
+        onClick={() => handleLogout(refreshToken ?? '')}
       >
         <LogoutIcon />
         <small className="font-medium">Logout</small>

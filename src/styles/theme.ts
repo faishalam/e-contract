@@ -10,7 +10,7 @@ export const theme = createTheme({
       contrastText: '#ffffff',
     },
     secondary: {
-      main: '#1e40af', // blue-800 (bg-blue-800)
+      main: '#2684c6', // blue-800 (bg-blue-800)
       contrastText: '#ffffff',
     },
   },

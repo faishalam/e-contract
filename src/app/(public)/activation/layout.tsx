@@ -1,6 +1,6 @@
 'use client';
 
-export default function LoginLayout({
+export default function ActivationLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

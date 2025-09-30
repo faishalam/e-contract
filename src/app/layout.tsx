@@ -3,6 +3,9 @@ import { Geist_Mono, Poppins } from 'next/font/google';
 import { ToastContainer } from 'react-toastify';
 import './globals.css';
 import { QueryProviders } from '@/providers/queryProviders';
+import { ThemeProvider } from '@mui/material';
+import { theme } from '@/styles/theme';
+import { LoginProvider } from './(public)/login/hooks';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '700'] });
 
@@ -27,7 +30,11 @@ export default function RootLayout({
         className={`${poppins.className} ${geistMono.variable} antialiased h-screen w-screen overflow-hidden`}
       >
         <ToastContainer />
-        <QueryProviders>{children}</QueryProviders>
+        <QueryProviders>
+          <ThemeProvider theme={theme}>
+            <LoginProvider>{children}</LoginProvider>
+          </ThemeProvider>
+        </QueryProviders>
       </body>
     </html>
   );

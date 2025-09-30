@@ -179,7 +179,7 @@ const useGoogleDocsHooks = () => {
   // Memoize formData untuk menghindari infinite loop
   const formData = useMemo(() => {
     return values;
-  }, [getValues, values]);
+  }, [values]);
 
   // Generate hash dari formData untuk tracking perubahan
   const formDataHash = useMemo(() => {

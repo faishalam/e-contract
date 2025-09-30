@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import { handleGlobalError } from '@/utils/globalErrorHandler';
 
-const baseURL = `${process.env.NEXT_PUBLIC_API_URL}/auth`;
+const baseURL = `${process.env.NEXT_PUBLIC_API_URL}`;
 
 export const AuthServices = Axios.create({
   baseURL: baseURL,

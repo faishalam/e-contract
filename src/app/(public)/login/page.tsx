@@ -1,164 +1,216 @@
 'use client';
-import DescriptionIcon from '@mui/icons-material/Description';
-import { LoadingButton } from '@mui/lab';
-import CIconButton from '@/components/atoms/icon-button';
+import LoginIcon from '@mui/icons-material/Login';
+import RecentActorsIcon from '@mui/icons-material/RecentActors';
+import MicrosoftIcon from '@mui/icons-material/Microsoft';
 import CInput from '@/components/atoms/input';
-import Image from 'next/image';
-import { CircularProgress } from '@mui/material';
+import { Button } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import useLogin from './hooks';
 import { useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import LockOutlineIcon from '@mui/icons-material/LockOutline';
+import EmailIcon from '@mui/icons-material/Email';
+import Link from 'next/link';
+import SecurityIcon from '@mui/icons-material/Security';
+import { toast } from 'react-toastify';
+import LeftPanel from './components/leftPanel';
+import { useRouter } from 'next/navigation';
+import CIconButton from '@/components/atoms/icon-button';
 
 export default function LoginPage() {
-  const { control, handleSubmit, onSubmit, onInvalid, errors, isLoadingLogin } = useLogin();
+  const { control, handleSubmit, onSubmit, onInvalid, errors, isLoadingLogin, getValues } =
+    useLogin();
   const [showPassword, setShowPassword] = useState(false);
   const toggleShowPassword = () => setShowPassword(prev => !prev);
+  const router = useRouter();
 
   return (
     <>
-      <div className="relative">
-        <div className="h-screen w-screen overflow-hidden grid lg:grid-cols-12">
-          <div className="hidden lg:block col-span-12 lg:col-span-8">
-            <div className="flex flex-col h-full bg-gray-300 rounded-r-3xl relative overflow-hidden p-16">
-              <Image
-                src="/asset/logo/logoPosindoWhite.png"
-                alt="logo-pos-white.png"
-                width={80}
-                height={80}
-                className="absolute z-10 right-10"
-                priority
-              />
-              <Image
-                alt="bg.jpg"
-                src={'https://storage.googleapis.com/nde-bucket/logo/backgorund-nde-login.png'}
-                className="brightness-75"
-                fill
-                style={{ objectFit: 'cover' }}
-                priority
-                unoptimized
-              />
-              <Image
-                src="/asset/logo/bumn-white.png"
-                alt="logo-bumn-white.png"
-                width={200}
-                height={200}
-                className="absolute z-10"
-                priority
-              />
-              <div className="absolute bottom-4 left-0 right-0 flex justify-center text-white z-20">
-                <p className="text-sm font-medium">
-                  Powered By <b>PT Pos Finansial Indonesia</b>
-                </p>
-              </div>
-            </div>
+      <div className="h-screen w-screen overflow-hidden flex flex-col justify-center items-center">
+        <div className="w-full flex h-full">
+          <div className="w-full h-full relative lg:block hidden ">
+            <LeftPanel />
           </div>
 
-          <div className="col-span-12 lg:col-span-4 flex items-center justify-center max-w-full px-10 sm:px-10 md:px-5">
-            <div className="w-full max-w-md flex flex-col gap-4 items-center text-black">
-              <div className="max-w-full w-full flex items-center gap-3 bg-orange-500 p-4 rounded-md mb-5">
-                <div className="flex gap-4 justify-center items-center w-6 h-6 bg-[#2784c7] rounded-md">
-                  <DescriptionIcon sx={{ color: 'white', fontSize: '0.8rem' }} />
-                </div>
-                <p className="text-white font-bold">eContract Platform</p>
-              </div>
-              <div className="max-w-full w-full gap-4 flex flex-col">
-                <h1 className="text-2xl text-start">
-                  Hai, Selamat Datang <br />
-                  di <span className="font-bold text-[#F84F1B]">e-Contract Management</span>
-                </h1>
-                <div className="flex flex-col gap-1">
-                  <p>Silakan Masuk</p>
-                </div>
+          <div className="w-full h-full bg-[#f0fefa] bg-gradient-to-tl from-[#f0fefa] to-white flex flex-col gap-4 justify-center items-center text-black px-12">
+            <div className="max-w-sm w-full rounded-lg shadow-xl flex flex-col gap-7 justify-center items-center bg-white p-7">
+              <div className="w-full justify-center items-center">
+                <h1 className="text-2xl font-semibold text-center">Masuk ke Akun Anda</h1>
+                <p className="text-sm text-gray-500 text-center mt-2">
+                  Gunakan kredensial perusahaan untuk mengakses sistem
+                </p>
               </div>
 
-              <form
-                onSubmit={handleSubmit(onSubmit, onInvalid)}
-                className="w-full max-w-full flex flex-col gap-2 text-black"
-              >
-                <div>
-                  <Controller
-                    name="username"
-                    control={control}
-                    rules={{
-                      required: 'Username wajib diisi',
-                    }}
-                    render={({ field }) => (
-                      <CInput
-                        id="username"
-                        label="Username*"
-                        placeholder="Enter username"
-                        {...field}
-                        required
-                        autoComplete="off"
-                        slotProps={{
-                          input: {
-                            startAdornment: (
-                              <PermIdentityIcon
-                                className="text-gray-500"
-                                style={{ fontSize: '1.3rem' }}
-                              />
-                            ),
-                          },
-                        }}
-                      />
-                    )}
-                  />
-                  {errors.username && (
-                    <span className="text-red-500 italic text-xs">*{errors.username.message}</span>
-                  )}
-                </div>
+              <form onSubmit={handleSubmit(onSubmit, onInvalid)} className="w-full flex flex-col">
                 <div className="mb-4">
                   <Controller
-                    name="password"
+                    name="email"
                     control={control}
-                    rules={{
-                      required: 'Password wajib diisi',
-                    }}
                     render={({ field }) => (
                       <CInput
-                        label="Password*"
-                        placeholder="Enter password"
-                        type={showPassword ? 'text' : 'password'}
                         {...field}
+                        id="email"
+                        label="Email Perusahaan*"
+                        placeholder="nama@posindonesia.co.id"
                         required
+                        autoComplete="off"
+                        error={!!errors.email}
                         slotProps={{
                           input: {
-                            endAdornment: (
-                              <CIconButton size="small" edge="end" onClick={toggleShowPassword}>
-                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                              </CIconButton>
-                            ),
                             startAdornment: (
-                              <LockOutlineIcon
-                                className="text-gray-500"
-                                style={{ fontSize: '1.3rem' }}
-                              />
+                              <EmailIcon className="text-gray-400" style={{ fontSize: '1.3rem' }} />
                             ),
                           },
                         }}
                       />
                     )}
                   />
-                  {errors.password && (
-                    <span className="text-red-500 italic text-xs">*{errors.password.message}</span>
-                  )}
                 </div>
 
-                <LoadingButton
-                  type="submit"
+                <Controller
+                  name="password"
+                  control={control}
+                  render={({ field }) => (
+                    <CInput
+                      label="Password*"
+                      placeholder="Enter password"
+                      type={showPassword ? 'text' : 'password'}
+                      {...field}
+                      required
+                      error={!!errors.password}
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <CIconButton size="small" edge="end" onClick={toggleShowPassword}>
+                              {showPassword ? (
+                                <VisibilityOff className="text-gray-400" />
+                              ) : (
+                                <Visibility className="text-gray-400" />
+                              )}
+                            </CIconButton>
+                          ),
+                          startAdornment: (
+                            <LockOutlineIcon
+                              className="text-gray-400"
+                              style={{ fontSize: '1.3rem' }}
+                            />
+                          ),
+                        },
+                      }}
+                    />
+                  )}
+                />
+
+                <div className="w-full flex justify-between text-xs py-4">
+                  <div className="flex items-center cursor-pointer gap-2">
+                    <input
+                      id="rememberMe"
+                      type="checkbox"
+                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    />
+
+                    <label htmlFor="rememberMe" className="cursor-pointer">
+                      Ingat saya
+                    </label>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <Link
+                      href={''}
+                      onClick={() => {
+                        toast.error('Fitur belum tersedia');
+                      }}
+                      className="text-blue-400 hover:text-glue-500"
+                    >
+                      Lupa Password?
+                    </Link>
+
+                    <button
+                      onClick={e => {
+                        e.preventDefault();
+                        const email = getValues('email');
+                        if (!email) {
+                          toast.error('Silakan isi email terlebih dahulu');
+                          return;
+                        }
+
+                        // TODO: arahkan ke halaman aktivasi / panggil API
+                        router.push('/activation');
+                      }}
+                      className="text-green-600 hover:text-green-700 cursor-pointer"
+                    >
+                      Aktivasi Akun
+                    </button>
+                  </div>
+                </div>
+
+                <div className="w-full">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    fullWidth
+                    color="secondary"
+                    startIcon={<LoginIcon />}
+                    loading={isLoadingLogin}
+                  >
+                    Masuk ke Sistem
+                  </Button>
+                </div>
+              </form>
+
+              <div className="flex items-center w-full">
+                <div className="flex-grow border-t border-gray-300"></div>
+                <span className="px-4 text-gray-500 text-xs">Atau masuk dengan</span>
+                <div className="flex-grow border-t border-gray-300"></div>
+              </div>
+
+              <div className="w-full flex justify-center items-center gap-3">
+                <Button
                   variant="contained"
                   fullWidth
-                  loading={isLoadingLogin}
-                  // className="!capitalize !shadow-sm !bg-blue-800 !text-md"
-                  color="secondary"
-                  loadingIndicator={<CircularProgress className="text-white" size={20} />}
+                  className="!capitalize !shadow-sm !bg-white hover:!bg-gray-100 !text-sm !text-gray-500 !border !border-gray-200"
+                  startIcon={<MicrosoftIcon className="text-blue-600" />}
+                  onClick={() => {
+                    toast.error('Fitur belum tersedia');
+                  }}
                 >
-                  Masuk
-                </LoadingButton>
-              </form>
+                  Microsoft
+                </Button>
+
+                <Button
+                  variant="contained"
+                  fullWidth
+                  className="!capitalize !shadow-sm !bg-white hover:!bg-gray-100 !text-sm !text-gray-500 !border !border-gray-200"
+                  startIcon={<RecentActorsIcon className="text-green-600" />}
+                  onClick={() => {
+                    toast.error('Fitur belum tersedia');
+                  }}
+                >
+                  SSO
+                </Button>
+              </div>
+
+              <p className="text-xs mt-5">
+                Belum memiliki akses?{' '}
+                <Link
+                  href={''}
+                  onClick={() => toast.error('Fitur belum tersedia')}
+                  className="text-blue-500"
+                >
+                  Hubungi Administrator
+                </Link>
+              </p>
+            </div>
+
+            <div className="text-xs max-w-sm w-full flex gap-2 bg-yellow-50 border-yellow-400 border rounded-lg p-4">
+              <SecurityIcon style={{ fontSize: '1rem' }} className="text-yellow-700" />
+              <div>
+                <p className="text-yellow-800 font-medium">Keamanan Sistem</p>
+                <p className="text-yellow-700 mt-1">
+                  Sistem ini dilindungi oleh enkripsi tingkat enterprise. Semua aktivitas dicatat
+                  untuk audit keamanan.
+                </p>
+              </div>
             </div>
           </div>
         </div>
