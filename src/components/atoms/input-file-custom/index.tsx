@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useState, useId } from 'react';
 
 type TCardOptionProps = {
   title: string;
@@ -13,8 +13,13 @@ type TCardOptionProps = {
   maxSize?: number;
   disabled?: boolean;
   active?: boolean;
+  label?: string | React.ReactNode;
+  required?: boolean;
   onClick?: () => void;
   onChangeFile?: (file: File) => void;
+  className?: string;
+  error?: boolean;
+  helperText?: string;
 };
 
 const CInputFileCustom: React.FC<TCardOptionProps> = ({
@@ -28,9 +33,15 @@ const CInputFileCustom: React.FC<TCardOptionProps> = ({
   disabled,
   active,
   onClick,
+  label,
+  required,
   onChangeFile,
+  className,
+  error,
+  helperText,
 }) => {
   const [fileName, setFileName] = useState<string>('');
+  const reactId = useId();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -50,12 +61,12 @@ const CInputFileCustom: React.FC<TCardOptionProps> = ({
         flex: 1,
         p: 4,
         borderRadius: '12px',
-        border: active ? '2px dashed #3b82f6' : '1px solid #e5e7eb',
-        bgcolor: active ? '#eff6ff' : '#fff',
+        border: error ? '2px dashed #ef4444' : active ? '2px dashed #3b82f6' : '1px solid #e5e7eb',
+        bgcolor: error ? '#fef2f2' : active ? '#eff6ff' : '#fff',
         cursor: disabled ? 'not-allowed' : 'pointer',
         textAlign: 'center',
         '&:hover': {
-          borderColor: disabled ? '#e5e7eb' : '#3b82f6',
+          borderColor: disabled ? '#e5e7eb' : error ? '#ef4444' : '#3b82f6',
         },
         transition: 'all 0.2s ease',
       }}
@@ -85,20 +96,52 @@ const CInputFileCustom: React.FC<TCardOptionProps> = ({
     </Box>
   );
 
-  return type === 'file' ? (
-    <label style={{ flex: 1 }}>
-      <input
-        type="file"
-        hidden
-        accept={accept || '.pdf,.doc,.docx'}
-        disabled={disabled}
-        onChange={handleChange}
-      />
-      {cardContent}
-    </label>
-  ) : (
-    <div style={{ flex: 1 }} onClick={!disabled ? onClick : undefined}>
-      {cardContent}
+  const labelComponent = label && (
+    <small>
+      <label htmlFor={reactId} className="font-medium">
+        {typeof label === 'string' ? label.replace(/\*$/, '') : label}
+        {(required || (typeof label === 'string' && label.endsWith('*'))) && (
+          <span style={{ color: 'red' }}>*</span>
+        )}
+      </label>
+    </small>
+  );
+
+  const helperTextComponent = helperText && (
+    <Typography
+      variant="caption"
+      sx={{
+        color: error ? '#ef4444' : '#6b7280',
+        display: 'block',
+        mt: 0.5,
+        ml: 1.5,
+      }}
+    >
+      {helperText}
+    </Typography>
+  );
+
+  return (
+    <div className={className}>
+      {labelComponent}
+      {type === 'file' ? (
+        <label style={{ flex: 1, display: 'block' }} htmlFor={reactId}>
+          <input
+            id={reactId}
+            type="file"
+            hidden
+            accept={accept || '.pdf,.doc,.docx'}
+            disabled={disabled}
+            onChange={handleChange}
+          />
+          {cardContent}
+        </label>
+      ) : (
+        <div style={{ flex: 1 }} onClick={!disabled ? onClick : undefined}>
+          {cardContent}
+        </div>
+      )}
+      {helperTextComponent}
     </div>
   );
 };
