@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import Router from 'next/router';
 
-const baseURL = `${process.env.NEXT_PUBLIC_API_URL}`;
+const baseURL = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/`;
 
 export const HeroServices = axios.create({
   baseURL,
@@ -37,7 +37,7 @@ HeroServices.interceptors.response.use(
 
       try {
         if (accessToken) {
-          const res = await rawAxios.post(`${baseURL}/api/v1/auth/validate`, {
+          const res = await rawAxios.post(`${baseURL}auth/validate`, {
             token: accessToken,
           });
           if (res.data.valid === false) {

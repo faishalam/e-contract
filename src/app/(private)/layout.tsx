@@ -5,7 +5,7 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
-import { AuthProvider } from '@/context/hooks';
+import { AuthProvider } from '@/context/AuthProvider/hooks';
 
 export default function PrivateLayout({
   children,

@@ -31,6 +31,7 @@ export type TUserProfile = {
   name: string;
   phone: string;
   is_active: boolean;
+  role: string;
   roles: TRoles[];
 };
 

@@ -30,6 +30,7 @@ const useUserProfile = (props?: TUseUserProfile) => {
     queryKey: ['useUserProfile', props?.params],
     queryFn: useUserProfileFn,
     staleTime: Infinity,
+    retry: false,
     enabled: true,
   });
 

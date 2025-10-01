@@ -11,7 +11,7 @@ type TLogoutUserProps = {
 const useLogoutUser = (props?: TLogoutUserProps) => {
   const logoutUserFn = async (refreshToken: string): Promise<null> => {
     try {
-      const response = await HeroServices.post<TResponseType<null>>(`/api/v1/auth/logout`, {
+      const response = await HeroServices.post<TResponseType<null>>(`/auth/logout`, {
         refresh_token: refreshToken,
       });
 
