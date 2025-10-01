@@ -61,6 +61,12 @@ const Sidebar: React.FC = () => {
         />
         <MenuItems
           Icon={DescriptionIcon}
+          title="Merchant Management"
+          selected={pathname.startsWith('/merchant-management')}
+          href="/merchant-management"
+        />
+        <MenuItems
+          Icon={DescriptionIcon}
           title="Partner Management"
           selected={pathname.startsWith('/partner-management')}
           href="/partner-management"
