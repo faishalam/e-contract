@@ -2,19 +2,21 @@ import { useQuery } from '@tanstack/react-query';
 import { NetworkAPIError, TResponseType } from '@/utils/response-type';
 import { AxiosError } from 'axios';
 import { HeroServices } from '../heroServices';
-import { TUserProfile } from './types';
 import { toast } from 'react-toastify';
+import { TUser } from './types';
 
-type TUseUserProfile = {
-  onSuccess?: (data: TUserProfile) => void;
+type TUseUserById = {
+  onSuccess?: (data: TUser) => void;
   onError?: (error: unknown) => void;
-  params: null;
+  params: {
+    id: string;
+  };
 };
 
-const useUserProfile = (props?: TUseUserProfile) => {
-  const useUserProfileFn = async () => {
+const useUserById = (props?: TUseUserById) => {
+  const useUserByIdFn = async () => {
     try {
-      const response = await HeroServices.get<TResponseType<TUserProfile>>(`/profile`);
+      const response = await HeroServices.get<TResponseType<TUser>>(`/users/${props?.params?.id}`);
 
       if (response.status !== 200) return;
 
@@ -27,14 +29,13 @@ const useUserProfile = (props?: TUseUserProfile) => {
   };
 
   const query = useQuery({
-    queryKey: ['useUserProfile', props?.params],
-    queryFn: useUserProfileFn,
+    queryKey: ['useUserById', props?.params.id],
+    queryFn: useUserByIdFn,
     staleTime: Infinity,
-    retry: false,
-    enabled: true,
+    enabled: !!props?.params.id && props?.params.id !== '', // ✅ tidak fetch kalau id kosong/null
   });
 
   return { ...query };
 };
 
-export default useUserProfile;
+export default useUserById;

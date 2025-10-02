@@ -12,10 +12,9 @@ type TUserVerifyTokenProps = {
 const useVerifyToken = (props?: TUserVerifyTokenProps) => {
   const useVerifyTokenFn = async (accessToken: string) => {
     try {
-      const response = await AuthServices.post<TResponseType<TVerifyUserToken>>(
-        `/api/v1/auth/validate`,
-        { token: accessToken },
-      );
+      const response = await AuthServices.post<TResponseType<TVerifyUserToken>>(`/auth/validate`, {
+        token: accessToken,
+      });
 
       const { status, data } = response;
 

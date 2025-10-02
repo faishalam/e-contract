@@ -3,6 +3,7 @@ import React from 'react';
 import useUserManagement from '../hooks';
 
 const labels = [
+  { label: 'All Users' },
   { label: 'All Activities' },
   { label: 'Contract Activities' },
   { label: 'User Activities' },

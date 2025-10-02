@@ -1,0 +1,54 @@
+import { useQuery } from '@tanstack/react-query';
+import { NetworkAPIError, TResponseType } from '@/utils/response-type';
+import { AxiosError } from 'axios';
+import { HeroServices } from '../heroServices';
+import { toast } from 'react-toastify';
+import { TUserList } from './types';
+
+type TUseUserList = {
+  onSuccess?: (data: TUserList) => void;
+  onError?: (error: unknown) => void;
+  params: {
+    page: number;
+    limit: number;
+    search?: string;
+    role?: string;
+    active?: boolean;
+  };
+};
+
+const useUserList = (props?: TUseUserList) => {
+  const useUserListFn = async () => {
+    try {
+      const response = await HeroServices.get<TResponseType<TUserList>>(`/users`, {
+        params: {
+          page: props?.params?.page,
+          limit: props?.params?.limit,
+          ...(props?.params?.search && { q: props.params.search }),
+          ...(props?.params?.role && { role: props.params.role }),
+          ...(props?.params?.active && { active: props.params.active }),
+        },
+      });
+
+      if (response.status !== 200) return;
+
+      return response?.data?.data;
+    } catch (error) {
+      const err = error as AxiosError<NetworkAPIError>;
+      toast.error(err?.response?.data?.message);
+      throw err?.response?.data?.message;
+    }
+  };
+
+  const query = useQuery({
+    queryKey: ['useUserList', props?.params],
+    queryFn: useUserListFn,
+    staleTime: Infinity,
+    retry: false,
+    enabled: !!props?.params,
+  });
+
+  return { ...query };
+};
+
+export default useUserList;
