@@ -1,9 +1,37 @@
 'use client';
-import { Avatar } from '@mui/material';
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { TUser, TUserForm, TUserListCol } from './types';
+import { ICellRendererParams } from '@ag-grid-community/core';
+import Image from 'next/image';
+import useUserList from '@/services/user/useUserList';
+import EyeIcon from '@/assets/svg/eye-icon.svg';
+import IconPencil from '@/assets/svg/icon-pencil.svg';
+import DeleteIcon from '@/assets/svg/delete-icon.svg';
+import useUserById from '@/services/user/useUserById';
+import { FieldErrors, SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { createUserSchema, updateUserSchema } from './validator';
+import useCreateUser from '@/services/user/useCreateUser';
+import { toast } from 'react-toastify';
+import useUpdateUser from '@/services/user/useUpdateUser';
+import useDeleteUser from '@/services/user/useDeleteUser';
+import { useModalWarningInfo } from '@/components/atoms/modal-warning';
+import { useDebounce } from '@/utils/useDebounce';
+import { useQueryClient } from '@tanstack/react-query';
 
 const useUserManagementHooks = () => {
-  const [activeTab, setActiveTab] = useState<string>('All Activities');
+  const queryClient = useQueryClient();
+  const [mode, setMode] = useState<'create' | 'edit' | 'view'>('view');
+  const [activeTab, setActiveTab] = useState<string>('All Users');
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const [openModalUser, setOpenModalUser] = useState(false);
+  const modalWarningInfo = useModalWarningInfo();
+  const [search, setSearch] = useState<string>('');
+  const [page, setPage] = useState<number>(1);
+  const [active, setActive] = useState<boolean | undefined>(undefined);
+  const limit = 10;
+  const debouncedSearch = useDebounce(search, 500);
+
   const activities = [
     { value: '1,247', label: 'Total Activities', color: 'text-black' },
     { value: '328', label: 'Contract Activities', color: 'text-orange-500' },
@@ -11,128 +39,268 @@ const useUserManagementHooks = () => {
     { value: '89', label: 'Signing Activities', color: 'text-green-500' },
     { value: '45', label: "Today's Activities", color: 'text-purple-500' },
   ];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const activitesColumnsDef: any[] = useMemo(
-    () => [
-      {
-        field: 'user',
-        headerName: 'User / System',
-        width: 250,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        cellRenderer: (params: any) => (
-          <div className="flex items-center gap-3 w-full">
-            <Avatar
-              src={params.data.avatar}
-              alt={params.data.user}
-              sx={{ width: 32, height: 32 }}
-            />
-            <div className="flex flex-col w-full h-full">
-              <span className="font-medium">{params.data.user}</span>
-            </div>
+
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    reset,
+  } = useForm<TUserForm>({
+    resolver: zodResolver(mode === 'create' ? createUserSchema : updateUserSchema),
+    defaultValues: {
+      email: '',
+      username: '',
+      name: '',
+      phone: '',
+      password: '',
+      is_active: true,
+    },
+    mode: 'onChange',
+  });
+  // create
+  const { mutate: mutateCreateUser, isPending: isLoadingCreateUser } = useCreateUser({
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ['useUserList'] });
+      setOpenModalUser(false);
+      toast.success('User Berhasil Ditambahkan');
+      reset();
+    },
+    onError: error => {
+      toast.error(error as string);
+    },
+  });
+  // read
+  const { data: usersData, isPending: isLoadingUsers } = useUserList({
+    params: {
+      page: page,
+      limit: limit,
+      search: debouncedSearch,
+      active: active,
+    },
+  });
+  // detail
+  const { data: usersDataById, isPending: isLoadingUsersById } = useUserById({
+    params: { id: selectedUserId ?? '' },
+  });
+  // update
+  const { mutate: mutateUpdateUser, isPending: isLoadingUpdateUser } = useUpdateUser({
+    onSuccess: () => {
+      toast.success('User Berhasil Diubah');
+      setOpenModalUser(false);
+      queryClient.refetchQueries({ queryKey: ['useUserList'] });
+      reset();
+    },
+    onError: error => {
+      toast.error(error as string);
+    },
+  });
+  // delete
+  const { mutate: mutateDeleteUser, isPending: isLoadingDeleteUser } = useDeleteUser({
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ['useUserList'] });
+      toast.success('User Berhasil Dihapus');
+      reset();
+    },
+    onError: error => {
+      toast.error(error as string);
+    },
+  });
+
+  const onSubmit: SubmitHandler<TUserForm> = data => {
+    if (mode === 'create') {
+      modalWarningInfo.open({
+        title: 'Konfirmasi',
+        message: (
+          <div>
+            <p>Apakah anda yakin ingin menambahkan user ini?</p>
           </div>
         ),
+        onConfirm: () => {
+          const payload = {
+            email: data.email,
+            username: data.username,
+            name: data.name,
+            phone: data.phone,
+            password: data.password,
+          };
+          mutateCreateUser(payload);
+        },
+      });
+    }
+
+    if (mode === 'edit') {
+      modalWarningInfo.open({
+        title: 'Konfirmasi',
+        message: (
+          <div>
+            <p>Apakah anda yakin ingin mengubah user ini?</p>
+          </div>
+        ),
+        onConfirm: () => {
+          const payload = {
+            email: data.email,
+            username: data.username,
+            name: data.name,
+            phone: data.phone,
+          };
+          mutateUpdateUser({ id: selectedUserId || '', payload });
+        },
+      });
+    }
+  };
+
+  const onInvalid = (errors: FieldErrors<TUserForm>) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    Object.entries(errors).forEach(([_, error]) => {
+      // console.log(key);
+      if (error?.message) {
+        toast.error(error.message);
+      }
+    });
+    console.log(errors);
+  };
+
+  const usersColumnsDef = useMemo<TUserListCol[]>(() => {
+    return [
+      {
+        field: 'email',
+        headerName: 'Email',
+        width: 250,
       },
       {
-        field: 'action',
-        headerName: 'Action',
+        field: 'username',
+        headerName: 'Username',
         flex: 1,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        cellRenderer: (params: any) => (
+      },
+      { field: 'name', headerName: 'Name', flex: 2 },
+      { field: 'phone', headerName: 'Phone', flex: 1 },
+      {
+        field: 'is_active',
+        headerName: 'Active',
+        flex: 1,
+        cellRenderer: (params: ICellRendererParams<TUser>) => (
           <span
-            className={`px-2 py-1 rounded-full text-xs font-medium
-        ${
-          params.data.actionColor === 'green'
-            ? 'bg-green-100 text-green-700'
-            : params.data.actionColor === 'orange'
-              ? 'bg-orange-100 text-orange-700'
-              : params.data.actionColor === 'blue'
-                ? 'bg-blue-100 text-blue-700'
-                : params.data.actionColor === 'purple'
-                  ? 'bg-purple-100 text-purple-700'
-                  : 'bg-gray-100 text-gray-700'
-        }`}
+            className={`px-2 py-1 rounded-full text-xs font-medium ${
+              params.data?.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+            }`}
           >
-            {params.data.action}
+            {params.data?.is_active ? 'Aktif' : 'Tidak Aktif'}
           </span>
         ),
       },
-      { field: 'details', headerName: 'Details', flex: 2 },
-      { field: 'ip', headerName: 'IP Address', flex: 1 },
-      { field: 'timestamp', headerName: 'Timestamp', flex: 1 },
+      { field: 'role', headerName: 'Role' },
       {
-        field: 'actions',
+        width: 120,
         headerName: 'Actions',
-        flex: 0.5,
-        cellRenderer: () => <button className="text-gray-400 hover:text-gray-600">⋮</button>,
-      },
-    ],
-    [],
-  );
+        sortable: false,
+        pinned: 'right',
+        cellRenderer: (params: ICellRendererParams<TUser>) => {
+          return (
+            <div className="flex gap-1 py-1 items-center justify-center">
+              <div
+                onClick={() => {
+                  if (params && params.data) {
+                    setSelectedUserId(params.data.id);
+                    setOpenModalUser(true);
+                    setMode('view');
+                  }
+                }}
+                className="cursor-pointer"
+              >
+                <Image src={EyeIcon} alt="edit" />
+              </div>
 
-  const dataGrid = [
-    {
-      id: 1,
-      user: 'Anisa Wijaya',
-      role: 'Admin Corporate',
-      avatar: 'https://i.pravatar.cc/100?img=1',
-      action: 'Contract Signed',
-      actionColor: 'green',
-      details: 'Signed "Logistics Service Agreement" (LSA-2023-0045)',
-      ip: '192.168.1.45',
-      timestamp: 'Today at 10:45 AM',
-    },
-    {
-      id: 2,
-      user: 'Budi Santoso',
-      role: 'Partner User',
-      avatar: 'https://i.pravatar.cc/100?img=2',
-      action: 'Contract Signed',
-      actionColor: 'green',
-      details: 'Signed "IT Service Agreement" (ITSA-2023-0078)',
-      ip: '203.142.21.78',
-      timestamp: 'Today at 09:30 AM',
-    },
-    {
-      id: 3,
-      user: 'System',
-      role: 'Automated Process',
-      avatar: '',
-      action: 'Notification Sent',
-      actionColor: 'orange',
-      details: 'Expiry reminder for "Vendor Agreement" (VA-2022-0098)',
-      ip: 'Internal',
-      timestamp: 'Yesterday at 11:30 AM',
-    },
-    {
-      id: 4,
-      user: 'Dian Permata',
-      role: 'Legal Reviewer',
-      avatar: 'https://i.pravatar.cc/100?img=4',
-      action: 'Contract Reviewed',
-      actionColor: 'blue',
-      details: 'Reviewed "Marketing Partnership" (MKT-2023-0032)',
-      ip: '192.168.1.78',
-      timestamp: 'Yesterday at 16:20 PM',
-    },
-    {
-      id: 5,
-      user: 'Siti Rahma',
-      role: 'Corporate User',
-      avatar: 'https://i.pravatar.cc/100?img=5',
-      action: 'User Login',
-      actionColor: 'orange',
-      details: 'Successful login (Windows 10)',
-      ip: '192.168.1.102',
-      timestamp: 'Jun 29, 2023 at 08:45 AM',
-    },
-  ];
+              <div
+                onClick={() => {
+                  if (params && params.data) {
+                    setSelectedUserId(params.data.id);
+                    setOpenModalUser(true);
+                    setMode('edit');
+                  }
+                }}
+                className="cursor-pointer"
+              >
+                <Image src={IconPencil} alt="edit" />
+              </div>
+
+              <div
+                onClick={() => {
+                  if (params && params.data) {
+                    modalWarningInfo.open({
+                      title: 'Konfirmasi',
+                      message: (
+                        <div>
+                          <p>Apakah anda yakin ingin menghapus user ini?</p>
+                        </div>
+                      ),
+                      onConfirm: () => {
+                        if (params && params.data) mutateDeleteUser(params.data.id);
+                      },
+                    });
+                  }
+                }}
+                className="cursor-pointer"
+              >
+                <Image src={DeleteIcon} alt="edit" />
+              </div>
+            </div>
+          );
+        },
+      },
+    ];
+  }, [usersData, mode]);
+
+  const globalLoading = useMemo(() => {
+    return isLoadingUsers || isLoadingCreateUser || isLoadingUpdateUser || isLoadingDeleteUser;
+  }, [isLoadingUsers, isLoadingCreateUser, isLoadingUpdateUser, isLoadingDeleteUser]);
+
+  useEffect(() => {
+    if (usersDataById && (mode === 'view' || mode === 'edit')) {
+      reset(usersDataById);
+    } else if (mode === 'create') {
+      reset({
+        email: '',
+        username: '',
+        name: '',
+        phone: '',
+        password: '',
+      });
+    }
+  }, [usersDataById, mode, reset]);
 
   return {
-    activitesColumnsDef,
+    globalLoading,
+    isLoadingCreateUser,
+    isLoadingUpdateUser,
+    mutateDeleteUser,
+    onSubmit,
+    onInvalid,
+    control,
+    handleSubmit,
+    watch,
+    errors,
+    reset,
+    setSelectedUserId,
+    setOpenModalUser,
+    openModalUser,
+    isLoadingUsers,
+    usersData,
+    usersColumnsDef,
     activities,
     activeTab,
     setActiveTab,
-    dataGrid,
+    usersDataById,
+    isLoadingUsersById,
+    mode,
+    setMode,
+    setPage,
+    page,
+    limit,
+    setSearch,
+    search,
+    setActive,
+    isLoadingDeleteUser,
   };
 };
 

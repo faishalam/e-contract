@@ -68,6 +68,9 @@ const CAutoComplete: React.FC<Omit<TProps, 'renderInput'>> = ({ error, helperTex
                       height: '36px',
                       padding: '8px 14px',
                     },
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: '6px',
+                    },
                   }
             }
             InputProps={{

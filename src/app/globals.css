@@ -42,7 +42,7 @@ body {
   font-weight: 600;
   color: #6B7280;
   font-size: 13px;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   letter-spacing: 0.025em;
 }
 

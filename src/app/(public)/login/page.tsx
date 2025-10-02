@@ -152,6 +152,7 @@ export default function LoginPage() {
                     color="secondary"
                     startIcon={<LoginIcon />}
                     loading={isLoadingLogin}
+                    className="!rounded-md"
                   >
                     Masuk ke Sistem
                   </Button>
@@ -168,7 +169,7 @@ export default function LoginPage() {
                 <Button
                   variant="contained"
                   fullWidth
-                  className="!capitalize !shadow-sm !bg-white hover:!bg-gray-100 !text-sm !text-gray-500 !border !border-gray-200"
+                  className="!capitalize !shadow-sm !bg-white hover:!bg-gray-100 !text-sm !text-gray-500 !border !border-gray-200 !rounded-md"
                   startIcon={<MicrosoftIcon className="text-blue-600" />}
                   onClick={() => {
                     toast.error('Fitur belum tersedia');
@@ -180,7 +181,7 @@ export default function LoginPage() {
                 <Button
                   variant="contained"
                   fullWidth
-                  className="!capitalize !shadow-sm !bg-white hover:!bg-gray-100 !text-sm !text-gray-500 !border !border-gray-200"
+                  className="!capitalize !shadow-sm !bg-white hover:!bg-gray-100 !text-sm !text-gray-500 !border !border-gray-200 !rounded-md"
                   startIcon={<RecentActorsIcon className="text-green-600" />}
                   onClick={() => {
                     toast.error('Fitur belum tersedia');

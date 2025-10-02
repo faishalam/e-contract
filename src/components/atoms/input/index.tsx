@@ -21,7 +21,7 @@ const CInput: React.FC<CInputProps> = ({
   ...props
 }) => {
   const reactId = useId();
-  const id = props.id || reactId;
+  const id = reactId;
 
   return (
     <div className={props.className}>
@@ -78,6 +78,9 @@ const CInput: React.FC<CInputProps> = ({
             fontSize: '12px',
             height: '36px',
             // padding: '8px 14px',
+          },
+          '& .MuiOutlinedInput-root': {
+            borderRadius: '6px', // ✅ custom border radius di sini
           },
           '& input:-webkit-autofill': {
             WebkitBoxShadow: '0 0 0 1000px white inset',

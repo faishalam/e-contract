@@ -6,8 +6,9 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { GridOptions } from '@ag-grid-community/core';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { ModuleRegistry } from '@ag-grid-community/core';
-// import IconNoData from '@/assets/svg/icon-no-data.svg'
+import IconNoData from '@/assets/svg/icon-no-data.svg';
 import { Loader } from '@/components/atoms/loader';
+import Image from 'next/image';
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 class DataGrid extends React.Component<GridOptions> {
   constructor(props: GridOptions) {
@@ -51,7 +52,7 @@ class DataGrid extends React.Component<GridOptions> {
       </div>
     ) : (
       <div className="flex justify-center items-center w-full h-[300px]">
-        {/* <Image src={IconNoData} alt="no-data" /> */}
+        <Image src={IconNoData} alt="no-data" />
       </div>
     );
   }

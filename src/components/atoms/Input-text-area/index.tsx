@@ -45,6 +45,9 @@ export function TextArea({ label, required = false, inputClassName, ...props }: 
             '&:hover fieldset': {
               borderColor: '#D1D5DB',
             },
+            '& .MuiOutlinedInput-root': {
+              borderRadius: '6px',
+            },
             '&.Mui-focused fieldset': {
               borderColor: '#6366F1',
             },
