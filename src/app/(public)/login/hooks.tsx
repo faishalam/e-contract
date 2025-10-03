@@ -1,28 +1,39 @@
 'use client';
 
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { FieldErrors, SubmitHandler, useForm } from 'react-hook-form';
-import { TLoginForm } from './types';
 import { zodResolver } from '@hookform/resolvers/zod';
-// import { useQueryClient } from '@tanstack/react-query';
 import useLoginUser from '@/services/auth/login';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
-import { loginSchema } from './validator';
+import {
+  activateEmailSchema,
+  forgotPasswordSchema,
+  loginSchema,
+  resendOtpSchema,
+  TActivateEmailForm,
+  TForgotPasswordForm,
+  TLoginForm,
+  TResendForm,
+  TVerifyOtpForm,
+  verifyOtpSchema,
+} from './validator';
 import { toast } from 'react-toastify';
 import { TLoginResponse } from '@/services/auth/types';
+import useSendOtp from '@/services/auth/sendOtp';
+import useVerifyOtp from '@/services/auth/verifyOtp';
+import useResendOtp from '@/services/auth/resendOtp';
+import useForgotPassword from '@/services/auth/forgotPassword';
 
 const useLoginHooks = () => {
   // const queryClient = useQueryClient();
   const router = useRouter();
   const {
-    register,
     handleSubmit,
     formState: { errors },
     reset,
     control,
     resetField,
-    getValues,
   } = useForm<TLoginForm>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -30,6 +41,57 @@ const useLoginHooks = () => {
       password: '',
     },
   });
+  const {
+    handleSubmit: handleSubmitActivate,
+    formState: { errors: errorsActivate },
+    reset: resetActivate,
+    control: controlActivate,
+    getValues: getValuesActivate,
+  } = useForm<TActivateEmailForm>({
+    resolver: zodResolver(activateEmailSchema),
+    defaultValues: {
+      email: '',
+    },
+  });
+  const {
+    handleSubmit: handleSubmitVerify,
+    formState: { errors: errorsVerify },
+    reset: resetVerify,
+    control: controlVerify,
+    watch: watchVerify,
+  } = useForm<TVerifyOtpForm>({
+    resolver: zodResolver(verifyOtpSchema),
+    defaultValues: {
+      email: '',
+      otp: '',
+    },
+  });
+  const {
+    handleSubmit: handleSubmitResend,
+    formState: { errors: errorsResend },
+    reset: resetResend,
+    control: controlResend,
+  } = useForm<TResendForm>({
+    resolver: zodResolver(resendOtpSchema),
+    defaultValues: {
+      email: '',
+      purpose: 'login',
+    },
+  });
+  const {
+    handleSubmit: handleSubmitForgot,
+    formState: { errors: errorsForgot },
+    reset: resetForgot,
+    control: controlForgot,
+  } = useForm<TForgotPasswordForm>({
+    resolver: zodResolver(forgotPasswordSchema),
+    defaultValues: {
+      email: '',
+    },
+  });
+  const [openModalActivateEmail, setOpenModalAtivateEmail] = useState<boolean>(false);
+  const [openModalForgotPassword, setOpenModalForgotPassword] = useState<boolean>(false);
+  const valuesActivate = getValuesActivate();
 
   const { mutate: mutateLogin, isPending: isLoadingLogin } = useLoginUser({
     onSuccess: (data: TLoginResponse) => {
@@ -52,8 +114,64 @@ const useLoginHooks = () => {
     },
   });
 
+  const { mutate: mutateSendOtp, isPending: isLoadingSendOtp } = useSendOtp({
+    onSuccess: data => {
+      toast.success(data.message);
+      router.push('/activation');
+      setOpenModalAtivateEmail(false);
+    },
+    onError: error => {
+      toast.error(error as string);
+    },
+  });
+
+  const { mutate: mutateVerifyOtp, isPending: isLoadingVerify } = useVerifyOtp({
+    onSuccess: data => {
+      toast.success(data.message);
+      router.push('/login');
+      resetActivate();
+    },
+    onError: error => {
+      toast.error(error as string);
+    },
+  });
+
+  const { mutate: mutateResend, isPending: isLoadingResend } = useResendOtp({
+    onSuccess: data => {
+      toast.success(data.message);
+    },
+    onError: error => {
+      toast.error(error as string);
+    },
+  });
+
+  const { mutate: mutateForgot, isPending: isLoadingForgot } = useForgotPassword({
+    onSuccess: () => {
+      toast.success('Password berhasil di reset, silahkan check email anda');
+    },
+    onError: error => {
+      toast.error(error as string);
+    },
+  });
+
   const onSubmit: SubmitHandler<TLoginForm> = data => {
     mutateLogin(data);
+  };
+
+  const onSubmitActivate: SubmitHandler<TActivateEmailForm> = data => {
+    mutateSendOtp(data);
+  };
+
+  const onSubmitVerify: SubmitHandler<TVerifyOtpForm> = data => {
+    mutateVerifyOtp(data);
+  };
+
+  const onSubmitResend: SubmitHandler<TResendForm> = () => {
+    mutateResend({ email: valuesActivate.email });
+  };
+
+  const onSubmitForgot: SubmitHandler<TForgotPasswordForm> = data => {
+    mutateForgot(data);
   };
 
   const onInvalid = (errors: FieldErrors<TLoginForm>) => {
@@ -64,11 +182,52 @@ const useLoginHooks = () => {
         toast.error(error.message);
       }
     });
-    console.log(errors);
+  };
+
+  const onInvalidActivate = (errors: FieldErrors<TActivateEmailForm>) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    Object.entries(errors).forEach(([_, error]) => {
+      // console.log(key);
+      if (error?.message) {
+        toast.error(error.message);
+      }
+    });
+  };
+
+  const onInvalidVerify = (errors: FieldErrors<TVerifyOtpForm>) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    Object.entries(errors).forEach(([_, error]) => {
+      // console.log(key);
+      if (error?.message) {
+        toast.error(error.message);
+      }
+    });
+  };
+
+  const onInvalidResend = (errors: FieldErrors<TResendForm>) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    Object.entries(errors).forEach(([_, error]) => {
+      // console.log(key);
+      if (error?.message) {
+        toast.error(error.message);
+      }
+    });
+  };
+
+  const onInvalidForgot = (errors: FieldErrors<TForgotPasswordForm>) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    Object.entries(errors).forEach(([_, error]) => {
+      // console.log(key);
+      if (error?.message) {
+        toast.error(error.message);
+      }
+    });
   };
   return {
+    isLoadingSendOtp,
+    onSubmitActivate,
     isLoadingLogin,
-    register,
+    onInvalidActivate,
     handleSubmit,
     errors,
     reset,
@@ -76,7 +235,38 @@ const useLoginHooks = () => {
     resetField,
     onSubmit,
     onInvalid,
-    getValues,
+    getValuesActivate,
+    openModalActivateEmail,
+    setOpenModalAtivateEmail,
+    resetActivate,
+    handleSubmitActivate,
+    errorsActivate,
+    controlActivate,
+    mutateVerifyOtp,
+    isLoadingVerify,
+    handleSubmitVerify,
+    errorsVerify,
+    resetVerify,
+    controlVerify,
+    watchVerify,
+    onInvalidVerify,
+    onSubmitVerify,
+    handleSubmitResend,
+    errorsResend,
+    resetResend,
+    controlResend,
+    onInvalidResend,
+    onSubmitResend,
+    isLoadingResend,
+    handleSubmitForgot,
+    errorsForgot,
+    resetForgot,
+    controlForgot,
+    onInvalidForgot,
+    onSubmitForgot,
+    isLoadingForgot,
+    openModalForgotPassword,
+    setOpenModalForgotPassword,
   };
 };
 

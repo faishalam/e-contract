@@ -25,7 +25,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (pathname.startsWith('/login') || pathname.startsWith('/activation')) {
+  if (
+    pathname.startsWith('/login') ||
+    pathname.startsWith('/activation') ||
+    pathname.startsWith('/reset-password')
+  ) {
     if (!token) {
       return NextResponse.next();
     }

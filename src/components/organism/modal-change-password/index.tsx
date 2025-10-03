@@ -3,7 +3,7 @@ import LockOutlineIcon from '@mui/icons-material/LockOutline';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box, Modal, IconButton, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import useAuth from '@/context/AuthProvider/hooks';
+import useAuth from '@/context/profileProvider/hooks';
 import { Controller } from 'react-hook-form';
 import CInput from '@/components/atoms/input';
 import CIconButton from '@/components/atoms/icon-button';

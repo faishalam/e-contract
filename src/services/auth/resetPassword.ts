@@ -2,18 +2,18 @@ import { useMutation } from '@tanstack/react-query';
 import { NetworkAPIError, TResponseType } from '@/utils/response-type';
 import { AxiosError } from 'axios';
 import { AuthServices } from '../authServices';
-import { TLoginForm, TLoginResponse } from './types';
+import { TResetPasswordForm } from './types';
 
-type TUseLoginProps = {
-  onSuccess?: (data: TLoginResponse) => void;
+type TResetPassword = {
+  onSuccess?: (data: TResetPasswordForm) => void;
   onError?: (error: unknown) => void;
 };
 
-const useLoginUser = (props?: TUseLoginProps) => {
-  const useLoginUserFn = async (payload: TLoginForm) => {
+const useResetPasswordAPI = (props?: TResetPassword) => {
+  const useResetPasswordFn = async (payload: TResetPasswordForm) => {
     try {
-      const response = await AuthServices.post<TResponseType<TLoginResponse>>(
-        `/auth/login`,
+      const response = await AuthServices.post<TResponseType<TResetPasswordForm>>(
+        `/auth/reset-password`,
         payload,
       );
 
@@ -29,8 +29,8 @@ const useLoginUser = (props?: TUseLoginProps) => {
   };
 
   const mutation = useMutation({
-    mutationKey: ['useLoginUser'],
-    mutationFn: useLoginUserFn,
+    mutationKey: ['useResetPassword'],
+    mutationFn: useResetPasswordFn,
     onSuccess: response => {
       if (response) {
         props?.onSuccess?.(response);
@@ -46,4 +46,4 @@ const useLoginUser = (props?: TUseLoginProps) => {
   return { ...mutation };
 };
 
-export default useLoginUser;
+export default useResetPasswordAPI;

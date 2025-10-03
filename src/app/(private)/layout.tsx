@@ -5,7 +5,7 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
-import { AuthProvider } from '@/context/AuthProvider/hooks';
+import { UserProfileProvider } from '@/context/profileProvider/hooks';
 
 export default function PrivateLayout({
   children,
@@ -25,7 +25,7 @@ export default function PrivateLayout({
   return (
     <>
       <AppRouterCacheProvider>
-        <AuthProvider>
+        <UserProfileProvider>
           <div className="w-screen h-screen no-scrollbar">
             <div className="w-full h-full">
               <div className="flex w-full h-full">
@@ -37,7 +37,7 @@ export default function PrivateLayout({
               </div>
             </div>
           </div>
-        </AuthProvider>
+        </UserProfileProvider>
       </AppRouterCacheProvider>
     </>
   );

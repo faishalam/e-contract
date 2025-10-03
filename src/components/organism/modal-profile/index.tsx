@@ -3,7 +3,7 @@ import { Box, Modal, IconButton, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import EditIcon from '@mui/icons-material/Edit';
-import useAuth from '@/context/AuthProvider/hooks';
+import useAuth from '@/context/profileProvider/hooks';
 
 const ModalUserProfile: React.FC = () => {
   const { openModalProfile, setOpenModalProfile, dataProfile, setOpenModalChangePassword } =
