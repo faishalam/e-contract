@@ -29,7 +29,7 @@ const useUserManagementHooks = () => {
   const [search, setSearch] = useState<string>('');
   const [page, setPage] = useState<number>(1);
   const [active, setActive] = useState<boolean | undefined>(undefined);
-  const limit = 10;
+  const limit = 9;
   const debouncedSearch = useDebounce(search, 500);
 
   const activities = [
@@ -163,6 +163,14 @@ const useUserManagementHooks = () => {
 
   const usersColumnsDef = useMemo<TUserListCol[]>(() => {
     return [
+      {
+        width: 90,
+        headerName: 'No',
+        cellRenderer: (params: ICellRendererParams<TUser>) => {
+          const rowIndex = params.node?.rowIndex ?? 0;
+          return (page - 1) * limit + rowIndex + 1;
+        },
+      },
       {
         field: 'email',
         headerName: 'Email',

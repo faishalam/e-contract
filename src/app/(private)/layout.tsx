@@ -32,7 +32,7 @@ export default function PrivateLayout({
                 <Sidebar />
                 <div className="flex flex-col w-full overflow-y-auto">
                   <Navbar />
-                  <div className="w-full px-6 py-4 bg-[#f9fafb]">{children}</div>
+                  <div className="w-full px-6 py-4 bg-[#f9fafb] h-screen">{children}</div>
                 </div>
               </div>
             </div>
