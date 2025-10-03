@@ -2,19 +2,19 @@ import { useMutation } from '@tanstack/react-query';
 import { NetworkAPIError, TResponseType } from '@/utils/response-type';
 import { AxiosError } from 'axios';
 import { AuthServices } from '../authServices';
-import { TLoginForm, TLoginResponse } from './types';
+import { TSendOtpResponse } from './types';
 
-type TUseLoginProps = {
-  onSuccess?: (data: TLoginResponse) => void;
+type TSendOtpProps = {
+  onSuccess?: (data: TSendOtpResponse) => void;
   onError?: (error: unknown) => void;
 };
 
-const useLoginUser = (props?: TUseLoginProps) => {
-  const useLoginUserFn = async (payload: TLoginForm) => {
+const useSendOtp = (props?: TSendOtpProps) => {
+  const useSendOtpFn = async ({ email }: { email: string }) => {
     try {
-      const response = await AuthServices.post<TResponseType<TLoginResponse>>(
-        `/auth/login`,
-        payload,
+      const response = await AuthServices.post<TResponseType<TSendOtpResponse>>(
+        `/auth/otp/send-activation`,
+        { email },
       );
 
       const { status, data } = response;
@@ -29,8 +29,8 @@ const useLoginUser = (props?: TUseLoginProps) => {
   };
 
   const mutation = useMutation({
-    mutationKey: ['useLoginUser'],
-    mutationFn: useLoginUserFn,
+    mutationKey: ['useSendOtp'],
+    mutationFn: useSendOtpFn,
     onSuccess: response => {
       if (response) {
         props?.onSuccess?.(response);
@@ -46,4 +46,4 @@ const useLoginUser = (props?: TUseLoginProps) => {
   return { ...mutation };
 };
 
-export default useLoginUser;
+export default useSendOtp;

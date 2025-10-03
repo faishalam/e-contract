@@ -2,19 +2,19 @@ import { useMutation } from '@tanstack/react-query';
 import { NetworkAPIError, TResponseType } from '@/utils/response-type';
 import { AxiosError } from 'axios';
 import { AuthServices } from '../authServices';
-import { TLoginForm, TLoginResponse } from './types';
+import { TSendOtpResponse } from './types';
 
-type TUseLoginProps = {
-  onSuccess?: (data: TLoginResponse) => void;
+type TVerifyOtp = {
+  onSuccess?: (data: TSendOtpResponse) => void;
   onError?: (error: unknown) => void;
 };
 
-const useLoginUser = (props?: TUseLoginProps) => {
-  const useLoginUserFn = async (payload: TLoginForm) => {
+const useVerifyOtp = (props?: TVerifyOtp) => {
+  const useVerifyOtpFn = async ({ email, otp }: { email: string; otp: string }) => {
     try {
-      const response = await AuthServices.post<TResponseType<TLoginResponse>>(
-        `/auth/login`,
-        payload,
+      const response = await AuthServices.post<TResponseType<TSendOtpResponse>>(
+        `/auth/otp/verify-activation`,
+        { email, otp },
       );
 
       const { status, data } = response;
@@ -29,8 +29,8 @@ const useLoginUser = (props?: TUseLoginProps) => {
   };
 
   const mutation = useMutation({
-    mutationKey: ['useLoginUser'],
-    mutationFn: useLoginUserFn,
+    mutationKey: ['useVerifyOtp'],
+    mutationFn: useVerifyOtpFn,
     onSuccess: response => {
       if (response) {
         props?.onSuccess?.(response);
@@ -46,4 +46,4 @@ const useLoginUser = (props?: TUseLoginProps) => {
   return { ...mutation };
 };
 
-export default useLoginUser;
+export default useVerifyOtp;

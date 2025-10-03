@@ -7,9 +7,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { TChangePasswordForm } from './types';
 import { changePasswordSchema } from './validator';
 import { toast } from 'react-toastify';
-import useChangePassword from '@/services/auth/change-password';
+import useChangePassword from '@/services/auth/changePassword';
 
-const useAuthHooks = () => {
+const useProfileUserHooks = () => {
   const { data: dataProfile, isPending: isLoadingDataProfile } = useUserProfile();
   const [openModalProfile, setOpenModalProfile] = useState<boolean>(false);
   const [openModalChangePassword, setOpenModalChangePassword] = useState<boolean>(false);
@@ -73,19 +73,21 @@ const useAuthHooks = () => {
   };
 };
 
-const AuthContext = createContext<ReturnType<typeof useAuthHooks> | undefined>(undefined);
+const UserProfileContext = createContext<ReturnType<typeof useProfileUserHooks> | undefined>(
+  undefined,
+);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const value = useAuthHooks();
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const value = useProfileUserHooks();
+  return <UserProfileContext.Provider value={value}>{children}</UserProfileContext.Provider>;
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
+export const useProfileProvider = () => {
+  const context = useContext(UserProfileContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within a AuthProvider');
+    throw new Error('useProfileProvider must be used within a UserProfileProvider');
   }
   return context;
 };
 
-export default useAuth;
+export default useProfileProvider;

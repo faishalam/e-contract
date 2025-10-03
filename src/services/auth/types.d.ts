@@ -6,6 +6,11 @@ export type TLoginResponse = {
   expires_in: number;
 };
 
+export type TLoginForm = {
+  email: string;
+  password: string;
+};
+
 export type TUser = {
   esign_id: string;
   esign_status_id: string;
@@ -37,4 +42,15 @@ export type TUserProfile = {
 
 export type TVerifyUserToken = {
   valid: boolean;
+};
+
+export type TSendOtpResponse = {
+  message: string;
+  email: string;
+};
+
+export type TResetPasswordForm = {
+  email: string;
+  otp: string;
+  new_password: string;
 };

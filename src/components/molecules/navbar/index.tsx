@@ -6,7 +6,7 @@ import { TProps } from './types';
 import SearchIcon from '@mui/icons-material/Search';
 import NotificationIcon from '@mui/icons-material/Notifications';
 import CInput from '@/components/atoms/input';
-import useAuth from '@/context/AuthProvider/hooks';
+import useAuth from '@/context/profileProvider/hooks';
 import DropdownButton from '@/components/atoms/dropdown-button';
 import ModalUserProfile from '@/components/organism/modal-profile';
 import useLogoutUser from '@/services/auth/logout';

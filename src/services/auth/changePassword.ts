@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { NetworkAPIError, TResponseType } from '@/utils/response-type';
 import { AxiosError } from 'axios';
-import { TChangePasswordForm } from '@/context/AuthProvider/types';
+import { TChangePasswordForm } from '@/context/profileProvider/types';
 import { HeroServices } from '../heroServices';
 import { toast } from 'react-toastify';
 

@@ -7,16 +7,91 @@ import LeftPanel from './components/leftPanel';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import { useEffect, useState } from 'react';
 import { Clock } from 'lucide-react';
-import { LoadingButton } from '@mui/lab';
-import { Button, CircularProgress } from '@mui/material';
+import { Button } from '@mui/material';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
 import useLogin from '../login/hooks';
+import { Controller } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 
 export default function ActivationPage() {
-  const [code, setCode] = useState(['', '', '', '', '', '']);
   const [timeLeft, setTimeLeft] = useState(896); // 14:56 in seconds
-  const { getValues } = useLogin();
+  const {
+    getValuesActivate,
+    controlVerify,
+    handleSubmitVerify,
+    watchVerify,
+    isLoadingVerify,
+    onSubmitVerify,
+    onInvalidVerify,
+    handleSubmitResend,
+    onInvalidResend,
+    onSubmitResend,
+  } = useLogin();
+
+  const values = getValuesActivate();
+  const router = useRouter();
+
+  const otpValue = watchVerify('otp') || '';
+  const isOtpComplete = otpValue.length === 6;
+
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleCodeChange = (index: number, value: string, fieldOnChange: any) => {
+    if (value.length > 1) return;
+    if (!/^\d*$/.test(value)) return;
+
+    const newOtp = otpValue.split('');
+    newOtp[index] = value;
+    const newOtpString = newOtp.join('');
+
+    fieldOnChange(newOtpString);
+
+    // Auto focus ke input berikutnya jika ada value
+    if (value && index < 5) {
+      const nextInput = document.getElementById(`code-${index + 1}`) as HTMLInputElement;
+      nextInput?.focus();
+    }
+  };
+
+  const handleKeyDown = (
+    index: number,
+    e: React.KeyboardEvent<HTMLInputElement>,
+    //eslint-disable-next-line @typescript-eslint/no-explicit-any
+    fieldOnChange: any,
+  ) => {
+    if (e.key === 'Backspace') {
+      const currentValue = otpValue[index];
+
+      if (!currentValue && index > 0) {
+        // Jika kosong, focus ke input sebelumnya
+        const prevInput = document.getElementById(`code-${index - 1}`) as HTMLInputElement;
+        prevInput?.focus();
+      } else {
+        // Hapus value di index saat ini
+        const newOtp = otpValue.split('');
+        newOtp[index] = '';
+        fieldOnChange(newOtp.join(''));
+      }
+    }
+  };
+
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handlePaste = (e: React.ClipboardEvent, fieldOnChange: any) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData('text').slice(0, 6).replace(/\D/g, '');
+    fieldOnChange(pastedData);
+
+    // Focus ke input terakhir yang terisi
+    const lastIndex = Math.min(pastedData.length - 1, 5);
+    const lastInput = document.getElementById(`code-${lastIndex}`) as HTMLInputElement;
+    lastInput?.focus();
+  };
+
+  const formatTime = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -26,32 +101,11 @@ export default function ActivationPage() {
     return () => clearInterval(timer);
   }, []);
 
-  const handleCodeChange = (index: number, value: string) => {
-    if (value.length > 1) return;
-    if (!/^\d*$/.test(value)) return;
-
-    const newCode = [...code];
-    newCode[index] = value;
-    setCode(newCode);
-
-    if (value && index < 5) {
-      const nextInput = document.getElementById(`code-${index + 1}`) as HTMLInputElement;
-      nextInput?.focus();
+  useEffect(() => {
+    if (!values.email) {
+      router.push('/login');
     }
-  };
-
-  const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace' && !code[index] && index > 0) {
-      const prevInput = document.getElementById(`code-${index - 1}`) as HTMLInputElement;
-      prevInput?.focus();
-    }
-  };
-
-  const formatTime = (seconds: number): string => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
+  }, [values.email]);
 
   return (
     <>
@@ -79,7 +133,7 @@ export default function ActivationPage() {
                   <div className="flex-1">
                     <p className="text-xs text-gray-600 mb-1">Kode dikirim ke:</p>
                     <p className="text-xs font-medium text-gray-800 break-all">
-                      {getValues('email')}
+                      {getValuesActivate('email')}
                     </p>
                   </div>
                   <div className="flex items-center gap-1 text-green-600">
@@ -89,63 +143,80 @@ export default function ActivationPage() {
                 </div>
               </div>
 
-              <div className="py-2">
-                <label className="block text-sm font-medium text-gray-700 mb-3 text-center">
-                  Kode Aktivasi
-                </label>
-                <div className="flex gap-2 justify-center">
-                  {code.map((digit, index) => (
-                    <input
-                      key={index}
-                      id={`code-${index}`}
-                      type="text"
-                      maxLength={1}
-                      value={digit}
-                      onChange={e => handleCodeChange(index, e.target.value)}
-                      onKeyDown={e => handleKeyDown(index, e)}
-                      className="w-12 h-14 text-center text-xl font-bold border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none transition-colors"
+              <form
+                onSubmit={handleSubmitVerify(onSubmitVerify, onInvalidVerify)}
+                className="flex flex-col gap-3"
+              >
+                <div className="py-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-3 text-center">
+                    Kode Aktivasi
+                  </label>
+                  <div className="flex gap-2 justify-center">
+                    <Controller
+                      name="otp"
+                      control={controlVerify}
+                      render={({ field }) => (
+                        <>
+                          {Array.from({ length: 6 }).map((_, index) => (
+                            <input
+                              key={index}
+                              id={`code-${index}`}
+                              type="text"
+                              inputMode="numeric"
+                              maxLength={1}
+                              value={field.value?.[index] || ''}
+                              onChange={e =>
+                                handleCodeChange(index, e.target.value, field.onChange)
+                              }
+                              onKeyDown={e => handleKeyDown(index, e, field.onChange)}
+                              onPaste={e => handlePaste(e, field.onChange)}
+                              className="w-12 h-14 text-center text-xl font-bold border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none transition-colors"
+                            />
+                          ))}
+                        </>
+                      )}
                     />
-                  ))}
+                  </div>
                 </div>
-              </div>
 
-              <div className="bg-blue-50 rounded-lg w-full p-3 flex items-center justify-between border border-blue-200">
-                <div className="flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-blue-600" />
-                  <span className="text-xs text-gray-700">Kode akan kedaluwarsa dalam:</span>
+                <div className="bg-blue-50 rounded-lg w-full p-3 flex items-center justify-between border border-blue-200">
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-blue-600" />
+                    <span className="text-xs text-gray-700">Kode akan kedaluwarsa dalam:</span>
+                  </div>
+                  <span className="text-lg font-bold text-blue-600">{formatTime(timeLeft)}</span>
                 </div>
-                <span className="text-lg font-bold text-blue-600">{formatTime(timeLeft)}</span>
-              </div>
 
-              <div className="w-full mt-2">
-                <LoadingButton
-                  type="submit"
-                  variant="contained"
-                  className="w-full"
-                  //   loading={isLoadingLogin}
-                  // className="!capitalize !shadow-sm !bg-blue-800 !text-md"
-                  color="secondary"
-                  loadingIndicator={<CircularProgress className="text-white" size={20} />}
-                  startIcon={<CheckIcon />}
-                >
-                  Activasi Akun
-                </LoadingButton>
-              </div>
+                <div className="w-full mt-2">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    className="w-full"
+                    disabled={!isOtpComplete}
+                    color="secondary"
+                    loading={isLoadingVerify}
+                    startIcon={<CheckIcon />}
+                  >
+                    Activasi Akun
+                  </Button>
+                </div>
+              </form>
 
-              <div className="max-w-sm flex flex-col mb-4 gap-3">
+              <form
+                onSubmit={handleSubmitResend(onSubmitResend, onInvalidResend)}
+                className="max-w-sm flex flex-col mb-4 gap-3"
+              >
                 <p className="text-gray-500 text-center text-xs">Tidak menerima kode?</p>
                 <Button
                   variant="contained"
                   fullWidth
+                  type="submit"
                   className="!capitalize !shadow-sm !bg-white hover:!bg-gray-100 !text-sm !text-gray-500 !border !border-gray-200"
                   startIcon={<SendIcon className="text-black" style={{ fontSize: '1.2rem' }} />}
-                  onClick={() => {
-                    toast.error('Fitur belum tersedia');
-                  }}
                 >
                   Kirim Ulang Kode
                 </Button>
-              </div>
+              </form>
 
               <div className="border border-gray-200 w-full"></div>
 
