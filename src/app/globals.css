@@ -118,7 +118,10 @@ body {
 /* Remove default borders */
 .ag-theme-alpine .ag-root-wrapper {
   border: 1px solid #E5E7EB;
-  border-radius: 8px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
   overflow: hidden;
 }
 

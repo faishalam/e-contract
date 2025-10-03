@@ -11,6 +11,7 @@ import ActivityTabs from './components/activeTabsFilter';
 import useUserManagement from './hooks';
 import DataGrid from '@/components/molecules/datagrid';
 import UserModal from './components/userModal';
+import TablePagination from '@/components/molecules/pagination';
 
 export default function UserManagementPage() {
   const {
@@ -20,13 +21,14 @@ export default function UserManagementPage() {
     openModalUser,
     setOpenModalUser,
     setMode,
-    limit,
-    setPage,
     setSearch,
     search,
     setActive,
     setSelectedUserId,
     globalLoading,
+    page,
+    limit,
+    setPage,
   } = useUserManagement();
   return (
     <>
@@ -64,98 +66,99 @@ export default function UserManagementPage() {
         </div>
 
         {activeTab === 'All Users' && (
-          <div className="flex flex-col gap-6 bg-white p-4 rounded-md shadow-sm">
-            <div className="w-full flex justify-center items-center overflow-x-auto overflow-y-hidden max-w-full">
-              <div className="w-full flex gap-2">
-                <CAutoComplete
-                  options={[]}
-                  className="w-1/3"
-                  getOptionKey={option => option.value}
-                  renderOption={(props, option) => (
-                    <li {...props} key={option.value}>
-                      {option.label}
-                    </li>
-                  )}
-                  // onChange={(_, status) => {
-                  // setFilter({ ...filter, status });
-                  // }}
-                  getOptionLabel={option => option.label}
-                  placeholder="All Users"
-                />
-                <CAutoComplete
-                  options={[]}
-                  className="w-1/3"
-                  getOptionKey={option => option.value}
-                  renderOption={(props, option) => (
-                    <li {...props} key={option.value}>
-                      {option.label}
-                    </li>
-                  )}
-                  // onChange={(_, status) => {
-                  // setFilter({ ...filter, status });
-                  // }}
-                  getOptionLabel={option => option.label}
-                  placeholder="All Actions"
-                />
-                <CAutoComplete
-                  options={[
-                    { label: 'Aktif', value: true },
-                    { label: 'Tidak Aktif', value: false },
-                  ]}
-                  className="w-1/3"
-                  getOptionKey={option => String(option.value)}
-                  renderOption={(props, option) => (
-                    <li {...props} key={String(option.value)}>
-                      {option.label}
-                    </li>
-                  )}
-                  onChange={(_, status) => {
-                    setActive(status?.value);
-                  }}
-                  getOptionLabel={option => option.label}
-                  placeholder="Filter Status"
-                />
-              </div>
-              <div className="flex w-full gap-2 justify-end">
-                <CInput
-                  className="w-1/2"
-                  type="text"
-                  placeholder="Search Logs"
-                  icon={<SearchIcon className="text-black" />}
-                  onChange={e => setSearch(e.target.value)}
-                  value={search}
-                />
-                <Button
-                  startIcon={<AddIcon />}
-                  variant="contained"
-                  color="primary"
-                  className="!rounded-md"
-                  onClick={() => {
-                    setSelectedUserId(null);
-                    setOpenModalUser(true);
-                    setMode('create');
-                  }}
-                >
-                  Create User
-                </Button>
+          <div className="">
+            <div className="flex flex-col gap-6 bg-white p-4 rounded-md shadow-sm">
+              <div className="w-full flex justify-center items-center overflow-x-auto overflow-y-hidden max-w-full">
+                <div className="w-full flex gap-2">
+                  <CAutoComplete
+                    options={[]}
+                    className="w-1/3"
+                    getOptionKey={option => option.value}
+                    renderOption={(props, option) => (
+                      <li {...props} key={option.value}>
+                        {option.label}
+                      </li>
+                    )}
+                    // onChange={(_, status) => {
+                    // setFilter({ ...filter, status });
+                    // }}
+                    getOptionLabel={option => option.label}
+                    placeholder="All Users"
+                  />
+                  <CAutoComplete
+                    options={[]}
+                    className="w-1/3"
+                    getOptionKey={option => option.value}
+                    renderOption={(props, option) => (
+                      <li {...props} key={option.value}>
+                        {option.label}
+                      </li>
+                    )}
+                    // onChange={(_, status) => {
+                    // setFilter({ ...filter, status });
+                    // }}
+                    getOptionLabel={option => option.label}
+                    placeholder="All Actions"
+                  />
+                  <CAutoComplete
+                    options={[
+                      { label: 'Aktif', value: true },
+                      { label: 'Tidak Aktif', value: false },
+                    ]}
+                    className="w-1/3"
+                    getOptionKey={option => String(option.value)}
+                    renderOption={(props, option) => (
+                      <li {...props} key={String(option.value)}>
+                        {option.label}
+                      </li>
+                    )}
+                    onChange={(_, status) => {
+                      setActive(status?.value);
+                    }}
+                    getOptionLabel={option => option.label}
+                    placeholder="Filter Status"
+                  />
+                </div>
+                <div className="flex w-full gap-2 justify-end">
+                  <CInput
+                    className="w-1/2"
+                    type="text"
+                    placeholder="Search Logs"
+                    icon={<SearchIcon className="text-black" />}
+                    onChange={e => setSearch(e.target.value)}
+                    value={search}
+                  />
+                  <Button
+                    startIcon={<AddIcon />}
+                    variant="contained"
+                    color="primary"
+                    className="!rounded-md"
+                    onClick={() => {
+                      setSelectedUserId(null);
+                      setOpenModalUser(true);
+                      setMode('create');
+                    }}
+                  >
+                    Create User
+                  </Button>
+                </div>
               </div>
             </div>
-            <div className="w-full h-[57vh] overflow-y-scroll rounded-md">
+
+            <div className="w-full overflow-y-scroll rounded-md mt-6">
               <DataGrid
                 rowData={usersData?.users ?? []}
                 columnDefs={usersColumnsDef}
-                pagination={true}
+                pagination={false}
                 loading={globalLoading}
-                paginationPageSize={limit}
-                paginationPageSizeSelector={[10, 20, 50]}
-                onPaginationChanged={params => {
-                  if (params.api) {
-                    const newPage = params.api.paginationGetCurrentPage() + 1;
-                    setPage(newPage);
-                  }
-                }}
               />
             </div>
+            <TablePagination
+              page={page}
+              setPage={setPage}
+              limit={limit}
+              dataLength={usersData?.users.length ?? 0}
+            />
           </div>
         )}
 
