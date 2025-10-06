@@ -9,7 +9,7 @@ export default function MarchantManaagementPage() {
   const { statisticsHeader, merchantColumnsDef, merchantData } = useMerchantManagement();
   return (
     <>
-      <div className="w-[100%] h-[100%] flex flex-col gap-6">
+      <div className="w-full flex flex-col gap-6">
         {/* button header */}
         <div className="w-full flex justify-between items-center gap-80">
           <ButtonHeader />

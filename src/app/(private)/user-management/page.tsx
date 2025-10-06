@@ -32,7 +32,7 @@ export default function UserManagementPage() {
   } = useUserManagement();
   return (
     <>
-      <div className="w-[100%] h-screen flex flex-col gap-4">
+      <div className="w-full h-full flex flex-col gap-4">
         <div className="w-full flex justify-between items-center">
           <div className="text-black flex flex-col w-full">
             <p className="text-2xl font-bold">Activity Logs</p>

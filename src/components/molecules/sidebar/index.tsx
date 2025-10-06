@@ -30,7 +30,7 @@ const Sidebar: React.FC = () => {
 
   const sidebarClass = useMemo(() => {
     if (pathname.includes('/messages')) return 'hidden';
-    return 'w-[260px] sticky top-[var(--header-height)] h-[calc(100vh-var(--header-height))] bg-white border-r flex flex-col justify-between';
+    return 'w-[240px] h-screen bg-white border-r flex flex-col justify-between shrink-0';
   }, [pathname]);
 
   const handleLogout = (refreshToken: string) => {
@@ -39,8 +39,9 @@ const Sidebar: React.FC = () => {
 
   return (
     <div className={sidebarClass}>
-      <div>
-        <div className="h-[55px] justify-start p-3 items-center flex gap-2 border-b mb-4">
+      {/* Scrollable Menu Area */}
+      <div className="flex-1 overflow-y-auto overflow-x-hidden">
+        <div className="h-[55px] justify-start p-3 items-center flex gap-2 border-b mb-4 sticky top-0 bg-white z-10">
           <div className="flex gap-4 justify-center items-center w-6 h-6 border bg-[#2784c7] rounded-md">
             <DescriptionIcon sx={{ color: 'white', fontSize: '0.8rem' }} />
           </div>
@@ -91,8 +92,9 @@ const Sidebar: React.FC = () => {
         />
       </div>
 
+      {/* Fixed Logout Button */}
       <button
-        className="border-t w-full p-3 cursor-pointer hover:bg-gray-50 flex items-center gap-2 text-black border-gray-200"
+        className="border-t w-full p-3 cursor-pointer hover:bg-gray-50 flex items-center gap-2 text-black border-gray-200 shrink-0"
         onClick={() => handleLogout(refreshToken ?? '')}
       >
         <LogoutIcon />
