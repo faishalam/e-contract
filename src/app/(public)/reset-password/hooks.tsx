@@ -6,6 +6,7 @@ import { FieldErrors, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { resetPasswordSchema, TResetPasswordForm } from './validator';
+import { useRouter } from 'next/navigation';
 
 const useResetPasswordHooks = () => {
   const {
@@ -17,13 +18,16 @@ const useResetPasswordHooks = () => {
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
       email: '',
-      otp: '',
+      code: '',
       new_password: '',
+      confirm_password: '',
     },
   });
+  const router = useRouter();
 
   const { mutate: mutateResetPassword, isPending: isLoadingResetPassword } = useResetPasswordAPI({
     onSuccess: () => {
+      router.push('/login');
       toast.success('Password berhasil di ubah, silahkan login kembali');
     },
     onError: error => {

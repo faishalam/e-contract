@@ -10,7 +10,7 @@ export const activateEmailSchema = z.object({
 });
 
 export const verifyOtpSchema = z.object({
-  email: z.string().min(1, 'Email tidak ditemukan').email('Format email tidak valid'),
+  email: z.string().optional(),
   otp: z.string().min(1, 'OTP wajib diisi'),
 });
 
