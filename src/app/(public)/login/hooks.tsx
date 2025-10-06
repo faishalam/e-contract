@@ -28,6 +28,7 @@ import useForgotPassword from '@/services/auth/forgotPassword';
 const useLoginHooks = () => {
   // const queryClient = useQueryClient();
   const router = useRouter();
+
   const {
     handleSubmit,
     formState: { errors },
@@ -53,6 +54,8 @@ const useLoginHooks = () => {
       email: '',
     },
   });
+  const valuesActivate = getValuesActivate();
+
   const {
     handleSubmit: handleSubmitVerify,
     formState: { errors: errorsVerify },
@@ -91,7 +94,6 @@ const useLoginHooks = () => {
   });
   const [openModalActivateEmail, setOpenModalAtivateEmail] = useState<boolean>(false);
   const [openModalForgotPassword, setOpenModalForgotPassword] = useState<boolean>(false);
-  const valuesActivate = getValuesActivate();
 
   const { mutate: mutateLogin, isPending: isLoadingLogin } = useLoginUser({
     onSuccess: (data: TLoginResponse) => {
@@ -115,8 +117,8 @@ const useLoginHooks = () => {
   });
 
   const { mutate: mutateSendOtp, isPending: isLoadingSendOtp } = useSendOtp({
-    onSuccess: data => {
-      toast.success(data.message);
+    onSuccess: () => {
+      toast.success('Otp berhasil di kirim, silahkan check email anda');
       router.push('/activation');
       setOpenModalAtivateEmail(false);
     },
@@ -126,8 +128,8 @@ const useLoginHooks = () => {
   });
 
   const { mutate: mutateVerifyOtp, isPending: isLoadingVerify } = useVerifyOtp({
-    onSuccess: data => {
-      toast.success(data.message);
+    onSuccess: () => {
+      toast.success('Otp berhasil di verifikasi, silahkan login kembali');
       router.push('/login');
       resetActivate();
     },
@@ -148,6 +150,8 @@ const useLoginHooks = () => {
   const { mutate: mutateForgot, isPending: isLoadingForgot } = useForgotPassword({
     onSuccess: () => {
       toast.success('Password berhasil di reset, silahkan check email anda');
+      router.push('/reset-password');
+      setOpenModalForgotPassword(false);
     },
     onError: error => {
       toast.error(error as string);
@@ -163,7 +167,16 @@ const useLoginHooks = () => {
   };
 
   const onSubmitVerify: SubmitHandler<TVerifyOtpForm> = data => {
-    mutateVerifyOtp(data);
+    const payload = {
+      email: valuesActivate.email,
+      otp: data.otp,
+    };
+
+    console.log(payload);
+    mutateVerifyOtp({
+      email: valuesActivate.email,
+      otp: data.otp,
+    });
   };
 
   const onSubmitResend: SubmitHandler<TResendForm> = () => {

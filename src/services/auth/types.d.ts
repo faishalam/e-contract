@@ -51,6 +51,7 @@ export type TSendOtpResponse = {
 
 export type TResetPasswordForm = {
   email: string;
-  otp: string;
+  code: string;
   new_password: string;
+  confirm_password: string;
 };

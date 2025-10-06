@@ -158,7 +158,6 @@ const useUserManagementHooks = () => {
         toast.error(error.message);
       }
     });
-    console.log(errors);
   };
 
   const usersColumnsDef = useMemo<TUserListCol[]>(() => {

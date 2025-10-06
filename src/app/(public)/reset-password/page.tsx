@@ -17,7 +17,7 @@ export default function ResetPasswordPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const toggleShowPassword = () => setShowPassword(prev => !prev);
 
-  const otpValue = watch('otp') || '';
+  const otpValue = watch('code') || '';
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleCodeChange = (index: number, value: string, fieldOnChange: any) => {
     if (value.length > 1) return;
@@ -146,13 +146,46 @@ export default function ResetPasswordPage() {
                     />
                   )}
                 />
+                <Controller
+                  name="confirm_password"
+                  control={control}
+                  render={({ field }) => (
+                    <CInput
+                      label="Konfirmasi Password Baru*"
+                      placeholder="Enter password"
+                      type={showPassword ? 'text' : 'password'}
+                      {...field}
+                      required
+                      error={!!errors.new_password}
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <CIconButton size="small" edge="end" onClick={toggleShowPassword}>
+                              {showPassword ? (
+                                <VisibilityOff className="text-gray-400" />
+                              ) : (
+                                <Visibility className="text-gray-400" />
+                              )}
+                            </CIconButton>
+                          ),
+                          startAdornment: (
+                            <LockOutlineIcon
+                              className="text-gray-400"
+                              style={{ fontSize: '1.3rem' }}
+                            />
+                          ),
+                        },
+                      }}
+                    />
+                  )}
+                />
                 <div className="flex flex-col gap-1">
                   <p className="text-xs font-medium">
                     Masukkan Kode OTP <span className="text-red-500">*</span>
                   </p>
                   <div className="flex gap-2 justify-center">
                     <Controller
-                      name="otp"
+                      name="code"
                       control={control}
                       render={({ field }) => (
                         <>
