@@ -1,5 +1,5 @@
 'use client';
-import { AreaChart } from '@mui/icons-material';
+// import { AreaChart } from '@mui/icons-material';
 import { LinearProgress, Box } from '@mui/material';
 
 type QuotaCardProps = {

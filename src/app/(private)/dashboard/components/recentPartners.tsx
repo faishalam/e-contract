@@ -1,9 +1,12 @@
-import DataGrid from '@/components/molecules/datagrid';
+// import DataGrid from '@/components/molecules/datagrid';
 import useDashboard from '../hooks';
 import { Button, LinearProgress } from '@mui/material';
 
 export default function RecentPartners() {
-  const { recentPartnersColumnDef, partners, quotas } = useDashboard();
+  const {
+    // recentPartnersColumnDef, partners,
+    quotas,
+  } = useDashboard();
   return (
     <>
       {/* Recent Partners */}

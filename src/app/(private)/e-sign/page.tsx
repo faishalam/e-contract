@@ -2,7 +2,7 @@
 import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CAutoComplete from '@/components/atoms/auto-complete';
-import DataGrid from '@/components/molecules/datagrid';
+// import DataGrid from '@/components/molecules/datagrid';
 import useEsign from './hooks';
 import QuotaCard from './components/quotaCard';
 import UsageStatistics from './components/usageStatistic';
@@ -10,7 +10,10 @@ import RecentUsageLogs from './components/recentUsageLogs';
 import PurchaseQuota from './components/purchaseQuota';
 
 export default function EsignManagementPage() {
-  const { quotasData, usageHistoryColumnDef, usageHistoryData } = useEsign();
+  const {
+    quotasData,
+    // usageHistoryColumnDef, usageHistoryData
+  } = useEsign();
 
   return (
     <div className="w-full flex flex-col gap-6 pb-6">
