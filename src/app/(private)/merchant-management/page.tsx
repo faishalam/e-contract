@@ -1,12 +1,23 @@
 'use client';
 import useMerchantManagement from './hooks';
+import SearchIcon from '@mui/icons-material/Search';
 import CardHeader from './components/cardHeader';
-import MerchantCharts from './components/merchantChart';
 import DataGrid from '@/components/molecules/datagrid';
 import ButtonHeader from './components/buttonHeader';
+import CAutoComplete from '@/components/atoms/auto-complete';
+import CInput from '@/components/atoms/input';
 
 export default function MarchantManaagementPage() {
-  const { statisticsHeader, merchantColumnsDef, merchantData } = useMerchantManagement();
+  const {
+    statisticsHeader,
+    merchantColumnsDef,
+    dataMerchantList,
+    loadingMerchant,
+    setFilter,
+    filter,
+    setSearch,
+    search,
+  } = useMerchantManagement();
   return (
     <>
       <div className="w-full flex flex-col gap-6">
@@ -23,18 +34,47 @@ export default function MarchantManaagementPage() {
         </div>
 
         {/* Grafik */}
-        <div className="w-full flex gap-4">
+        {/* <div className="w-full flex gap-4">
           <MerchantCharts />
-        </div>
+        </div> */}
 
         {/* table */}
         <div className="bg-white w-full p-4 rounded-md shadow-sm">
           <h2 className="font-semibold text-lg text-black mb-4">Merchant List</h2>
+          <div className="flex justify-between items-center gap-4 w-full mb-4">
+            <CInput
+              className="w-1/3"
+              type="text"
+              placeholder="Search Logs"
+              icon={<SearchIcon className="text-black" />}
+              onChange={e => setSearch(e.target.value)}
+              value={search}
+            />
+            <CAutoComplete
+              options={[
+                { label: 'Aktif', value: 'active' },
+                { label: 'Tidak Aktif', value: 'inactive' },
+              ]}
+              className="w-1/5"
+              getOptionKey={option => String(option.value)}
+              renderOption={(props, option) => (
+                <li {...props} key={String(option.value)}>
+                  {option.label}
+                </li>
+              )}
+              onChange={(_, status) => {
+                setFilter({ ...filter, status: status?.value ?? '' });
+              }}
+              getOptionLabel={option => option.label}
+              placeholder="Filter Role"
+            />
+          </div>
           <div className="w-full overflow-y-scroll">
             <DataGrid
               columnDefs={merchantColumnsDef}
-              rowData={merchantData}
+              rowData={dataMerchantList}
               rowSelection="multiple"
+              loading={loadingMerchant}
             />
           </div>
         </div>

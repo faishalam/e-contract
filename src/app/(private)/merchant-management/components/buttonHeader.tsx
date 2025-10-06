@@ -6,15 +6,15 @@ import EmailIcon from '@mui/icons-material/Email';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import ViewCompactIcon from '@mui/icons-material/ViewCompact';
-import { useRouter } from 'next/navigation';
+import useMerchantManagement from '../hooks';
 
 export default function ButtonHeader() {
-  const router = useRouter();
+  const { onCreateNew } = useMerchantManagement();
   return (
     <>
       <div className="w-full flex items-center justify-start gap-2">
         <Button
-          onClick={() => router.push('/merchant-management/create')}
+          onClick={onCreateNew}
           className="w-full"
           variant="contained"
           color="secondary"

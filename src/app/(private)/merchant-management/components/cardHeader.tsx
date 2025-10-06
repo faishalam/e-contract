@@ -3,22 +3,22 @@ import { ReactNode } from 'react';
 type CardHeaderProps = {
   title: string;
   icon: ReactNode;
-  value: string | number;
-  conclusion: string;
-  trend?: 'up' | 'down' | 'neutral';
-  progress?: number;
+  value: number;
+  // conclusion: string;
+  // trend?: 'up' | 'down' | 'neutral';
+  // progress?: number;
 };
 
 export default function CardHeader({
   title,
   icon,
   value,
-  conclusion,
-  trend = 'neutral',
-  progress,
+  // conclusion,
+  // trend = 'neutral',
+  // progress,
 }: CardHeaderProps) {
-  const trendColor =
-    trend === 'up' ? 'text-green-600' : trend === 'down' ? 'text-red-600' : 'text-gray-600';
+  // const trendColor =
+  //   trend === 'up' ? 'text-green-600' : trend === 'down' ? 'text-red-600' : 'text-gray-600';
 
   return (
     <div className="w-full bg-white rounded-md shadow-sm p-6 flex flex-col">
@@ -33,18 +33,18 @@ export default function CardHeader({
       {/* Value & Conclusion */}
       <div className="mt-3 flex w-full flex-col items-start gap-2">
         <p className="text-2xl text-black font-bold">{value}</p>
-        <p className={`text-sm ${trendColor}`}>{conclusion}</p>
+        {/* <p className={`text-sm ${trendColor}`}>{conclusion}</p> */}
       </div>
 
       {/* Progress bar (opsional) */}
-      {progress !== undefined && (
+      {/* {progress !== undefined && (
         <div className="mt-3">
           <div className="w-full bg-gray-200 h-2 rounded-full">
             <div className="h-2 rounded-full bg-orange-500" style={{ width: `${progress}%` }} />
           </div>
           <p className="text-xs text-gray-600 mt-1">{progress}% used of monthly quota</p>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { CreateMerchantProvider } from './hooks';
 
-export default function CreateMerchantLayout({
+export default function MerchantManagementLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
