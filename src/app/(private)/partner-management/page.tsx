@@ -13,7 +13,7 @@ export default function PartnerManagementPage() {
 
   return (
     <>
-      <div className="w-full h-screen flex flex-col gap-4">
+      <div className="w-full flex flex-col gap-4">
         <div className="w-full flex justify-between items-center">
           <div className="text-black flex flex-col w-full">
             <p className="text-2xl font-bold">Partner Management</p>

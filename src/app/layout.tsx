@@ -25,9 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${poppins.className} ${geistMono.variable} antialiased h-screen w-screen overflow-hidden`}
-      >
+      <body className={`${poppins.className} ${geistMono.variable} antialiased`}>
         <ToastContainer />
         <QueryProviders>
           <ThemeProvider theme={theme}>{children}</ThemeProvider>

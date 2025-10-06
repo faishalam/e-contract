@@ -13,82 +13,77 @@ export default function DashboardPage() {
   const { statisticsHeader, activeContractsColumnDef, dataGrid } = useDashboard();
 
   return (
-    <>
-      <div className="w-[100%] h-[100%] flex flex-col gap-6">
-        <div className="text-black flex flex-col">
-          <p className="text-2xl font-bold">Welcome Back, Anisa!</p>
-          <p className="text-sm text-gray-700">{`Here's what's happening with your contract today.`}</p>
-        </div>
+    <div className="w-full flex flex-col gap-6 pb-6">
+      <div className="text-black flex flex-col gap-1">
+        <p className="text-2xl font-bold">Welcome Back, Anisa!</p>
+        <p className="text-sm text-gray-700">{`Here's what's happening with your contract today.`}</p>
+      </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {statisticsHeader.map((stat, idx) => (
-            <CardHeader key={idx} {...stat} />
-          ))}
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {statisticsHeader.map((stat, idx) => (
+          <CardHeader key={idx} {...stat} />
+        ))}
+      </div>
 
-        <div className="h-full w-full flex flex-col lg:flex-row gap-4 items-stretch">
-          <div className="col-span-2 h-full w-full">
-            <PlatformActivityChart />
-          </div>
-          <div className="h-full w-full lg:w-1/2">
-            <RecentActivity />
-          </div>
+      <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="lg:col-span-2">
+          <PlatformActivityChart />
         </div>
-
-        <div className="w-full flex flex-col bg-white rounded-md shadow-sm">
-          <div className="flex p-4 max-w-full gap-3 w-full justify-between">
-            <div>
-              <h2 className="font-bold text-lg text-black">Active Contracts</h2>
-            </div>
-            <div className="w-full md:w-1/3 justify-center items-center flex gap-2 overflow-x-auto">
-              <CAutoComplete
-                options={[]}
-                className="w-full"
-                getOptionKey={option => option.value}
-                renderOption={(props, option) => (
-                  <li {...props} key={option.value}>
-                    {option.label}
-                  </li>
-                )}
-                // onChange={(_, status) => {
-                // setFilter({ ...filter, status });
-                // }}
-                getOptionLabel={option => option.label}
-                placeholder="Status"
-              />
-              <CAutoComplete
-                options={[]}
-                className="w-full"
-                getOptionKey={option => option.value}
-                renderOption={(props, option) => (
-                  <li {...props} key={option.value}>
-                    {option.label}
-                  </li>
-                )}
-                // onChange={(_, status) => {
-                // setFilter({ ...filter, status });
-                // }}
-                getOptionLabel={option => option.label}
-                placeholder="Status"
-              />
-              <Button variant="contained" fullWidth color="primary">
-                New Contract
-              </Button>
-            </div>
-          </div>
-          <div className="w-full overflow-y-scroll">
-            <DataGrid columnDefs={activeContractsColumnDef} rowData={dataGrid} />
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-6">
-          <RecentPartners />
-        </div>
-
-        <div className="w-full">
-          <QuickAccess />
+        <div className="lg:col-span-1">
+          <RecentActivity />
         </div>
       </div>
-    </>
+
+      <div className="w-full flex flex-col bg-white rounded-lg shadow-sm overflow-hidden">
+        <div className="flex flex-col md:flex-row p-4 gap-3 justify-between items-start md:items-center border-b">
+          <div>
+            <h2 className="font-bold text-lg text-black">Active Contracts</h2>
+          </div>
+          <div className="w-full md:w-auto flex gap-2 flex-wrap md:flex-nowrap">
+            <CAutoComplete
+              options={[]}
+              className="w-full md:w-[180px]"
+              getOptionKey={option => option.value}
+              renderOption={(props, option) => (
+                <li {...props} key={option.value}>
+                  {option.label}
+                </li>
+              )}
+              getOptionLabel={option => option.label}
+              placeholder="Status"
+            />
+            <CAutoComplete
+              options={[]}
+              className="w-full md:w-[180px]"
+              getOptionKey={option => option.value}
+              renderOption={(props, option) => (
+                <li {...props} key={option.value}>
+                  {option.label}
+                </li>
+              )}
+              getOptionLabel={option => option.label}
+              placeholder="Category"
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              className="w-full md:w-auto whitespace-nowrap"
+            >
+              New Contract
+            </Button>
+          </div>
+        </div>
+        <div className="w-full overflow-x-auto">
+          <DataGrid columnDefs={activeContractsColumnDef} rowData={dataGrid} />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <RecentPartners />
+      </div>
+      <div className="bg-white rounded-md shadow-sm p-4">
+        <QuickAccess />
+      </div>
+    </div>
   );
 }

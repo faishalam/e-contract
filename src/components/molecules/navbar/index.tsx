@@ -38,10 +38,10 @@ const Navbar: React.FC<TProps> = ({ showRightMenu = true }) => {
   };
 
   return (
-    <div className="flex items-center sticky top-0 justify-between px-8 py-2 m-0 p-0 z-50 bg-[#f9fafb] text-black">
+    <nav className="flex items-center justify-between px-8 py-3 shrink-0 h-[55px] bg-[#f9fafb]">
       {showRightMenu && (
-        <div className="w-full flex justify-between items-end">
-          <div className="w-full text-sm">
+        <div className="w-full flex justify-between items-center gap-4">
+          <div className="text-sm text-gray-700">
             <p>
               {new Intl.DateTimeFormat('id-ID', {
                 weekday: 'long',
@@ -52,36 +52,34 @@ const Navbar: React.FC<TProps> = ({ showRightMenu = true }) => {
               }).format(new Date())}
             </p>
           </div>
-          <div className="w-full flex justify-end items-center gap-4">
+          <div className="flex justify-end items-center gap-4 flex-1">
             <CInput
-              className="w-1/2"
+              className="max-w-md w-full"
               type="text"
               placeholder="Search"
               icon={<SearchIcon className="text-black" />}
-              // onChange={e => setSearch(e.target.value)}
-              // value={search}
             />
-            <div className="w-[30px] h-[30px] bg-gray-200 rounded-full flex items-center justify-center">
+            <div className="w-[30px] h-[30px] bg-gray-200 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-300 transition-colors shrink-0">
               <NotificationIcon className="text-gray-700" style={{ fontSize: '1.3rem' }} />
             </div>
-            <div className="pl-2 border-l border-l-[#E5E7EB]">
+            <div className="pl-4 border-l border-l-gray-200 shrink-0">
               <DropdownButton
                 className="text-black"
                 menuItems={[
                   <div
-                    key={Math.random()}
+                    key="profile"
                     onClick={() => {
                       setOpenModalProfile(true);
                     }}
-                    className="flex items-center w-[200px]"
+                    className="flex items-center w-[200px] px-4 py-2 hover:bg-gray-100 cursor-pointer"
                   >
                     <UserAccountIcon />
                     <span className="ml-2">Profile</span>
                   </div>,
                   <div
-                    key={Math.random()}
+                    key="logout"
                     onClick={() => handleLogout(refreshToken)}
-                    className="flex items-center w-[200px]"
+                    className="flex items-center w-[200px] px-4 py-2 hover:bg-gray-100 cursor-pointer"
                   >
                     <LogoutAccountIcon />
                     <span className="ml-2">Logout</span>
@@ -90,13 +88,13 @@ const Navbar: React.FC<TProps> = ({ showRightMenu = true }) => {
               >
                 <Image
                   src="https://img.freepik.com/premium-photo/happy-man-ai-generated-portrait-user-profile_1119669-1.jpg"
-                  alt="Sample Image"
+                  alt="Profile"
                   width={30}
                   height={30}
                   className="rounded-full w-[30px] h-[30px]"
                   unoptimized
                 />
-                <div className="grid text-sm justify-items-start text-[#4B5563]">
+                <div className="grid text-sm justify-items-start text-gray-700 ml-2">
                   <div className="font-bold">{dataProfile?.name}</div>
                   <small className="text-gray-500 text-xs">{dataProfile?.role}</small>
                 </div>
@@ -107,7 +105,7 @@ const Navbar: React.FC<TProps> = ({ showRightMenu = true }) => {
       )}
       {openModalProfile && <ModalUserProfile />}
       {openModalChangePassword && <ModalChangePassword />}
-    </div>
+    </nav>
   );
 };
 
