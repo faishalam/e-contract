@@ -145,7 +145,7 @@ export default function UserManagementPage() {
               </div>
             </div>
 
-            <div className="w-full overflow-y-scroll rounded-md mt-6">
+            <div className="w-full overflow-y-scroll mt-6 bg-white shadow rounded-md">
               <DataGrid
                 rowData={usersData?.users ?? []}
                 columnDefs={usersColumnsDef}
