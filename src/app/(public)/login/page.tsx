@@ -126,6 +126,7 @@ export default function LoginPage() {
 
                   <div className="flex gap-2">
                     <button
+                      type="button"
                       className="text-blue-400 hover:text-glue-500 cursor-pointer"
                       onClick={e => {
                         e.preventDefault();
@@ -136,6 +137,7 @@ export default function LoginPage() {
                     </button>
 
                     <button
+                      type="button"
                       onClick={e => {
                         e.preventDefault();
                         setOpenModalAtivateEmail(true);

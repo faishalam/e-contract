@@ -40,8 +40,8 @@ HeroServices.interceptors.response.use(
           const res = await rawAxios.post(`${baseURL}auth/validate`, {
             token: accessToken,
           });
-          if (res.data.valid === false) {
-            await rawAxios.post(`${baseURL}/api/v1/auth/logout`, { refresh_token: refreshToken });
+          if (res.data.data.valid === false) {
+            await rawAxios.post(`${baseURL}/auth/logout`, { refresh_token: refreshToken });
             Cookies.remove('accessToken');
             Cookies.remove('refreshToken');
             isRedirecting = true;
