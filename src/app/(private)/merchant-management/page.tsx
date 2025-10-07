@@ -6,7 +6,7 @@ import DataGrid from '@/components/molecules/datagrid';
 import ButtonHeader from './components/buttonHeader';
 import CAutoComplete from '@/components/atoms/auto-complete';
 import CInput from '@/components/atoms/input';
-import MerchantListSkeleton from './components/merchantListSkeleton';
+// import MerchantListSkeleton from './components/merchantListSkeleton';
 
 export default function MarchantManaagementPage() {
   const {
@@ -18,7 +18,6 @@ export default function MarchantManaagementPage() {
     filter,
     setSearch,
     search,
-    isLoadingMerchantList,
   } = useMerchantManagement();
   return (
     <>
@@ -41,50 +40,50 @@ export default function MarchantManaagementPage() {
         </div> */}
 
         {/* table */}
-        {isLoadingMerchantList ? (
+        {/* {isLoadingMerchantList ? (
           <MerchantListSkeleton />
-        ) : (
-          <div className="bg-white w-full p-4 rounded-md shadow-sm">
-            <h2 className="font-semibold text-lg text-black mb-4">Merchant List</h2>
-            <div className="flex justify-between items-center gap-4 w-full mb-4">
-              <CInput
-                className="w-1/3"
-                type="text"
-                placeholder="Search merchant"
-                icon={<SearchIcon className="text-black" />}
-                onChange={e => setSearch(e.target.value)}
-                value={search}
-              />
-              <CAutoComplete
-                options={[
-                  { label: 'Aktif', value: 'active' },
-                  { label: 'Tidak Aktif', value: 'inactive' },
-                  { label: 'Pending', value: 'pending' },
-                ]}
-                className="w-1/5"
-                getOptionKey={option => String(option.value)}
-                renderOption={(props, option) => (
-                  <li {...props} key={String(option.value)}>
-                    {option.label}
-                  </li>
-                )}
-                onChange={(_, status) => {
-                  setFilter({ ...filter, status: status?.value ?? '' });
-                }}
-                getOptionLabel={option => option.label}
-                placeholder="Filter Status"
-              />
-            </div>
-            <div className="w-full overflow-y-scroll">
-              <DataGrid
-                columnDefs={merchantColumnsDef}
-                rowData={dataMerchantList}
-                rowSelection="multiple"
-                loading={loadingMerchant}
-              />
-            </div>
+        ) : ( */}
+        <div className="bg-white w-full p-4 rounded-md shadow-sm">
+          <h2 className="font-semibold text-lg text-black mb-4">Merchant List</h2>
+          <div className="flex justify-between items-center gap-4 w-full mb-4">
+            <CInput
+              className="w-1/3"
+              type="text"
+              placeholder="Search merchant"
+              icon={<SearchIcon className="text-black" />}
+              onChange={e => setSearch(e.target.value)}
+              value={search}
+            />
+            <CAutoComplete
+              options={[
+                { label: 'Aktif', value: 'active' },
+                { label: 'Tidak Aktif', value: 'inactive' },
+                { label: 'Pending', value: 'pending' },
+              ]}
+              className="w-1/5"
+              getOptionKey={option => String(option.value)}
+              renderOption={(props, option) => (
+                <li {...props} key={String(option.value)}>
+                  {option.label}
+                </li>
+              )}
+              onChange={(_, status) => {
+                setFilter({ ...filter, status: status?.value ?? '' });
+              }}
+              getOptionLabel={option => option.label}
+              placeholder="Filter Status"
+            />
           </div>
-        )}
+          <div className="w-full overflow-y-scroll">
+            <DataGrid
+              columnDefs={merchantColumnsDef}
+              rowData={dataMerchantList}
+              rowSelection="multiple"
+              loading={loadingMerchant}
+            />
+          </div>
+        </div>
+        {/* )} */}
       </div>
     </>
   );
