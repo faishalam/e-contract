@@ -6,10 +6,23 @@ import CInput from '@/components/atoms/input';
 import SearchIcon from '@mui/icons-material/Search';
 import DataGrid from '@/components/molecules/datagrid';
 import usePartnerManagement from './hooks';
-import ModalPartner from './components/modal';
+import ModalPartner from './components/modalPartner';
 
 export default function PartnerManagementPage() {
-  const { partnerColumnDef, partnersData, openModal, setOpenModal } = usePartnerManagement();
+  const {
+    partnerColumnDef,
+    dataPartnerList,
+    setMode,
+    reset,
+    openModalPartner,
+    setOpenModalPartner,
+    search,
+    setSearch,
+    isLoadingDataPartnerList,
+    setFilter,
+    filter,
+    isLoadingDeletePartner,
+  } = usePartnerManagement();
 
   return (
     <>
@@ -23,14 +36,33 @@ export default function PartnerManagementPage() {
             <Button
               variant="contained"
               startIcon={<AddIcon />}
-              className="!bg-orange-500 !capitalize !shadow-sm w-40"
-              onClick={() => setOpenModal(!openModal)}
+              color="primary"
+              className="!rounded-md"
+              onClick={() => {
+                setOpenModalPartner(!openModalPartner);
+                setMode('create');
+                reset({
+                  name: '',
+                  type: '',
+                  contact_name: '',
+                  position: '',
+                  email: '',
+                  phone_number: '',
+                  address: '',
+                  city: '',
+                  province: '',
+                  npwp: '',
+                });
+              }}
             >
               Add Partner
             </Button>
           </div>
         </div>
-        <div className="flex flex-col gap-6 p-4 bg-white rouonded-md shadow-sm">
+        {/* {isLoadingDataPartnerList ? (
+          <PartnerListSkeleton />
+        ) : ( */}
+        <div className="flex flex-col gap-6 p-4 bg-white rounded-md shadow-sm">
           <div className="w-full flex justify-center overflow-auto max-w-full">
             <div className="w-full flex gap-2">
               <Button variant="contained" className="!bg-orange-500 !capitalize !shadow-sm w-40">
@@ -49,11 +81,14 @@ export default function PartnerManagementPage() {
                 type="text"
                 placeholder="Search"
                 icon={<SearchIcon className="text-black" />}
-                // onChange={e => setSearch(e.target.value)}
-                // value={search}
+                onChange={e => setSearch(e.target.value)}
+                value={search}
               />
               <CAutoComplete
-                options={[]}
+                options={[
+                  { value: 'active', label: 'Active' },
+                  { value: 'inactive', label: 'Inactive' },
+                ]}
                 className="w-1/3"
                 getOptionKey={option => option.value}
                 renderOption={(props, option) => (
@@ -61,9 +96,9 @@ export default function PartnerManagementPage() {
                     {option.label}
                   </li>
                 )}
-                // onChange={(_, status) => {
-                // setFilter({ ...filter, status });
-                // }}
+                onChange={(_, status) => {
+                  setFilter({ ...filter, status: status?.value });
+                }}
                 getOptionLabel={option => option.label}
                 placeholder="Status"
               />
@@ -86,9 +121,15 @@ export default function PartnerManagementPage() {
           </div>
 
           <div className="w-full overflow-y-scroll">
-            <DataGrid columnDefs={partnerColumnDef} rowData={partnersData} />
+            <DataGrid
+              columnDefs={partnerColumnDef}
+              rowData={dataPartnerList}
+              loading={isLoadingDeletePartner || isLoadingDataPartnerList}
+            />
           </div>
         </div>
+        {/* )} */}
+
         <ModalPartner />
       </div>
     </>

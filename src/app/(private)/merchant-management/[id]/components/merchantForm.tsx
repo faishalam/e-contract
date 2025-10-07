@@ -292,7 +292,7 @@ export default function MerchantForm() {
                         {...field}
                         label="Email Perusahaan*"
                         className="w-full"
-                        type="text"
+                        type="email"
                         placeholder="admin@contohperusahaan.com"
                         error={!!errors.profile?.company_email}
                       />
@@ -326,6 +326,10 @@ export default function MerchantForm() {
                         type="text"
                         placeholder="021-876543212"
                         error={!!errors.profile?.company_phone}
+                        onChange={e => {
+                          const numericValue = e.target.value.replace(/\D/g, '');
+                          field.onChange(numericValue);
+                        }}
                       />
                     )}
                   />
@@ -397,7 +401,7 @@ export default function MerchantForm() {
                           {...field}
                           label="Email*"
                           className="w-full"
-                          type="text"
+                          type="email"
                           placeholder="admin@contohperusahaan.com"
                           error={!!errors.pics?.[index]?.email}
                         />

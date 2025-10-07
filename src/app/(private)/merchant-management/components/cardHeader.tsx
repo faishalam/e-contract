@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import useMerchantManagement from '../hooks';
-import CardSkeleton from './cardLoadingSkeleton';
+// import useMerchantManagement from '../hooks';
+// import CardSkeleton from './cardLoadingSkeleton';
 
 type CardHeaderProps = {
   title: string;
@@ -21,29 +21,29 @@ export default function CardHeader({
 }: CardHeaderProps) {
   // const trendColor =
   //   trend === 'up' ? 'text-green-600' : trend === 'down' ? 'text-red-600' : 'text-gray-600';
-  const { isLoadingMerchantList } = useMerchantManagement();
+  // const { isLoadingMerchantList } = useMerchantManagement();
 
   return (
     <>
-      {isLoadingMerchantList ? (
+      {/* {isLoadingMerchantList ? (
         <CardSkeleton />
-      ) : (
-        <div className="w-full bg-white rounded-md shadow-sm p-6 flex flex-col">
-          {/* Header */}
-          <div className="flex justify-between items-center">
-            <p className="text-gray-800 font-medium">{title}</p>
-            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100">
-              {icon}
-            </div>
+      ) : ( */}
+      <div className="w-full bg-white rounded-md shadow-sm p-6 flex flex-col">
+        {/* Header */}
+        <div className="flex justify-between items-center">
+          <p className="text-gray-800 font-medium">{title}</p>
+          <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100">
+            {icon}
           </div>
-          {/* Value & Conclusion */}
-          <div className="mt-3 flex w-full flex-col items-start gap-2">
-            <p className="text-2xl text-black font-bold">{value}</p>
-            {/* <p className={`text-sm ${trendColor}`}>{conclusion}</p> */}
-          </div>
+        </div>
+        {/* Value & Conclusion */}
+        <div className="mt-3 flex w-full flex-col items-start gap-2">
+          <p className="text-2xl text-black font-bold">{value}</p>
+          {/* <p className={`text-sm ${trendColor}`}>{conclusion}</p> */}
+        </div>
 
-          {/* Progress bar (opsional) */}
-          {/* {progress !== undefined && (
+        {/* Progress bar (opsional) */}
+        {/* {progress !== undefined && (
         <div className="mt-3">
           <div className="w-full bg-gray-200 h-2 rounded-full">
             <div className="h-2 rounded-full bg-orange-500" style={{ width: `${progress}%` }} />
@@ -51,8 +51,8 @@ export default function CardHeader({
           <p className="text-xs text-gray-600 mt-1">{progress}% used of monthly quota</p>
         </div>
       )} */}
-        </div>
-      )}
+      </div>
+      {/* )} */}
     </>
   );
 }
