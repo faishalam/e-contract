@@ -37,25 +37,24 @@ export function TextArea({ label, required = false, inputClassName, ...props }: 
         variant="outlined"
         {...props}
         sx={{
+          backgroundColor: props?.disabled ? '#F3F4F6' : 'white',
+          width: '100%',
           '& .MuiOutlinedInput-root': {
-            backgroundColor: props?.disabled ? '#F3F4F6' : 'white',
-            // "& fieldset": {
-            //   borderColor: "#E5E7EB",
-            // },
-            '&:hover fieldset': {
-              borderColor: '#D1D5DB',
-            },
-            '& .MuiOutlinedInput-root': {
-              borderRadius: '6px',
-            },
+            borderRadius: '6px',
             '&.Mui-focused fieldset': {
-              borderColor: '#6366F1',
+              borderColor: 'primary.main',
             },
           },
           '& .MuiInputBase-input': {
             fontSize: '12px',
-            height: '36px',
-            // padding: "8px 14px",
+            lineHeight: '1.5rem',
+            // padding: '10px 14px',
+          },
+          '& textarea': {
+            resize: 'vertical',
+          },
+          '& .Mui-disabled': {
+            backgroundColor: '#F3F4F6',
           },
           ...props.sx,
         }}

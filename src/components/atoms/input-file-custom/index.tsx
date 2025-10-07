@@ -36,7 +36,7 @@ const CInputFileCustom: React.FC<TCardOptionProps> = ({
   label,
   required,
   onChangeFile,
-  className,
+  className = 'min-h-[200px]', // Default height jika tidak ada className
   error,
   helperText,
 }) => {
@@ -57,8 +57,11 @@ const CInputFileCustom: React.FC<TCardOptionProps> = ({
 
   const cardContent = (
     <Box
+      className={className}
       sx={{
-        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
         p: 4,
         borderRadius: '12px',
         border: error ? '2px dashed #ef4444' : active ? '2px dashed #3b82f6' : '1px solid #e5e7eb',
@@ -97,8 +100,8 @@ const CInputFileCustom: React.FC<TCardOptionProps> = ({
   );
 
   const labelComponent = label && (
-    <small>
-      <label htmlFor={reactId} className="font-medium">
+    <small className="block mb-2">
+      <label htmlFor={reactId} className="font-medium text-gray-700">
         {typeof label === 'string' ? label.replace(/\*$/, '') : label}
         {(required || (typeof label === 'string' && label.endsWith('*'))) && (
           <span style={{ color: 'red' }}>*</span>
@@ -122,10 +125,10 @@ const CInputFileCustom: React.FC<TCardOptionProps> = ({
   );
 
   return (
-    <div className={className}>
+    <div className="w-full">
       {labelComponent}
       {type === 'file' ? (
-        <label style={{ flex: 1, display: 'block' }} htmlFor={reactId}>
+        <label style={{ display: 'block' }} htmlFor={reactId}>
           <input
             id={reactId}
             type="file"
@@ -137,9 +140,7 @@ const CInputFileCustom: React.FC<TCardOptionProps> = ({
           {cardContent}
         </label>
       ) : (
-        <div style={{ flex: 1 }} onClick={!disabled ? onClick : undefined}>
-          {cardContent}
-        </div>
+        <div onClick={!disabled ? onClick : undefined}>{cardContent}</div>
       )}
       {helperTextComponent}
     </div>

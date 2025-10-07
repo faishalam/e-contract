@@ -28,9 +28,12 @@ const useUserManagementHooks = () => {
   const modalWarningInfo = useModalWarningInfo();
   const [search, setSearch] = useState<string>('');
   const [page, setPage] = useState<number>(1);
-  const [active, setActive] = useState<boolean | undefined>(undefined);
   const limit = 9;
   const debouncedSearch = useDebounce(search, 500);
+  const [filter, setFilter] = useState({
+    role: '',
+    status: '',
+  });
 
   const activities = [
     { value: '1,247', label: 'Total Activities', color: 'text-black' },
@@ -76,7 +79,8 @@ const useUserManagementHooks = () => {
       page: page,
       limit: limit,
       search: debouncedSearch,
-      active: active,
+      status: filter.status,
+      role: filter.role,
     },
   });
   // detail
@@ -306,8 +310,9 @@ const useUserManagementHooks = () => {
     limit,
     setSearch,
     search,
-    setActive,
     isLoadingDeleteUser,
+    setFilter,
+    filter,
   };
 };
 

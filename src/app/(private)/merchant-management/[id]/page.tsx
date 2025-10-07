@@ -6,7 +6,7 @@ import RightPanel from './components/rightPanel';
 export default function CreateMerchantPage() {
   return (
     <>
-      <div className="w-[100%] h-[100%] flex flex-col gap-6">
+      <div className="w-full flex flex-col gap-6">
         <div className="w-full flex gap-6">
           <div className="flex flex-col gap-6 w-full">
             <MerchantForm />

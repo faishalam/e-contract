@@ -3,29 +3,27 @@ import { NetworkAPIError, TResponseType } from '@/utils/response-type';
 import { AxiosError } from 'axios';
 import { HeroServices } from '../heroServices';
 import { toast } from 'react-toastify';
-import { TUserList } from './types';
+import { TMerchantList } from './types';
 
-type TUseUserList = {
-  onSuccess?: (data: TUserList) => void;
+type TUserMerchantListProps = {
+  onSuccess?: (data: TMerchantList) => void;
   onError?: (error: unknown) => void;
   params: {
     page: number;
     limit: number;
     search?: string;
-    role?: string;
     status?: string;
   };
 };
 
-const useUserList = (props?: TUseUserList) => {
-  const useUserListFn = async () => {
+const useMerchantList = (props?: TUserMerchantListProps) => {
+  const useMerchantListFn = async () => {
     try {
-      const response = await HeroServices.get<TResponseType<TUserList>>(`/users`, {
+      const response = await HeroServices.get<TResponseType<TMerchantList[]>>(`/merchants`, {
         params: {
           page: props?.params?.page,
           limit: props?.params?.limit,
-          ...(props?.params?.search && { name: props.params.search }),
-          ...(props?.params?.role && { role: props.params.role }),
+          ...(props?.params?.search && { search: props.params.search }),
           ...(props?.params?.status && { status: props.params.status }),
         },
       });
@@ -41,14 +39,12 @@ const useUserList = (props?: TUseUserList) => {
   };
 
   const query = useQuery({
-    queryKey: ['useUserList', props?.params],
-    queryFn: useUserListFn,
-    staleTime: Infinity,
-    retry: false,
+    queryKey: ['useMerchantList', props?.params],
+    queryFn: useMerchantListFn,
     enabled: !!props?.params,
   });
 
   return { ...query };
 };
 
-export default useUserList;
+export default useMerchantList;

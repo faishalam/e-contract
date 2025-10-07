@@ -12,6 +12,7 @@ import useUserManagement from './hooks';
 import DataGrid from '@/components/molecules/datagrid';
 import UserModal from './components/userModal';
 import TablePagination from '@/components/molecules/pagination';
+import UserListSkeleton from './components/userListSkeleton';
 
 export default function UserManagementPage() {
   const {
@@ -23,12 +24,14 @@ export default function UserManagementPage() {
     setMode,
     setSearch,
     search,
-    setActive,
     setSelectedUserId,
     globalLoading,
     page,
     limit,
     setPage,
+    setFilter,
+    filter,
+    isLoadingUsers,
   } = useUserManagement();
   return (
     <>
@@ -71,39 +74,30 @@ export default function UserManagementPage() {
               <div className="w-full flex justify-center items-center overflow-x-auto overflow-y-hidden max-w-full">
                 <div className="w-full flex gap-2">
                   <CAutoComplete
-                    options={[]}
+                    options={[
+                      { label: 'User', value: 'User' },
+                      { label: 'Admin', value: 'Admin' },
+                      { label: 'Partner', value: 'Partner' },
+                      { label: 'Verificator', value: 'Verificator' },
+                      { label: 'Signer', value: 'Signer' },
+                    ]}
                     className="w-1/3"
-                    getOptionKey={option => option.value}
+                    getOptionKey={option => String(option.value)}
                     renderOption={(props, option) => (
-                      <li {...props} key={option.value}>
+                      <li {...props} key={String(option.value)}>
                         {option.label}
                       </li>
                     )}
-                    // onChange={(_, status) => {
-                    // setFilter({ ...filter, status });
-                    // }}
+                    onChange={(_, role) => {
+                      setFilter({ ...filter, role: role?.value ?? '' });
+                    }}
                     getOptionLabel={option => option.label}
-                    placeholder="All Users"
-                  />
-                  <CAutoComplete
-                    options={[]}
-                    className="w-1/3"
-                    getOptionKey={option => option.value}
-                    renderOption={(props, option) => (
-                      <li {...props} key={option.value}>
-                        {option.label}
-                      </li>
-                    )}
-                    // onChange={(_, status) => {
-                    // setFilter({ ...filter, status });
-                    // }}
-                    getOptionLabel={option => option.label}
-                    placeholder="All Actions"
+                    placeholder="Filter Role"
                   />
                   <CAutoComplete
                     options={[
-                      { label: 'Aktif', value: true },
-                      { label: 'Tidak Aktif', value: false },
+                      { label: 'Aktif', value: 'active' },
+                      { label: 'Tidak Aktif', value: 'inactive' },
                     ]}
                     className="w-1/3"
                     getOptionKey={option => String(option.value)}
@@ -113,7 +107,7 @@ export default function UserManagementPage() {
                       </li>
                     )}
                     onChange={(_, status) => {
-                      setActive(status?.value);
+                      setFilter({ ...filter, status: status?.value ?? '' });
                     }}
                     getOptionLabel={option => option.label}
                     placeholder="Filter Status"
@@ -145,20 +139,26 @@ export default function UserManagementPage() {
               </div>
             </div>
 
-            <div className="w-full overflow-y-scroll mt-6 bg-white shadow rounded-md">
-              <DataGrid
-                rowData={usersData?.users ?? []}
-                columnDefs={usersColumnsDef}
-                pagination={false}
-                loading={globalLoading}
-              />
-            </div>
-            <TablePagination
-              page={page}
-              setPage={setPage}
-              limit={limit}
-              dataLength={usersData?.users.length ?? 0}
-            />
+            {isLoadingUsers ? (
+              <UserListSkeleton />
+            ) : (
+              <>
+                <div className="w-full overflow-y-scroll mt-6 bg-white shadow rounded-md">
+                  <DataGrid
+                    rowData={usersData?.users ?? []}
+                    columnDefs={usersColumnsDef}
+                    pagination={false}
+                    loading={globalLoading}
+                  />
+                </div>
+                <TablePagination
+                  page={page}
+                  setPage={setPage}
+                  limit={limit}
+                  dataLength={usersData?.users?.length ?? 0}
+                />
+              </>
+            )}
           </div>
         )}
 
