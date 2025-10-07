@@ -10,8 +10,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import useCreateMerchant from '@/services/merchant/useCreateMerchant';
 import useUpdateMerchant from '@/services/merchant/useUpdateMerchant';
-import useMerchantById from '@/services/merchant/useMerchantById';
 import { merchantSchema, TMerchantForm } from './validator';
+import useMerchantManagement from '../hooks';
 
 const useCreateMerchantValue = () => {
   const pathName = usePathname();
@@ -26,6 +26,8 @@ const useCreateMerchantValue = () => {
     }
     return lastPath;
   }, [pathName]);
+
+  const { dataMerchantById, isLoadingMerchantById, errorMerchantById } = useMerchantManagement();
 
   const {
     control,
@@ -58,14 +60,16 @@ const useCreateMerchantValue = () => {
         plan: '',
         price: null,
       },
-      pic: {
-        name: '',
-        email: '',
-        phone: '',
-        office_phone: '',
-        position: '',
-        department: '',
-      },
+      pics: [
+        {
+          name: '',
+          email: '',
+          phone: '',
+          office_phone: '',
+          position: '',
+          department: '',
+        },
+      ],
     },
     mode: 'onChange',
   });
@@ -100,16 +104,6 @@ const useCreateMerchantValue = () => {
     },
   });
 
-  const {
-    data: dataMerchantById,
-    isPending: isLoadingMerchantById,
-    error: errorMerchantById,
-  } = useMerchantById({
-    params: {
-      id: id || '',
-    },
-  });
-
   const onSubmit: SubmitHandler<TMerchantForm> = data => {
     const payload = {
       ...data,
@@ -124,7 +118,7 @@ const useCreateMerchantValue = () => {
         title: 'Konfirmasi',
         message: (
           <div>
-            <p>Apakah anda yakin ingin menambahkan user ini?</p>
+            <p>Apakah anda yakin ingin menambahkan merchant ini?</p>
           </div>
         ),
         onConfirm: () => {
@@ -138,7 +132,7 @@ const useCreateMerchantValue = () => {
         title: 'Konfirmasi',
         message: (
           <div>
-            <p>Apakah anda yakin ingin mengubah user ini?</p>
+            <p>Apakah anda yakin ingin mengubah merchant ini?</p>
           </div>
         ),
         onConfirm: () => {
@@ -163,9 +157,7 @@ const useCreateMerchantValue = () => {
     showErrors(errors);
   };
 
-  const loadingMerchant = useMemo(() => {
-    return isLoadingMerchantById || isLoadingCreateMerchant || isLoadingUpdateMerchant;
-  }, [isLoadingMerchantById, isLoadingCreateMerchant, isLoadingUpdateMerchant]);
+  const loadingMerchant = isLoadingCreateMerchant || isLoadingUpdateMerchant;
 
   useEffect(() => {
     if (id && dataMerchantById) {
@@ -186,6 +178,8 @@ const useCreateMerchantValue = () => {
     handleSubmit,
     onSubmit,
     onInvalid,
+    dataMerchantById,
+    isLoadingMerchantById,
   };
 };
 

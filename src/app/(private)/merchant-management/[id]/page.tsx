@@ -16,8 +16,6 @@ export default function CreateMerchantPage() {
             <RightPanel />
           </div>
         </div>
-
-        {/* <ButtonNav /> */}
       </div>
     </>
   );

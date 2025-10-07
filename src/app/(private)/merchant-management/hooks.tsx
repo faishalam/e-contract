@@ -13,13 +13,25 @@ import { TMerchantList } from '@/services/merchant/types';
 import { useDebounce } from '@/utils/useDebounce';
 import Image from 'next/image';
 import { useModalWarningInfo } from '@/components/atoms/modal-warning';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import useDeleteMerchant from '@/services/merchant/useDeleteMerchant';
 import useMerchantStats from '@/services/merchant/useMerchantStatistics';
+import useMerchantById from '@/services/merchant/useMerchantById';
 
 const useMerchantManagementHooks = () => {
+  const pathName = usePathname();
+  const id = useMemo(() => {
+    const lastPath = pathName.split('/').pop();
+    if (lastPath === 'new') {
+      return null;
+    }
+    if (lastPath === 'merchant-management') {
+      return null;
+    }
+    return lastPath;
+  }, [pathName]);
   const queryClient = useQueryClient();
   const [page, setPage] = useState<number>(1);
   const limit = 10;
@@ -39,6 +51,16 @@ const useMerchantManagementHooks = () => {
       limit: limit,
       search: debouncedSearch,
       status: filter.status,
+    },
+  });
+
+  const {
+    data: dataMerchantById,
+    isLoading: isLoadingMerchantById,
+    error: errorMerchantById,
+  } = useMerchantById({
+    params: {
+      id: id ?? null,
     },
   });
 
@@ -118,7 +140,8 @@ const useMerchantManagementHooks = () => {
             <div className="flex gap-1 py-1 items-center justify-center">
               <div
                 onClick={() => {
-                  if (params && params.data) {
+                  if (params && params?.data?.id) {
+                    router.push(`/merchant-management/detail/${params?.data?.id}`);
                   }
                 }}
                 className="cursor-pointer"
@@ -144,7 +167,7 @@ const useMerchantManagementHooks = () => {
                       title: 'Konfirmasi',
                       message: (
                         <div>
-                          <p>Apakah anda yakin ingin menghapus user ini?</p>
+                          <p>Apakah anda yakin ingin menghapus merchant ini?</p>
                         </div>
                       ),
                       onConfirm: () => {
@@ -227,6 +250,8 @@ const useMerchantManagementHooks = () => {
   ];
 
   return {
+    dataMerchantById,
+    isLoadingMerchantById,
     loadingMerchant,
     setPage,
     statisticsHeader,
@@ -237,6 +262,8 @@ const useMerchantManagementHooks = () => {
     filter,
     setFilter,
     search,
+    errorMerchantById,
+    isLoadingMerchantList,
   };
 };
 

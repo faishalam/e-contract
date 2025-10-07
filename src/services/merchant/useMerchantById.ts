@@ -3,20 +3,20 @@ import { NetworkAPIError, TResponseType } from '@/utils/response-type';
 import { AxiosError } from 'axios';
 import { HeroServices } from '../heroServices';
 import { toast } from 'react-toastify';
-import { TMerchantList } from './types';
+import { TMerchantDetail } from './types';
 
 type TUseMerchantByIdProps = {
-  onSuccess?: (data: TMerchantList) => void;
+  onSuccess?: (data: TMerchantDetail) => void;
   onError?: (error: unknown) => void;
   params: {
-    id: string;
+    id?: string | null;
   };
 };
 
 const useMerchantById = (props?: TUseMerchantByIdProps) => {
   const useMerchantByIdFn = async () => {
     try {
-      const response = await HeroServices.get<TResponseType<TMerchantList>>(
+      const response = await HeroServices.get<TResponseType<TMerchantDetail>>(
         `/merchants/${props?.params?.id}`,
       );
 
@@ -34,7 +34,7 @@ const useMerchantById = (props?: TUseMerchantByIdProps) => {
     queryKey: ['useMerchantById', props?.params.id],
     queryFn: useMerchantByIdFn,
     retry: false,
-    enabled: !!props?.params.id && props?.params.id !== '',
+    enabled: !!props?.params.id && props?.params.id !== '' && props?.params.id !== null,
   });
 
   return { ...query };

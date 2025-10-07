@@ -15,9 +15,9 @@ export default function ButtonHeader() {
       <div className="w-full flex items-center justify-start gap-2">
         <Button
           onClick={onCreateNew}
-          className="w-full"
+          className="w-full !rounded-md"
           variant="contained"
-          color="secondary"
+          color="primary"
           startIcon={<AddIcon />}
         >
           Tambah Merchant
@@ -25,7 +25,7 @@ export default function ButtonHeader() {
         <Button
           variant="contained"
           fullWidth
-          className="!shadow !bg-white !text-gray-500 !border !border-gray-300"
+          className="!shadow !bg-white !text-gray-500 !border !border-gray-300 !rounded-md"
           startIcon={<ImportExportIcon />}
           onClick={() => {
             toast.error('Fitur belum tersedia');
@@ -37,7 +37,7 @@ export default function ButtonHeader() {
         <Button
           variant="contained"
           fullWidth
-          className="!shadow !bg-white !text-gray-500 !border !border-gray-300"
+          className="!shadow !bg-white !text-gray-500 !border !border-gray-300 !rounded-md"
           startIcon={<ImportExportIcon />}
           onClick={() => {
             toast.error('Fitur belum tersedia');
@@ -48,7 +48,7 @@ export default function ButtonHeader() {
         <Button
           variant="contained"
           fullWidth
-          className="!shadow !bg-white !text-gray-500 !border !border-gray-300"
+          className="!shadow !bg-white !text-gray-500 !border !border-gray-300 !rounded-md"
           startIcon={<EmailIcon />}
           onClick={() => {
             toast.error('Fitur belum tersedia');
@@ -58,11 +58,11 @@ export default function ButtonHeader() {
         </Button>
       </div>
 
-      <div className="w-1/3 flex items-center justify-end gap-2">
+      <div className="w-1/3 flex items-center justify-end gap-2 !rounded-md">
         <Button
           variant="contained"
           fullWidth
-          className="!shadow !bg-white !text-gray-500 !border !border-gray-300"
+          className="!shadow !bg-white !text-gray-500 !border !border-gray-300 !rounded-md"
           startIcon={<FilterAltIcon />}
           onClick={() => {
             toast.error('Fitur belum tersedia');
@@ -72,7 +72,7 @@ export default function ButtonHeader() {
         </Button>
         <Button
           variant="contained"
-          className="!shadow !p-2 !bg-white !text-gray-500 !border !border-gray-300"
+          className="!shadow !p-2 !bg-white !text-gray-500 !border !border-gray-300 !rounded-md"
           startIcon={<ViewCompactIcon />}
           onClick={() => {
             toast.error('Fitur belum tersedia');
@@ -80,7 +80,7 @@ export default function ButtonHeader() {
         ></Button>
         <Button
           variant="contained"
-          className="!shadow !p-2 !bg-white !text-gray-500 !border !border-gray-300"
+          className="!shadow !p-2 !bg-white !text-gray-500 !border !border-gray-300 !rounded-md"
           startIcon={<FormatListBulletedIcon />}
           onClick={() => {
             toast.error('Fitur belum tersedia');

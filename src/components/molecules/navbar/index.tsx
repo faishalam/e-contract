@@ -14,9 +14,16 @@ import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 import ModalChangePassword from '@/components/organism/modal-change-password';
+import { Skeleton } from '@mui/material';
 
 const Navbar: React.FC<TProps> = ({ showRightMenu = true }) => {
-  const { dataProfile, openModalProfile, setOpenModalProfile, openModalChangePassword } = useAuth();
+  const {
+    dataProfile,
+    openModalProfile,
+    setOpenModalProfile,
+    openModalChangePassword,
+    isLoadingDataProfile,
+  } = useAuth();
   const router = useRouter();
   const refreshToken = Cookies.get('refreshToken') as string;
 
@@ -62,44 +69,48 @@ const Navbar: React.FC<TProps> = ({ showRightMenu = true }) => {
             <div className="w-[30px] h-[30px] bg-gray-200 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-300 transition-colors shrink-0">
               <NotificationIcon className="text-gray-700" style={{ fontSize: '1.3rem' }} />
             </div>
-            <div className="pl-4 border-l border-l-gray-200 shrink-0">
-              <DropdownButton
-                className="text-black"
-                menuItems={[
-                  <div
-                    key="profile"
-                    onClick={() => {
-                      setOpenModalProfile(true);
-                    }}
-                    className="flex items-center w-[200px] px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                  >
-                    <UserAccountIcon />
-                    <span className="ml-2">Profile</span>
-                  </div>,
-                  <div
-                    key="logout"
-                    onClick={() => handleLogout(refreshToken)}
-                    className="flex items-center w-[200px] px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                  >
-                    <LogoutAccountIcon />
-                    <span className="ml-2">Logout</span>
-                  </div>,
-                ]}
-              >
-                <Image
-                  src="https://img.freepik.com/premium-photo/happy-man-ai-generated-portrait-user-profile_1119669-1.jpg"
-                  alt="Profile"
-                  width={30}
-                  height={30}
-                  className="rounded-full w-[30px] h-[30px]"
-                  unoptimized
-                />
-                <div className="grid text-sm justify-items-start text-gray-700 ml-2">
-                  <div className="font-bold">{dataProfile?.name}</div>
-                  <small className="text-gray-500 text-xs">{dataProfile?.role}</small>
-                </div>
-              </DropdownButton>
-            </div>
+            {isLoadingDataProfile ? (
+              <ProfileDropdownSkeleton />
+            ) : (
+              <div className="pl-4 border-l border-l-gray-200 shrink-0">
+                <DropdownButton
+                  className="text-black"
+                  menuItems={[
+                    <div
+                      key="profile"
+                      onClick={() => {
+                        setOpenModalProfile(true);
+                      }}
+                      className="flex items-center w-[200px] px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    >
+                      <UserAccountIcon />
+                      <span className="ml-2">Profile</span>
+                    </div>,
+                    <div
+                      key="logout"
+                      onClick={() => handleLogout(refreshToken)}
+                      className="flex items-center w-[200px] px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    >
+                      <LogoutAccountIcon />
+                      <span className="ml-2">Logout</span>
+                    </div>,
+                  ]}
+                >
+                  <Image
+                    src="https://img.freepik.com/premium-photo/happy-man-ai-generated-portrait-user-profile_1119669-1.jpg"
+                    alt="Profile"
+                    width={30}
+                    height={30}
+                    className="rounded-full w-[30px] h-[30px]"
+                    unoptimized
+                  />
+                  <div className="grid text-sm justify-items-start text-gray-700 ml-2">
+                    <div className="font-bold">{dataProfile?.name}</div>
+                    <small className="text-gray-500 text-xs">{dataProfile?.role}</small>
+                  </div>
+                </DropdownButton>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -108,5 +119,20 @@ const Navbar: React.FC<TProps> = ({ showRightMenu = true }) => {
     </nav>
   );
 };
+
+function ProfileDropdownSkeleton() {
+  return (
+    <div className="pl-4 border-l border-l-gray-200 shrink-0 flex items-center">
+      {/* Avatar */}
+      <Skeleton variant="circular" width={30} height={30} />
+
+      {/* Name + Role */}
+      <div className="grid text-sm justify-items-start ml-2">
+        <Skeleton variant="text" width={80} height={18} />
+        <Skeleton variant="text" width={50} height={14} />
+      </div>
+    </div>
+  );
+}
 
 export default Navbar;

@@ -12,6 +12,7 @@ import useUserManagement from './hooks';
 import DataGrid from '@/components/molecules/datagrid';
 import UserModal from './components/userModal';
 import TablePagination from '@/components/molecules/pagination';
+import UserListSkeleton from './components/userListSkeleton';
 
 export default function UserManagementPage() {
   const {
@@ -30,6 +31,7 @@ export default function UserManagementPage() {
     setPage,
     setFilter,
     filter,
+    isLoadingUsers,
   } = useUserManagement();
   return (
     <>
@@ -137,20 +139,26 @@ export default function UserManagementPage() {
               </div>
             </div>
 
-            <div className="w-full overflow-y-scroll mt-6 bg-white shadow rounded-md">
-              <DataGrid
-                rowData={usersData?.users ?? []}
-                columnDefs={usersColumnsDef}
-                pagination={false}
-                loading={globalLoading}
-              />
-            </div>
-            <TablePagination
-              page={page}
-              setPage={setPage}
-              limit={limit}
-              dataLength={usersData?.users?.length ?? 0}
-            />
+            {isLoadingUsers ? (
+              <UserListSkeleton />
+            ) : (
+              <>
+                <div className="w-full overflow-y-scroll mt-6 bg-white shadow rounded-md">
+                  <DataGrid
+                    rowData={usersData?.users ?? []}
+                    columnDefs={usersColumnsDef}
+                    pagination={false}
+                    loading={globalLoading}
+                  />
+                </div>
+                <TablePagination
+                  page={page}
+                  setPage={setPage}
+                  limit={limit}
+                  dataLength={usersData?.users?.length ?? 0}
+                />
+              </>
+            )}
           </div>
         )}
 

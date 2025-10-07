@@ -12,7 +12,7 @@ import { useMemo, useState } from 'react';
 import LockOutlineIcon from '@mui/icons-material/LockOutline';
 import CIconButton from '@/components/atoms/icon-button';
 import CAutoComplete from '@/components/atoms/auto-complete';
-import UserFormSkeleton from './loadingSkeletonForm';
+import UserFormSkeleton from './formSkeleton';
 
 export default function UserModal() {
   const {

@@ -24,20 +24,24 @@ export const merchantSchema = z.object({
     joined_date: z.string().min(1, { message: 'Tanggal bergabung wajib diisi' }),
     renewal_date: z.string().min(1, { message: 'Tanggal perpanjangan wajib diisi' }),
     plan: z.string().min(1, { message: 'Paket wajib diisi' }),
-    price: z.string().optional().nullable(),
+    price: z.number().optional().nullable(),
   }),
 
-  pic: z.object({
-    name: z.string().min(1, { message: 'Nama PIC wajib diisi' }),
-    email: z
-      .string()
-      .email({ message: 'Email PIC tidak valid' })
-      .min(1, { message: 'Email PIC wajib diisi' }),
-    phone: z.string().min(1, { message: 'Nomor telepon PIC wajib diisi' }),
-    office_phone: z.string().min(1, { message: 'Nomor telepon kantor PIC wajib diisi' }),
-    position: z.string().min(1, { message: 'Jabatan PIC wajib diisi' }),
-    department: z.string().min(1, { message: 'Departemen wajib diisi' }),
-  }),
+  pics: z
+    .array(
+      z.object({
+        name: z.string().min(1, { message: 'Nama PIC wajib diisi' }),
+        email: z
+          .string()
+          .email({ message: 'Email PIC tidak valid' })
+          .min(1, { message: 'Email PIC wajib diisi' }),
+        phone: z.string().min(1, { message: 'Nomor telepon PIC wajib diisi' }),
+        office_phone: z.string().min(1, { message: 'Nomor telepon kantor PIC wajib diisi' }),
+        position: z.string().min(1, { message: 'Jabatan PIC wajib diisi' }),
+        department: z.string().min(1, { message: 'Departemen wajib diisi' }),
+      }),
+    )
+    .min(1, { message: 'Minimal satu PIC wajib diisi' }),
 });
 
 export type TMerchantForm = z.infer<typeof merchantSchema>;

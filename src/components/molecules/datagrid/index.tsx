@@ -7,8 +7,8 @@ import { GridOptions } from '@ag-grid-community/core';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { ModuleRegistry } from '@ag-grid-community/core';
 import IconNoData from '@/assets/svg/icon-no-data.svg';
-import { Loader } from '@/components/atoms/loader';
 import Image from 'next/image';
+import { CircularProgress } from '@mui/material';
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 class DataGrid extends React.Component<GridOptions> {
   constructor(props: GridOptions) {
@@ -47,7 +47,9 @@ class DataGrid extends React.Component<GridOptions> {
           paginationPageSize={10}
           paginationPageSizeSelector={[10, 20, 30]}
           {...props}
-          loadingOverlayComponent={() => <Loader size="small" />}
+          loadingOverlayComponent={() => (
+            <CircularProgress size={48} thickness={4} color="primary" />
+          )}
         />
       </div>
     ) : (

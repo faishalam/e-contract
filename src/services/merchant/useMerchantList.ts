@@ -23,7 +23,7 @@ const useMerchantList = (props?: TUserMerchantListProps) => {
         params: {
           page: props?.params?.page,
           limit: props?.params?.limit,
-          ...(props?.params?.search && { name: props.params.search }),
+          ...(props?.params?.search && { search: props.params.search }),
           ...(props?.params?.status && { status: props.params.status }),
         },
       });
