@@ -82,7 +82,7 @@ const useMerchantManagementHooks = () => {
         headerName: 'No',
         cellRenderer: (params: ICellRendererParams<TMerchantList>) => {
           const rowIndex = params.node?.rowIndex ?? 0;
-          return <span>{rowIndex + 1}</span>;
+          return (page - 1) * limit + rowIndex + 1;
         },
       },
       {

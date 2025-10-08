@@ -33,7 +33,7 @@ export default function UserManagementPage() {
 
   return (
     <>
-      <div className="w-full h-full flex flex-col gap-4">
+      <div className="w-full flex flex-col gap-4">
         <div className="w-full flex justify-between items-center">
           <div className="text-black flex flex-col w-full">
             <p className="text-2xl font-bold">Activity Logs</p>
@@ -67,7 +67,7 @@ export default function UserManagementPage() {
         </div>
 
         {activeTab === 'All Users' && (
-          <div className="">
+          <>
             <div className="flex flex-col gap-6 bg-white p-4 rounded-md shadow-sm">
               <div className="w-full flex justify-center items-center overflow-x-auto overflow-y-hidden max-w-full">
                 <div className="w-full flex gap-2">
@@ -137,23 +137,23 @@ export default function UserManagementPage() {
               </div>
             </div>
 
-            <div className="w-full overflow-y-scroll mt-6 bg-white shadow rounded-md">
+            <div className="w-full overflow-y-scroll bg-white rounded-md shadow mb-4">
               <DataGrid
                 rowData={usersData?.data ?? []}
                 columnDefs={usersColumnsDef}
                 pagination={false}
                 loading={globalLoading}
               />
+              <TablePagination
+                meta={usersData?.meta}
+                onPageChange={setPage}
+                onLimitChange={newLimit => {
+                  setLimit(newLimit);
+                  setPage(1);
+                }}
+              />
             </div>
-            <TablePagination
-              meta={usersData?.meta}
-              onPageChange={setPage}
-              onLimitChange={newLimit => {
-                setLimit(newLimit);
-                setPage(1);
-              }}
-            />
-          </div>
+          </>
         )}
         {openModalUser && <UserModal />}
       </div>
