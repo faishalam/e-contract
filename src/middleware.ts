@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// Contoh: fungsi verifikasi JWT/token kamu
+const PUBLIC_ROUTES = ['/login', '/activation', '/reset-password'];
+
 async function verifyToken(token: string): Promise<boolean> {
   try {
-    // TODO: implementasikan validasi token asli
-    token;
-    return true;
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.exp * 1000 > Date.now();
   } catch {
     return false;
   }
@@ -16,32 +16,17 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('accessToken')?.value;
 
-  if (
-    pathname.startsWith('/_next') ||
-    pathname === '/favicon.ico' ||
-    pathname.startsWith('/assets') ||
-    pathname.startsWith('/public')
-  ) {
+  if (pathname.startsWith('/_next') || pathname.startsWith('/api') || pathname === '/favicon.ico') {
     return NextResponse.next();
   }
 
-  if (
-    pathname.startsWith('/login') ||
-    pathname.startsWith('/activation') ||
-    pathname.startsWith('/reset-password')
-  ) {
-    if (!token) {
-      return NextResponse.next();
-    }
+  const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
 
-    const isValid = await verifyToken(token);
-    if (isValid) {
+  if (isPublicRoute) {
+    if (token && (await verifyToken(token))) {
       return NextResponse.redirect(new URL('/dashboard', request.url));
     }
-
-    const res = NextResponse.next();
-    res.cookies.delete('accessToken');
-    return res;
+    return NextResponse.next();
   }
 
   if (!token) {
@@ -50,14 +35,14 @@ export async function middleware(request: NextRequest) {
 
   const isValid = await verifyToken(token);
   if (!isValid) {
-    const res = NextResponse.redirect(new URL('/login', request.url));
-    res.cookies.delete('accessToken');
-    return res;
+    const response = NextResponse.redirect(new URL('/login', request.url));
+    response.cookies.delete('accessToken');
+    return response;
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/((?!_next/|favicon.ico|assets/|public/).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
 };
