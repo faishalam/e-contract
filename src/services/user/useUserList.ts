@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { NetworkAPIError, TResponseType } from '@/utils/response-type';
 import { AxiosError } from 'axios';
 import { HeroServices } from '../heroServices';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import { TUserList } from './types';
 
 type TUseUserList = {

@@ -15,7 +15,7 @@ import Image from 'next/image';
 import { useModalWarningInfo } from '@/components/atoms/modal-warning';
 import { usePathname, useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import useDeleteMerchant from '@/services/merchant/useDeleteMerchant';
 import useMerchantStats from '@/services/merchant/useMerchantStatistics';
 import useMerchantById from '@/services/merchant/useMerchantById';

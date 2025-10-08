@@ -3,7 +3,7 @@ import { NetworkAPIError, TResponseType } from '@/utils/response-type';
 import { AxiosError } from 'axios';
 import { TChangePasswordForm } from '@/context/profileProvider/types';
 import { HeroServices } from '../heroServices';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 
 type TUseChangePasswordProps = {
   onSuccess?: (data: null) => void;

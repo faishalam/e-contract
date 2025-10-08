@@ -12,7 +12,7 @@ import { FieldErrors, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createUserSchema, updateUserSchema } from './validator';
 import useCreateUser from '@/services/user/useCreateUser';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import useUpdateUser from '@/services/user/useUpdateUser';
 import useDeleteUser from '@/services/user/useDeleteUser';
 import { useModalWarningInfo } from '@/components/atoms/modal-warning';

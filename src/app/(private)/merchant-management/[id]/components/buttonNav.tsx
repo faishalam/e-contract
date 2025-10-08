@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 
 export default function ButtonNav() {
   const router = useRouter();

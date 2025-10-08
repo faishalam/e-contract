@@ -9,7 +9,7 @@ import DoneAllIcon from '@mui/icons-material/DoneAll';
 import { FieldErrors, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { contractMetadataSchema, TContractForm } from './validator';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import useFormPersist from 'react-hook-form-persist';
 import useCreateContract from '@/services/contract/useCreateContract';
 import useUpdateContract from '@/services/contract/useUpdateContract';
@@ -66,6 +66,7 @@ const useCreateContractValue = () => {
 
   const { mutate: mutateCreateContract, isPending: isLoadingCreateContract } = useCreateContract({
     onSuccess: () => {
+      toast.success('Contract Berhasil Ditambahkan');
       reset();
     },
     onError: error => {
@@ -88,7 +89,7 @@ const useCreateContractValue = () => {
         title: 'Konfirmasi',
         message: (
           <div>
-            <p>Apakah anda yakin ingin menambahkan merchant ini?</p>
+            <p>Apakah anda yakin ingin menambahkan Merchant ini?</p>
           </div>
         ),
         onConfirm: () => {
@@ -102,7 +103,7 @@ const useCreateContractValue = () => {
         title: 'Konfirmasi',
         message: (
           <div>
-            <p>Apakah anda yakin ingin mengubah merchant ini?</p>
+            <p>Apakah anda yakin ingin mengubah Merchant ini?</p>
           </div>
         ),
         onConfirm: () => {

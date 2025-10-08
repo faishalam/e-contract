@@ -2,7 +2,7 @@ import FaxIcon from '@mui/icons-material/Fax';
 import EmailIcon from '@mui/icons-material/Email';
 import BlockIcon from '@mui/icons-material/Block';
 import { Button } from '@mui/material';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import RenderTransactionStatus from '@/components/atoms/render-transaction-status';
 import useMerchantManagement from '../../../hooks';
 import MerchantDetailSkeleton from './merchantDetailSkeleton';

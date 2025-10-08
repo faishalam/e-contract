@@ -12,7 +12,7 @@ import ModalUserProfile from '@/components/organism/modal-profile';
 import useLogoutUser from '@/services/auth/logout';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import ModalChangePassword from '@/components/organism/modal-change-password';
 import { Skeleton } from '@mui/material';
 

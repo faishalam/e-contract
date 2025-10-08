@@ -9,7 +9,7 @@ import PieChartIcon from '@mui/icons-material/PieChart';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Cookies from 'js-cookie';
 import useLogoutUser from '@/services/auth/logout';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 
 const Sidebar: React.FC = () => {
   const pathname = usePathname();

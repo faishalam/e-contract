@@ -6,7 +6,7 @@ import { FieldErrors, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TChangePasswordForm } from './types';
 import { changePasswordSchema } from './validator';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import useChangePassword from '@/services/auth/changePassword';
 
 const useProfileUserHooks = () => {
