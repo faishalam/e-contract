@@ -77,9 +77,9 @@ const LeftPanel = () => {
               <div key={idx} className="mb-4">
                 <p className="text-xs font-semibold text-gray-600">{group.title}</p>
                 <div className="flex flex-col gap-1 mt-2 text-black">
-                  {group.variables.map(v => (
+                  {group.variables.map((v, i) => (
                     <div
-                      key={v}
+                      key={`${group.title}-${v}-${i}`}
                       className="bg-gray-100 hover:bg-gray-200 text-xs p-1 px-2 rounded cursor-pointer"
                     >
                       {v}

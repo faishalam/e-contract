@@ -1,19 +1,23 @@
 'use client';
 
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import DescriptionIcon from '@mui/icons-material/Description';
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import { useForm } from 'react-hook-form';
-import { TContractForm } from './types';
+import { FieldErrors, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { contractMetadataSchema } from './schema';
+import { contractMetadataSchema, TContractForm } from './validator';
 import { toast } from 'react-toastify';
 import useFormPersist from 'react-hook-form-persist';
+import useCreateContract from '@/services/contract/useCreateContract';
+import useUpdateContract from '@/services/contract/useUpdateContract';
+import { useModalWarningInfo } from '@/components/atoms/modal-warning';
 
-const useCreateContractHooks = () => {
+const useCreateContractValue = () => {
+  const modalWarningInfo = useModalWarningInfo();
+  const pathName = usePathname();
   const [stepNav, setStepNav] = useState<string>('');
   const steps = [
     { label: 'Metadata', path: 'metadata', icon: DescriptionIcon },
@@ -23,6 +27,14 @@ const useCreateContractHooks = () => {
   ];
   const paramsStep = useSearchParams();
   const step = paramsStep.get('step') || 'metadata';
+
+  const id = useMemo(() => {
+    const lastPath = pathName.split('/').pop();
+    if (lastPath === 'new') {
+      return null;
+    }
+    return lastPath;
+  }, [pathName]);
 
   const {
     control,
@@ -51,6 +63,69 @@ const useCreateContractHooks = () => {
     },
     mode: 'onChange',
   });
+
+  const { mutate: mutateCreateContract, isPending: isLoadingCreateContract } = useCreateContract({
+    onSuccess: () => {
+      reset();
+    },
+    onError: error => {
+      toast.error(error as string);
+    },
+  });
+
+  const { mutate: mutateUpdateContract, isPending: isLoadingUpdateContract } = useUpdateContract({
+    onSuccess: () => {
+      reset();
+    },
+    onError: error => {
+      toast.error(error as string);
+    },
+  });
+
+  const onSubmit: SubmitHandler<TContractForm> = data => {
+    if (!id) {
+      modalWarningInfo.open({
+        title: 'Konfirmasi',
+        message: (
+          <div>
+            <p>Apakah anda yakin ingin menambahkan merchant ini?</p>
+          </div>
+        ),
+        onConfirm: () => {
+          mutateCreateContract(data);
+        },
+      });
+    }
+
+    if (id) {
+      modalWarningInfo.open({
+        title: 'Konfirmasi',
+        message: (
+          <div>
+            <p>Apakah anda yakin ingin mengubah merchant ini?</p>
+          </div>
+        ),
+        onConfirm: () => {
+          mutateUpdateContract({ id: id || '', payload: data });
+        },
+      });
+    }
+  };
+
+  const onInvalid = (errors: FieldErrors<TContractForm>) => {
+    const showErrors = (errObj: FieldErrors<TContractForm>) => {
+      Object.values(errObj).forEach(error => {
+        if (!error) return;
+        if (typeof error === 'object' && error !== null) {
+          if ('message' in error && error.message) {
+            toast.error(String(error.message));
+          }
+          showErrors(error as FieldErrors<TContractForm>);
+        }
+      });
+    };
+    showErrors(errors);
+  };
 
   const validateStep = async (currentStep: string) => {
     let fieldsToValidate: (keyof TContractForm)[] = [];
@@ -99,6 +174,8 @@ const useCreateContractHooks = () => {
   });
 
   return {
+    onInvalid,
+    onSubmit,
     validateStep,
     getValues,
     stepNav,
@@ -109,6 +186,8 @@ const useCreateContractHooks = () => {
     control,
     handleSubmit,
     watch,
+    isLoadingCreateContract,
+    isLoadingUpdateContract,
     setValue,
     errors,
     isValid,
@@ -118,18 +197,18 @@ const useCreateContractHooks = () => {
   };
 };
 
-const CreateContractContext = createContext<ReturnType<typeof useCreateContractHooks> | undefined>(
+const CreateContractContext = createContext<ReturnType<typeof useCreateContractValue> | undefined>(
   undefined,
 );
 
 export const CreateContractProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const value = useCreateContractHooks();
+  const value = useCreateContractValue();
   return <CreateContractContext.Provider value={value}>{children}</CreateContractContext.Provider>;
 };
 
-export const useCreateContract = () => {
+export const useCreateContractHooks = () => {
   const context = useContext(CreateContractContext);
   if (context === undefined) {
     throw new Error('CreateContractContext must be used within an CreateContractProvider');
@@ -137,4 +216,4 @@ export const useCreateContract = () => {
   return context;
 };
 
-export default useCreateContract;
+export default useCreateContractHooks;

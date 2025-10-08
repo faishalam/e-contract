@@ -1,7 +1,6 @@
 export type TUserList = {
   id: string;
   email: string;
-  username: string;
   name: string;
   phone: string;
   is_active: boolean;
@@ -10,7 +9,6 @@ export type TUserList = {
 
 export type TUserForm = {
   email: string;
-  username: string;
   name: string;
   phone: string;
   password?: string;

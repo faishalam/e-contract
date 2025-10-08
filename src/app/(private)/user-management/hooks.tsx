@@ -53,7 +53,6 @@ const useUserManagementHooks = () => {
     resolver: zodResolver(mode === 'create' ? createUserSchema : updateUserSchema),
     defaultValues: {
       email: '',
-      username: '',
       name: '',
       phone: '',
       password: '',
@@ -123,7 +122,6 @@ const useUserManagementHooks = () => {
         onConfirm: () => {
           const payload = {
             email: data.email,
-            username: data.username,
             name: data.name,
             phone: data.phone,
             password: data.password,
@@ -144,7 +142,6 @@ const useUserManagementHooks = () => {
         onConfirm: () => {
           const payload = {
             email: data.email,
-            username: data.username,
             name: data.name,
             phone: data.phone,
           };
@@ -178,11 +175,6 @@ const useUserManagementHooks = () => {
         field: 'email',
         headerName: 'Email',
         width: 250,
-      },
-      {
-        field: 'username',
-        headerName: 'Username',
-        flex: 1,
       },
       { field: 'name', headerName: 'Name', flex: 2 },
       { field: 'phone', headerName: 'Phone', flex: 1 },
@@ -272,7 +264,6 @@ const useUserManagementHooks = () => {
     } else if (mode === 'create') {
       reset({
         email: '',
-        username: '',
         name: '',
         phone: '',
         password: '',

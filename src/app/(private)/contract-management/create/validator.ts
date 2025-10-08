@@ -1,5 +1,10 @@
 import { z } from 'zod';
 
+const optionSchema = z.object({
+  value: z.string(),
+  label: z.string(),
+});
+
 export const contractMetadataSchema = z.object({
   title: z.string().min(1, 'Judul kontrak wajib diisi'),
   party1: z
@@ -14,12 +19,10 @@ export const contractMetadataSchema = z.object({
     .refine(v => v !== null, {
       message: 'Pihak 2 wajib dipilih',
     }),
-  contractType: z
-    .object({})
+  contractType: optionSchema
     .nullable()
-    .refine(v => v !== null, {
-      message: 'Tipe kontrak wajib dipilih',
-    }),
+    .refine(v => v !== null, { message: 'Tipe kontrak wajib dipilih' }),
+
   contractValue: z.string().min(1, 'Nilai kontrak wajib diisi'),
   startDate: z.string().min(1, 'Tanggal mulai wajib diisi'),
   endDate: z.string().min(1, 'Tanggal selesai wajib diisi'),
@@ -39,3 +42,5 @@ export const contractMetadataSchema = z.object({
   description: z.string().optional(),
   tags: z.string().optional(),
 });
+
+export type TContractForm = z.infer<typeof contractMetadataSchema>;
