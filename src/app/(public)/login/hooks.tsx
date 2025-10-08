@@ -45,6 +45,7 @@ const useLoginHooks = () => {
       password: '',
     },
   });
+  console.log('test');
   const {
     handleSubmit: handleSubmitActivate,
     formState: { errors: errorsActivate },
