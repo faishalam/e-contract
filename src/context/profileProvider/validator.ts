@@ -6,3 +6,10 @@ export const changePasswordSchema = z.object({
   confirm_password: z.string().min(1, { message: 'Konfirmasi password wajib diisi' }),
 });
 export type TChangePasswordForm = z.infer<typeof changePasswordSchema>;
+
+export const updateProfileSchema = z.object({
+  name: z.string().min(1, { message: 'Nama wajib diisi' }),
+  phone: z.string().min(1, { message: 'Nomor telepon wajib diisi' }),
+});
+
+export type TUpdateProfileForm = z.infer<typeof updateProfileSchema>;
