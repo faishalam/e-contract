@@ -23,6 +23,7 @@ const useProfileUserHooks = () => {
   const [openModalProfile, setOpenModalProfile] = useState<boolean>(false);
   const [openModalUpdateProfile, setOpenModalUpdateProfile] = useState<boolean>(false);
   const [openModalChangePassword, setOpenModalChangePassword] = useState<boolean>(false);
+  console.log('hit');
   const {
     control,
     handleSubmit,
