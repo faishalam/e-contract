@@ -6,6 +6,7 @@ import DataGrid from '@/components/molecules/datagrid';
 import ButtonHeader from './components/buttonHeader';
 import CAutoComplete from '@/components/atoms/auto-complete';
 import CInput from '@/components/atoms/input';
+import TablePagination from '@/components/molecules/pagination';
 // import MerchantListSkeleton from './components/merchantListSkeleton';
 
 export default function MarchantManaagementPage() {
@@ -18,7 +19,10 @@ export default function MarchantManaagementPage() {
     filter,
     setSearch,
     search,
+    setPage,
+    setLimit,
   } = useMerchantManagement();
+
   return (
     <>
       <div className="w-full flex flex-col gap-6">
@@ -77,13 +81,21 @@ export default function MarchantManaagementPage() {
           <div className="w-full overflow-y-scroll">
             <DataGrid
               columnDefs={merchantColumnsDef}
-              rowData={dataMerchantList}
+              rowData={dataMerchantList?.data}
               rowSelection="multiple"
               loading={loadingMerchant}
+              pagination={false}
+            />
+            <TablePagination
+              meta={dataMerchantList?.meta}
+              onPageChange={setPage}
+              onLimitChange={newLimit => {
+                setLimit(newLimit);
+                setPage(1);
+              }}
             />
           </div>
         </div>
-        {/* )} */}
       </div>
     </>
   );

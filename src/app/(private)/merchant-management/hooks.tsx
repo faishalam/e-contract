@@ -34,7 +34,7 @@ const useMerchantManagementHooks = () => {
   }, [pathName]);
   const queryClient = useQueryClient();
   const [page, setPage] = useState<number>(1);
-  const limit = 10;
+  const [limit, setLimit] = useState<number>(10);
   const [search, setSearch] = useState<string>('');
   const debouncedSearch = useDebounce(search, 500);
   const router = useRouter();
@@ -264,6 +264,8 @@ const useMerchantManagementHooks = () => {
     search,
     errorMerchantById,
     isLoadingMerchantList,
+    limit,
+    setLimit,
   };
 };
 

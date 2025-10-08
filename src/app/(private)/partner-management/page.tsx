@@ -7,6 +7,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import DataGrid from '@/components/molecules/datagrid';
 import usePartnerManagement from './hooks';
 import ModalPartner from './components/modalPartner';
+import TablePagination from '@/components/molecules/pagination';
 
 export default function PartnerManagementPage() {
   const {
@@ -22,8 +23,11 @@ export default function PartnerManagementPage() {
     setFilter,
     filter,
     isLoadingDeletePartner,
+    setPage,
+    setLimit,
   } = usePartnerManagement();
 
+  console.log(dataPartnerList?.meta);
   return (
     <>
       <div className="w-full flex flex-col gap-4">
@@ -123,8 +127,17 @@ export default function PartnerManagementPage() {
           <div className="w-full overflow-y-scroll">
             <DataGrid
               columnDefs={partnerColumnDef}
-              rowData={dataPartnerList}
+              rowData={dataPartnerList?.data}
               loading={isLoadingDeletePartner || isLoadingDataPartnerList}
+              pagination={false}
+            />
+            <TablePagination
+              meta={dataPartnerList?.meta}
+              onPageChange={setPage}
+              onLimitChange={newLimit => {
+                setLimit(newLimit);
+                setPage(1);
+              }}
             />
           </div>
         </div>

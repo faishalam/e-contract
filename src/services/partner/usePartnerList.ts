@@ -32,7 +32,7 @@ const usePartnerList = (props?: TUsePartnerList) => {
 
       if (response.status !== 200) return;
 
-      return response?.data?.data;
+      return response?.data;
     } catch (error) {
       const err = error as AxiosError<NetworkAPIError>;
       toast.error(err?.response?.data?.message);

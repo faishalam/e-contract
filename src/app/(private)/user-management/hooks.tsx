@@ -28,7 +28,7 @@ const useUserManagementHooks = () => {
   const modalWarningInfo = useModalWarningInfo();
   const [search, setSearch] = useState<string>('');
   const [page, setPage] = useState<number>(1);
-  const limit = 9;
+  const [limit, setLimit] = useState<number>(10);
   const debouncedSearch = useDebounce(search, 500);
   const [filter, setFilter] = useState({
     role: '',
@@ -313,6 +313,7 @@ const useUserManagementHooks = () => {
     isLoadingDeleteUser,
     setFilter,
     filter,
+    setLimit,
   };
 };
 

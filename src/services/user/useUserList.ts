@@ -20,7 +20,7 @@ type TUseUserList = {
 const useUserList = (props?: TUseUserList) => {
   const useUserListFn = async () => {
     try {
-      const response = await HeroServices.get<TResponseType<TUserList>>(`/users`, {
+      const response = await HeroServices.get<TResponseType<TUserList[]>>(`/users`, {
         params: {
           page: props?.params?.page,
           limit: props?.params?.limit,
@@ -32,7 +32,7 @@ const useUserList = (props?: TUseUserList) => {
 
       if (response.status !== 200) return;
 
-      return response?.data?.data;
+      return response?.data;
     } catch (error) {
       const err = error as AxiosError<NetworkAPIError>;
       toast.error(err?.response?.data?.message);

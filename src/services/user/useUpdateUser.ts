@@ -2,17 +2,17 @@ import { useMutation } from '@tanstack/react-query';
 import { NetworkAPIError, TResponseType } from '@/utils/response-type';
 import { AxiosError } from 'axios';
 import { HeroServices } from '../heroServices';
-import { TUser, TUserForm } from './types';
+import { TUserList, TUserForm } from './types';
 
 type TUserUpdateUser = {
-  onSuccess?: (data: TUser) => void;
+  onSuccess?: (data: TUserList) => void;
   onError?: (error: unknown) => void;
 };
 
 const useUpdateUser = (props?: TUserUpdateUser) => {
   const useUpdateUserFn = async ({ id, payload }: { id: string; payload: TUserForm }) => {
     try {
-      const response = await HeroServices.put<TResponseType<TUser>>(`/users/${id}`, payload);
+      const response = await HeroServices.put<TResponseType<TUserList>>(`/users/${id}`, payload);
 
       const { status } = response;
 
