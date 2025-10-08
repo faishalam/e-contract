@@ -13,6 +13,7 @@ import Link from 'next/link';
 import useLogin from '../login/hooks';
 import { Controller } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import ModalCreatePassword from './components/modalCreatePassword';
 
 export default function ActivationPage() {
   const [timeLeft, setTimeLeft] = useState(896); // 14:56 in seconds
@@ -27,6 +28,7 @@ export default function ActivationPage() {
     handleSubmitResend,
     onInvalidResend,
     onSubmitResend,
+    openModalCreateNewPassword,
   } = useLogin();
 
   const values = getValuesActivate();
@@ -255,6 +257,7 @@ export default function ActivationPage() {
             </div>
           </div>
         </div>
+        {openModalCreateNewPassword && <ModalCreatePassword />}
       </div>
     </>
   );

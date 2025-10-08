@@ -23,8 +23,14 @@ export const forgotPasswordSchema = z.object({
   email: z.string().min(1, 'Email perusahaan wajib diisi').email('Format email tidak valid'),
 });
 
+export const createNewPasswordSchema = z.object({
+  email: z.string().min(1, 'Email perusahaan wajib diisi').email('Format email tidak valid'),
+  password: z.string().min(6, 'Password minimal 6 karakter'),
+});
+
 export type TLoginForm = z.infer<typeof loginSchema>;
 export type TActivateEmailForm = z.infer<typeof activateEmailSchema>;
 export type TVerifyOtpForm = z.infer<typeof verifyOtpSchema>;
 export type TResendForm = z.infer<typeof resendOtpSchema>;
 export type TForgotPasswordForm = z.infer<typeof forgotPasswordSchema>;
+export type TCreateNewPasswordForm = z.infer<typeof createNewPasswordSchema>;

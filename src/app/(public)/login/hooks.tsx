@@ -8,10 +8,12 @@ import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import {
   activateEmailSchema,
+  createNewPasswordSchema,
   forgotPasswordSchema,
   loginSchema,
   resendOtpSchema,
   TActivateEmailForm,
+  TCreateNewPasswordForm,
   TForgotPasswordForm,
   TLoginForm,
   TResendForm,
@@ -24,6 +26,7 @@ import useSendOtp from '@/services/auth/sendOtp';
 import useVerifyOtp from '@/services/auth/verifyOtp';
 import useResendOtp from '@/services/auth/resendOtp';
 import useForgotPassword from '@/services/auth/forgotPassword';
+import useCreatePassword from '@/services/auth/createPassword';
 
 const useLoginHooks = () => {
   // const queryClient = useQueryClient();
@@ -92,8 +95,23 @@ const useLoginHooks = () => {
       email: '',
     },
   });
+
+  const {
+    handleSubmit: handleSubmitCreatePassword,
+    formState: { errors: errorsCreatePassword },
+    reset: resetCreatePassword,
+    control: controlCreatePassword,
+  } = useForm<TCreateNewPasswordForm>({
+    resolver: zodResolver(createNewPasswordSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
   const [openModalActivateEmail, setOpenModalAtivateEmail] = useState<boolean>(false);
   const [openModalForgotPassword, setOpenModalForgotPassword] = useState<boolean>(false);
+  const [openModalCreateNewPassword, setOpenModalCreateNewPassword] = useState<boolean>(false);
 
   const { mutate: mutateLogin, isPending: isLoadingLogin } = useLoginUser({
     onSuccess: (data: TLoginResponse) => {
@@ -129,8 +147,11 @@ const useLoginHooks = () => {
 
   const { mutate: mutateVerifyOtp, isPending: isLoadingVerify } = useVerifyOtp({
     onSuccess: () => {
-      toast.success('Otp berhasil di verifikasi, silahkan login kembali');
-      router.push('/login');
+      toast.success('Otp berhasil di verifikasi, silahkan buat password anda');
+      resetCreatePassword({
+        email: valuesActivate.email,
+      });
+      setOpenModalCreateNewPassword(true);
       resetActivate();
     },
     onError: error => {
@@ -158,6 +179,31 @@ const useLoginHooks = () => {
     },
   });
 
+  const { mutate: mutateCreatePassword, isPending: isLoadingCreatePassword } = useCreatePassword({
+    onSuccess: () => {
+      toast.success('Password berhasil di ubah, silahkan login kembali');
+      router.push('/login-password');
+      setOpenModalCreateNewPassword(false);
+    },
+    onError: error => {
+      toast.error(error as string);
+    },
+  });
+
+  const onSubmitCreatePassword: SubmitHandler<TCreateNewPasswordForm> = data => {
+    mutateCreatePassword(data);
+  };
+
+  const onInvalidCreatePassword = (errors: FieldErrors<TCreateNewPasswordForm>) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    Object.entries(errors).forEach(([_, error]) => {
+      // console.log(key);
+      if (error?.message) {
+        toast.error(error.message);
+      }
+    });
+  };
+
   const onSubmit: SubmitHandler<TLoginForm> = data => {
     mutateLogin(data);
   };
@@ -167,12 +213,6 @@ const useLoginHooks = () => {
   };
 
   const onSubmitVerify: SubmitHandler<TVerifyOtpForm> = data => {
-    const payload = {
-      email: valuesActivate.email,
-      otp: data.otp,
-    };
-
-    console.log(payload);
     mutateVerifyOtp({
       email: valuesActivate.email,
       otp: data.otp,
@@ -280,6 +320,15 @@ const useLoginHooks = () => {
     isLoadingForgot,
     openModalForgotPassword,
     setOpenModalForgotPassword,
+    openModalCreateNewPassword,
+    setOpenModalCreateNewPassword,
+    handleSubmitCreatePassword,
+    onSubmitCreatePassword,
+    errorsCreatePassword,
+    resetCreatePassword,
+    controlCreatePassword,
+    onInvalidCreatePassword,
+    isLoadingCreatePassword,
   };
 };
 

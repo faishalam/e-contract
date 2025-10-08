@@ -2,26 +2,27 @@ import { useMutation } from '@tanstack/react-query';
 import { NetworkAPIError, TResponseType } from '@/utils/response-type';
 import { AxiosError } from 'axios';
 import { AuthServices } from '../authServices';
-import { TResetPasswordForm } from '@/app/(public)/reset-password/validator';
+import { TLoginResponse } from './types';
+import { TCreateNewPasswordForm } from '@/app/(public)/login/validator';
 
-type TResetPassword = {
-  onSuccess?: (data: null) => void;
+type TUseCreatePasswordProps = {
+  onSuccess?: (data: TLoginResponse) => void;
   onError?: (error: unknown) => void;
 };
 
-const useResetPasswordAPI = (props?: TResetPassword) => {
-  const useResetPasswordFn = async (payload: TResetPasswordForm) => {
+const useCreatePassword = (props?: TUseCreatePasswordProps) => {
+  const useCreatePasswordFn = async (payload: TCreateNewPasswordForm) => {
     try {
       const response = await AuthServices.post<TResponseType<null>>(
-        `/auth/reset-password`,
+        `/auth/create-password`,
         payload,
       );
 
-      const { status } = response;
+      const { status, data } = response;
 
       if (status !== 200) return;
 
-      return null;
+      return data?.data;
     } catch (error) {
       const err = error as AxiosError<NetworkAPIError>;
       throw err?.response?.data;
@@ -29,10 +30,12 @@ const useResetPasswordAPI = (props?: TResetPassword) => {
   };
 
   const mutation = useMutation({
-    mutationKey: ['useResetPassword'],
-    mutationFn: useResetPasswordFn,
+    mutationKey: ['useCreatePassword'],
+    mutationFn: useCreatePasswordFn,
     onSuccess: response => {
-      props?.onSuccess?.(response ?? null);
+      if (response) {
+        props?.onSuccess?.(response);
+      }
     },
     onError: error => {
       if (props?.onError) {
@@ -44,4 +47,4 @@ const useResetPasswordAPI = (props?: TResetPassword) => {
   return { ...mutation };
 };
 
-export default useResetPasswordAPI;
+export default useCreatePassword;
