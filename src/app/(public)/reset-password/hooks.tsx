@@ -18,7 +18,7 @@ const useResetPasswordHooks = () => {
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
       email: '',
-      code: '',
+      otp: '',
       new_password: '',
       confirm_password: '',
     },

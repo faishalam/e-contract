@@ -17,7 +17,7 @@ export default function ResetPasswordPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const toggleShowPassword = () => setShowPassword(prev => !prev);
 
-  const otpValue = watch('code') || '';
+  const otpValue = watch('otp') || '';
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleCodeChange = (index: number, value: string, fieldOnChange: any) => {
     if (value.length > 1) return;
@@ -31,7 +31,7 @@ export default function ResetPasswordPage() {
 
     // Auto focus ke input berikutnya jika ada value
     if (value && index < 5) {
-      const nextInput = document.getElementById(`code-${index + 1}`) as HTMLInputElement;
+      const nextInput = document.getElementById(`otp-${index + 1}`) as HTMLInputElement;
       nextInput?.focus();
     }
   };
@@ -47,7 +47,7 @@ export default function ResetPasswordPage() {
 
       if (!currentValue && index > 0) {
         // Jika kosong, focus ke input sebelumnya
-        const prevInput = document.getElementById(`code-${index - 1}`) as HTMLInputElement;
+        const prevInput = document.getElementById(`otp-${index - 1}`) as HTMLInputElement;
         prevInput?.focus();
       } else {
         // Hapus value di index saat ini
@@ -65,7 +65,7 @@ export default function ResetPasswordPage() {
 
     // Focus ke input terakhir yang terisi
     const lastIndex = Math.min(pastedData.length - 1, 5);
-    const lastInput = document.getElementById(`code-${lastIndex}`) as HTMLInputElement;
+    const lastInput = document.getElementById(`otp-${lastIndex}`) as HTMLInputElement;
     lastInput?.focus();
   };
 
@@ -185,14 +185,14 @@ export default function ResetPasswordPage() {
                   </p>
                   <div className="flex gap-2 justify-center">
                     <Controller
-                      name="code"
+                      name="otp"
                       control={control}
                       render={({ field }) => (
                         <>
                           {Array.from({ length: 6 }).map((_, index) => (
                             <input
                               key={index}
-                              id={`code-${index}`}
+                              id={`otp-${index}`}
                               type="text"
                               inputMode="numeric"
                               maxLength={1}
