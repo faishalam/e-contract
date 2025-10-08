@@ -3,10 +3,10 @@ import { NetworkAPIError, TResponseType } from '@/utils/response-type';
 import { AxiosError } from 'axios';
 import { HeroServices } from '../heroServices';
 import { toast } from 'react-toastify';
-import { TUser } from './types';
+import { TUserList } from './types';
 
 type TUseUserById = {
-  onSuccess?: (data: TUser) => void;
+  onSuccess?: (data: TUserList) => void;
   onError?: (error: unknown) => void;
   params: {
     id: string;
@@ -16,7 +16,9 @@ type TUseUserById = {
 const useUserById = (props?: TUseUserById) => {
   const useUserByIdFn = async () => {
     try {
-      const response = await HeroServices.get<TResponseType<TUser>>(`/users/${props?.params?.id}`);
+      const response = await HeroServices.get<TResponseType<TUserList>>(
+        `/users/${props?.params?.id}`,
+      );
 
       if (response.status !== 200) return;
 

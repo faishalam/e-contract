@@ -20,3 +20,4 @@ export const updateUserSchema = baseUserSchema.extend({
 
 export type TCreateUserForm = z.infer<typeof createUserSchema>;
 export type TUpdateUserForm = z.infer<typeof updateUserSchema>;
+export type TUserForm = TCreateUserForm | TUpdateUserForm;

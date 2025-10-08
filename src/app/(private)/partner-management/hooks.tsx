@@ -25,7 +25,7 @@ const usePartnerManagementHooks = () => {
   const modalWarningInfo = useModalWarningInfo();
   const [mode, setMode] = useState<string>('create');
   const [page, setPage] = useState<number>(1);
-  const limit = 10;
+  const [limit, setLimit] = useState<number>(10);
   const [selectedPartnerId, setSelectedPartnerId] = useState<string>();
   const [openModalPartner, setOpenModalPartner] = useState<boolean>(false);
   const [search, setSearch] = useState<string>('');
@@ -287,6 +287,7 @@ const usePartnerManagementHooks = () => {
     isLoadingDataPartnerById,
     setFilter,
     filter,
+    setLimit,
   };
 };
 
