@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" aria-hidden="true">
+  <!-- Background Circle -->
+  <circle cx="50" cy="50" r="48" fill="#f0f9ff" stroke="#e0f2fe" stroke-width="2"/>
+  
+  <!-- Envelope body -->
+  <rect x="25" y="35" width="50" height="35" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+  
+  <!-- Envelope flap -->
+  <path d="M25 35 L50 55 L75 35" fill="#e0f2fe" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Decorative letter inside -->
+  <rect x="33" y="40" width="34" height="18" rx="2" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+  
+  <!-- Badge circle -->
+  <circle cx="72" cy="70" r="14" fill="#10b981" stroke="#ffffff" stroke-width="3"/>
+  
+  <!-- Check inside badge -->
+  <path d="M66 70 L71 75 L79 65" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

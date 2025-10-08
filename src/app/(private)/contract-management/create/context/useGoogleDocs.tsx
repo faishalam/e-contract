@@ -10,7 +10,7 @@ import {
   useRef,
 } from 'react';
 import useCreateContract from '../hooks';
-import { TContractForm, TOption } from '../types';
+import { TContractForm } from '../validator';
 
 const contractTemplates = {
   standard: `SERVICE AGREEMENT
@@ -129,6 +129,11 @@ _____________________
 
 _____________________
 {{SECOND_PARTY_NAME}} Representative`,
+};
+
+type TOption = {
+  value: string;
+  label: string;
 };
 
 interface TemplateVariables {
@@ -289,7 +294,7 @@ const useGoogleDocsHooks = () => {
       CURRENT_DATE: formatDate(''),
       CONTRACT_VALUE: formatCurrency(formData.contractValue),
       CURRENCY: 'Rp',
-      PAYMENT_TERMS: getPaymentTerms(formData.contractType),
+      PAYMENT_TERMS: getPaymentTerms(formData?.contractType),
       SERVICE_DESCRIPTION: formData.description || '[Deskripsi detail layanan yang akan diberikan]',
       DELIVERY_TIMEFRAME: '[Jangka waktu pengiriman/penyelesaian]',
       PIC_INTERNAL: formData.picInternal?.label || '[Nama PIC Internal]',

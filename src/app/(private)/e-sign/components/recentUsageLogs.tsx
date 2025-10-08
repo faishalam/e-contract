@@ -45,7 +45,7 @@ const usageLogs = [
 
 export default function RecentUsageLogs() {
   return (
-    <div className="w-full bg-white p-4 rounded-md shadow h-full">
+    <div className="w-full bg-white p-4 rounded-md shadow ">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="font-bold text-lg text-black">Recent Usage Logs</h2>

@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
 import { Geist_Mono, Poppins } from 'next/font/google';
-import { ToastContainer } from 'react-toastify';
 import './globals.css';
 import { QueryProviders } from '@/providers/queryProviders';
 import { ThemeProvider } from '@mui/material';
 import { theme } from '@/styles/theme';
-import { LoginProvider } from './(public)/login/hooks';
+import { Toaster } from 'sonner';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '700'] });
 
@@ -26,14 +25,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${poppins.className} ${geistMono.variable} antialiased h-screen w-screen overflow-hidden`}
-      >
-        <ToastContainer />
+      <body className={`${poppins.className} ${geistMono.variable} antialiased`}>
+        {/* <ToastContainer /> */}
         <QueryProviders>
-          <ThemeProvider theme={theme}>
-            <LoginProvider>{children}</LoginProvider>
-          </ThemeProvider>
+          <Toaster position="top-right" richColors closeButton />
+          <ThemeProvider theme={theme}>{children}</ThemeProvider>
         </QueryProviders>
       </body>
     </html>

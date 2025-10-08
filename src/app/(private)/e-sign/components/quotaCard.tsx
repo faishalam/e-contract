@@ -1,4 +1,5 @@
 'use client';
+// import { AreaChart } from '@mui/icons-material';
 import { LinearProgress, Box } from '@mui/material';
 
 type QuotaCardProps = {
@@ -29,8 +30,8 @@ export default function QuotaCard({
   chartData,
 }: QuotaCardProps) {
   return (
-    <div className="rounded-md bg-white p-4 shadow border border-gray-200 h-full">
-      <div className="flex flex-col justify-between h-full">
+    <div className="rounded-md bg-white p-4 shadow border border-gray-200">
+      <div className="flex flex-col justify-between">
         <div className="flex items-center justify-between mb-3">
           <p className="text-sm text-gray-600">{title}</p>
           <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100">
@@ -68,7 +69,7 @@ export default function QuotaCard({
         )}
 
         {chartData && (
-          <div className="mt-2 h-20">
+          <div className="mt-2">
             {/* <AreaChart
               height={70}
               series={[{ data: [5, 10, 8, 12, 15], area: true, color: '#f46e31' }]}

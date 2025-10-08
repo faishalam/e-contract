@@ -12,17 +12,27 @@ import LockOutlineIcon from '@mui/icons-material/LockOutline';
 import EmailIcon from '@mui/icons-material/Email';
 import Link from 'next/link';
 import SecurityIcon from '@mui/icons-material/Security';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import LeftPanel from './components/leftPanel';
-import { useRouter } from 'next/navigation';
 import CIconButton from '@/components/atoms/icon-button';
+import ModalActivate from './components/modalActivate';
+import ModalForgot from './components/modalForgot';
 
 export default function LoginPage() {
-  const { control, handleSubmit, onSubmit, onInvalid, errors, isLoadingLogin, getValues } =
-    useLogin();
+  const {
+    control,
+    handleSubmit,
+    onSubmit,
+    onInvalid,
+    errors,
+    isLoadingLogin,
+    openModalActivateEmail,
+    setOpenModalAtivateEmail,
+    setOpenModalForgotPassword,
+    openModalForgotPassword,
+  } = useLogin();
   const [showPassword, setShowPassword] = useState(false);
   const toggleShowPassword = () => setShowPassword(prev => !prev);
-  const router = useRouter();
 
   return (
     <>
@@ -115,27 +125,22 @@ export default function LoginPage() {
                   </div>
 
                   <div className="flex gap-2">
-                    <Link
-                      href={''}
-                      onClick={() => {
-                        toast.error('Fitur belum tersedia');
-                      }}
-                      className="text-blue-400 hover:text-glue-500"
-                    >
-                      Lupa Password?
-                    </Link>
-
                     <button
+                      type="button"
+                      className="text-blue-400 hover:text-glue-500 cursor-pointer"
                       onClick={e => {
                         e.preventDefault();
-                        const email = getValues('email');
-                        if (!email) {
-                          toast.error('Silakan isi email terlebih dahulu');
-                          return;
-                        }
+                        setOpenModalForgotPassword(true);
+                      }}
+                    >
+                      Lupa Password?
+                    </button>
 
-                        // TODO: arahkan ke halaman aktivasi / panggil API
-                        router.push('/activation');
+                    <button
+                      type="button"
+                      onClick={e => {
+                        e.preventDefault();
+                        setOpenModalAtivateEmail(true);
                       }}
                       className="text-green-600 hover:text-green-700 cursor-pointer"
                     >
@@ -152,6 +157,7 @@ export default function LoginPage() {
                     color="secondary"
                     startIcon={<LoginIcon />}
                     loading={isLoadingLogin}
+                    className="!rounded-md"
                   >
                     Masuk ke Sistem
                   </Button>
@@ -168,7 +174,7 @@ export default function LoginPage() {
                 <Button
                   variant="contained"
                   fullWidth
-                  className="!capitalize !shadow-sm !bg-white hover:!bg-gray-100 !text-sm !text-gray-500 !border !border-gray-200"
+                  className="!capitalize !shadow-sm !bg-white hover:!bg-gray-100 !text-sm !text-gray-500 !border !border-gray-200 !rounded-md"
                   startIcon={<MicrosoftIcon className="text-blue-600" />}
                   onClick={() => {
                     toast.error('Fitur belum tersedia');
@@ -180,7 +186,7 @@ export default function LoginPage() {
                 <Button
                   variant="contained"
                   fullWidth
-                  className="!capitalize !shadow-sm !bg-white hover:!bg-gray-100 !text-sm !text-gray-500 !border !border-gray-200"
+                  className="!capitalize !shadow-sm !bg-white hover:!bg-gray-100 !text-sm !text-gray-500 !border !border-gray-200 !rounded-md"
                   startIcon={<RecentActorsIcon className="text-green-600" />}
                   onClick={() => {
                     toast.error('Fitur belum tersedia');
@@ -215,6 +221,8 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+      {openModalActivateEmail && <ModalActivate />}
+      {openModalForgotPassword && <ModalForgot />}
     </>
   );
 }

@@ -18,19 +18,19 @@ export default function ContractManagement() {
   const router = useRouter();
   return (
     <>
-      <div className="w-full h-full flex flex-col gap-6">
+      <div className="w-full flex flex-col gap-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {statisticsHeader.map((stat, idx) => (
             <CardHeader key={idx} {...stat} index={idx} />
           ))}
         </div>
 
-        <div className="w-full h-full">
+        <div className="w-full">
           <ContractCharts />
         </div>
 
-        <div className="w-full h-full">
-          <div className="w-full h-full bg-white p-4 flex flex-col gap-4 rounded-md shadow-sm">
+        <div className="w-full">
+          <div className="w-full bg-white p-4 flex flex-col gap-4 rounded-md shadow-sm">
             {/* buttons */}
             <div className="w-full md:w-1/3 justify-center items-center flex gap-2 overflow-x-auto text-black">
               <Button

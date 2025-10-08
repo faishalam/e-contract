@@ -3,8 +3,8 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@mui/material';
 import useCreateContract from '../../hooks';
-import { toast } from 'react-toastify';
-import { TContractForm } from '../../types';
+import { toast } from 'sonner';
+import { TContractForm } from '../../validator';
 
 export default function StepButtons() {
   const { steps, trigger } = useCreateContract();

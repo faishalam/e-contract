@@ -2,9 +2,14 @@ import CAutoComplete from '@/components/atoms/auto-complete';
 import CInput from '@/components/atoms/input';
 import TemplateSelector from './metadataForm/templateSelector';
 import { TextArea } from '@/components/atoms/Input-text-area';
-import { TOption } from '../types';
 import { Controller } from 'react-hook-form';
 import useCreateContract from '../hooks';
+
+type TOption = {
+  value: string;
+  label: string;
+};
+
 // data dummy
 const mockParty1Options: TOption[] = [
   { value: 'pos-pusat', label: 'PT. POS Indonesia (Pusat)' },
@@ -57,6 +62,12 @@ export default function MetadataForm() {
               Isi informari dasar untuk kontrak baru. Metadata ini akan digunakan untuk identifikasi
               dan pencarian kontrak.
             </p>
+          </div>
+          <div className="w-full flex flex-col gap-6">
+            <div className="text-black flex flex-col">
+              <h2 className="font-semibold text-lg text-black">Template Kontrak</h2>
+            </div>
+            <TemplateSelector />
           </div>
           <div className="w-full md:flex lg:flex-row flex-col justify-center items-center text-black gap-6 bg-white p-6 rounded-md shadow">
             <div className="w-full flex flex-col gap-4">
@@ -213,12 +224,6 @@ export default function MetadataForm() {
                 )}
               />
             </div>
-          </div>
-          <div className="w-full flex flex-col gap-6">
-            <div className="text-black flex flex-col">
-              <h2 className="font-semibold text-lg text-black">Template Kontrak</h2>
-            </div>
-            <TemplateSelector />
           </div>
           <div className="w-full bg-white rounded-md shadow p-4 text-black">
             <div className="text-black flex flex-col">

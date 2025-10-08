@@ -2,8 +2,8 @@ import { useMutation } from '@tanstack/react-query';
 import { NetworkAPIError, TResponseType } from '@/utils/response-type';
 import { AxiosError } from 'axios';
 import { AuthServices } from '../authServices';
-import { TLoginForm } from '@/app/(public)/login/types';
 import { TLoginResponse } from './types';
+import { TLoginForm } from '@/app/(public)/login/validator';
 
 type TUseLoginProps = {
   onSuccess?: (data: TLoginResponse) => void;
@@ -11,11 +11,11 @@ type TUseLoginProps = {
 };
 
 const useLoginUser = (props?: TUseLoginProps) => {
-  const useLoginUserFn = async (formLogin: TLoginForm) => {
+  const useLoginUserFn = async (payload: TLoginForm) => {
     try {
       const response = await AuthServices.post<TResponseType<TLoginResponse>>(
-        `/api/v1/auth/login`,
-        formLogin,
+        `/auth/login`,
+        payload,
       );
 
       const { status, data } = response;
