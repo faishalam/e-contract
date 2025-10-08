@@ -3,7 +3,7 @@ import { NetworkAPIError, TResponseType } from '@/utils/response-type';
 import { AxiosError } from 'axios';
 import { HeroServices } from '../heroServices';
 import { TUserProfile } from './types';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 
 type TUseUserProfile = {
   onSuccess?: (data: TUserProfile) => void;

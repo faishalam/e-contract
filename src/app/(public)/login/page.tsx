@@ -12,7 +12,7 @@ import LockOutlineIcon from '@mui/icons-material/LockOutline';
 import EmailIcon from '@mui/icons-material/Email';
 import Link from 'next/link';
 import SecurityIcon from '@mui/icons-material/Security';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import LeftPanel from './components/leftPanel';
 import CIconButton from '@/components/atoms/icon-button';
 import ModalActivate from './components/modalActivate';

@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import EmailIcon from '@mui/icons-material/Email';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';

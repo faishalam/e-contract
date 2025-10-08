@@ -1,31 +1,29 @@
 import { useQuery } from '@tanstack/react-query';
 import { NetworkAPIError, TResponseType } from '@/utils/response-type';
 import { AxiosError } from 'axios';
-import { HeroServices } from '../heroServices';
 import { toast } from 'sonner';
-import { TUserList } from './types';
+import { HeroServices } from '../heroServices';
+import { TContractList } from './types';
 
-type TUseUserList = {
-  onSuccess?: (data: TUserList) => void;
+type TUserContractListProps = {
+  onSuccess?: (data: TContractList) => void;
   onError?: (error: unknown) => void;
   params: {
     page: number;
     limit: number;
     search?: string;
-    role?: string;
     status?: string;
   };
 };
 
-const useUserList = (props?: TUseUserList) => {
-  const useUserListFn = async () => {
+const useContractList = (props?: TUserContractListProps) => {
+  const useContractListFn = async () => {
     try {
-      const response = await HeroServices.get<TResponseType<TUserList[]>>(`/users`, {
+      const response = await HeroServices.get<TResponseType<TContractList[]>>(`/contracts`, {
         params: {
           page: props?.params?.page,
           limit: props?.params?.limit,
-          ...(props?.params?.search && { name: props.params.search }),
-          ...(props?.params?.role && { role: props.params.role }),
+          ...(props?.params?.search && { search: props.params.search }),
           ...(props?.params?.status && { status: props.params.status }),
         },
       });
@@ -41,14 +39,12 @@ const useUserList = (props?: TUseUserList) => {
   };
 
   const query = useQuery({
-    queryKey: ['useUserList', props?.params],
-    queryFn: useUserListFn,
-    staleTime: Infinity,
-    retry: false,
+    queryKey: ['useContractList', props?.params],
+    queryFn: useContractListFn,
     enabled: !!props?.params,
   });
 
   return { ...query };
 };
 
-export default useUserList;
+export default useContractList;

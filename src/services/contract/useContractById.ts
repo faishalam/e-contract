@@ -3,21 +3,21 @@ import { NetworkAPIError, TResponseType } from '@/utils/response-type';
 import { AxiosError } from 'axios';
 import { HeroServices } from '../heroServices';
 import { toast } from 'sonner';
-import { TUserList } from './types';
+import { TContractList } from './types';
 
-type TUseUserById = {
-  onSuccess?: (data: TUserList) => void;
+type TUseContractById = {
+  onSuccess?: (data: TContractList) => void;
   onError?: (error: unknown) => void;
   params: {
-    id: string;
+    id?: string | null;
   };
 };
 
-const useUserById = (props?: TUseUserById) => {
-  const useUserByIdFn = async () => {
+const useContractById = (props?: TUseContractById) => {
+  const useContractByIdFn = async () => {
     try {
-      const response = await HeroServices.get<TResponseType<TUserList>>(
-        `/users/${props?.params?.id}`,
+      const response = await HeroServices.get<TResponseType<TContractList>>(
+        `/merchants/${props?.params?.id}`,
       );
 
       if (response.status !== 200) return;
@@ -31,13 +31,13 @@ const useUserById = (props?: TUseUserById) => {
   };
 
   const query = useQuery({
-    queryKey: ['useUserById', props?.params.id],
-    queryFn: useUserByIdFn,
-    staleTime: Infinity,
-    enabled: !!props?.params.id && props?.params.id !== '', // ✅ tidak fetch kalau id kosong/null
+    queryKey: ['useContractById', props?.params.id],
+    queryFn: useContractByIdFn,
+    retry: false,
+    enabled: !!props?.params.id && props?.params.id !== '' && props?.params.id !== null,
   });
 
   return { ...query };
 };
 
-export default useUserById;
+export default useContractById;

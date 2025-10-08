@@ -2,7 +2,6 @@ import { z } from 'zod';
 
 export const baseUserSchema = z.object({
   email: z.string().min(1, 'Email wajib diisi').email('Format email tidak valid'),
-  username: z.string().min(1, { message: 'Username wajib diisi' }),
   name: z.string().min(1, { message: 'Nama wajib diisi' }),
   phone: z.string().min(1, { message: 'Nomor telepon wajib diisi' }),
   is_active: z.boolean().default(true),

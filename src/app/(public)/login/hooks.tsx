@@ -18,7 +18,7 @@ import {
   TVerifyOtpForm,
   verifyOtpSchema,
 } from './validator';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import { TLoginResponse } from '@/services/auth/types';
 import useSendOtp from '@/services/auth/sendOtp';
 import useVerifyOtp from '@/services/auth/verifyOtp';

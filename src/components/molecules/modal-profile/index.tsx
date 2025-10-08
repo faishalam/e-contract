@@ -6,15 +6,19 @@ import EditIcon from '@mui/icons-material/Edit';
 import useAuth from '@/context/profileProvider/hooks';
 
 const ModalUserProfile: React.FC = () => {
-  const { openModalProfile, setOpenModalProfile, dataProfile, setOpenModalChangePassword } =
-    useAuth();
+  const {
+    openModalProfile,
+    setOpenModalProfile,
+    dataProfile,
+    setOpenModalChangePassword,
+    setOpenModalUpdateProfile,
+  } = useAuth();
 
   const handleClose = () => {
     setOpenModalProfile(false);
   };
 
   const profileItems = [
-    { label: 'Username', value: dataProfile?.username || '-' },
     { label: 'Name', value: dataProfile?.name || '-' },
     { label: 'Email', value: dataProfile?.email || '-' },
     { label: 'Nomor Telepon', value: dataProfile?.phone || '-' },
@@ -61,12 +65,22 @@ const ModalUserProfile: React.FC = () => {
             ))}
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex justify-end items-center gap-2">
+            <Button
+              onClick={() => {
+                setOpenModalUpdateProfile(true);
+              }}
+              variant="outlined"
+              color="secondary"
+              startIcon={<EditIcon />}
+            >
+              Edit Profile
+            </Button>
             <Button
               onClick={() => {
                 setOpenModalChangePassword(true);
               }}
-              variant="contained"
+              variant="outlined"
               color="secondary"
               startIcon={<EditIcon />}
             >

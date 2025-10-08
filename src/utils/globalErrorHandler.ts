@@ -1,4 +1,4 @@
-import { toast } from 'react-toastify';
+// import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 
 interface GlobalError {
@@ -58,7 +58,7 @@ export const handleGlobalError = (error: AppError): GlobalError => {
     type = 'server';
   }
 
-  toast.error(message);
+  // toast.error(message);
 
   return {
     message,

@@ -8,13 +8,14 @@ import NotificationIcon from '@mui/icons-material/Notifications';
 import CInput from '@/components/atoms/input';
 import useAuth from '@/context/profileProvider/hooks';
 import DropdownButton from '@/components/atoms/dropdown-button';
-import ModalUserProfile from '@/components/organism/modal-profile';
+import ModalUserProfile from '@/components/molecules/modal-profile';
 import useLogoutUser from '@/services/auth/logout';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
-import { toast } from 'react-toastify';
-import ModalChangePassword from '@/components/organism/modal-change-password';
+import { toast } from 'sonner';
+import ModalChangePassword from '@/components/molecules/modal-change-password';
 import { Skeleton } from '@mui/material';
+import ModalUpdateProfile from '../modal-update-profile';
 
 const Navbar: React.FC<TProps> = ({ showRightMenu = true }) => {
   const {
@@ -23,6 +24,7 @@ const Navbar: React.FC<TProps> = ({ showRightMenu = true }) => {
     setOpenModalProfile,
     openModalChangePassword,
     isLoadingDataProfile,
+    openModalUpdateProfile,
   } = useAuth();
   const router = useRouter();
   const refreshToken = Cookies.get('refreshToken') as string;
@@ -115,6 +117,7 @@ const Navbar: React.FC<TProps> = ({ showRightMenu = true }) => {
         </div>
       )}
       {openModalProfile && <ModalUserProfile />}
+      {openModalUpdateProfile && <ModalUpdateProfile />}
       {openModalChangePassword && <ModalChangePassword />}
     </nav>
   );

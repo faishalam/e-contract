@@ -7,7 +7,7 @@ import { FieldErrors, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useFormPersist from 'react-hook-form-persist';
 import { useQueryClient } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import useCreateMerchant from '@/services/merchant/useCreateMerchant';
 import useUpdateMerchant from '@/services/merchant/useUpdateMerchant';
 import { merchantSchema, TMerchantForm } from './validator';
@@ -169,7 +169,7 @@ const useCreateMerchantValue = () => {
     if (errorMerchantById) {
       router.push('/merchant-management');
     }
-  }, [errorMerchantById]);
+  }, [errorMerchantById, router]);
 
   return {
     loadingMerchant,

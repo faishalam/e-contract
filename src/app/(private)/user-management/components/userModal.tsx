@@ -92,26 +92,6 @@ export default function UserModal() {
                       )}
                     />
                     <Controller
-                      name="username"
-                      control={control}
-                      render={({ field }) => (
-                        <CInput
-                          {...field}
-                          label="Username*"
-                          className="w-full"
-                          type="text"
-                          placeholder="Masukkan username pengguna"
-                          disabled={mode === 'view'}
-                          error={!!errors.username}
-                          slotProps={{
-                            input: {
-                              startAdornment: <PermIdentityIcon className="text-gray-400" />,
-                            },
-                          }}
-                        />
-                      )}
-                    />
-                    <Controller
                       name="name"
                       control={control}
                       render={({ field }) => (

@@ -8,6 +8,7 @@ import CInputFile from '@/components/atoms/input-file';
 import { Controller } from 'react-hook-form';
 import FormSkeleton from './formSkeleton';
 import { BlockingLoader } from '@/components/atoms/loader';
+import { useMemo } from 'react';
 
 const ModalPartner = () => {
   const {
@@ -30,6 +31,12 @@ const ModalPartner = () => {
     setSelectedPartnerId('');
   };
 
+  const title = useMemo(() => {
+    if (mode === 'create') return 'Add New Partner';
+    if (mode === 'edit') return 'Edit Partner';
+    if (mode === 'view') return 'View Partner';
+  }, [mode]);
+
   return (
     <div>
       {(isLoadingCreatePartner || isLoadingUpdatePartner) && <BlockingLoader />}
@@ -42,7 +49,7 @@ const ModalPartner = () => {
       >
         <Box className=" w-full bg-white rounded-md text-black">
           <div className="w-full flex justify-between items-center p-5">
-            <p className="font-semibold text-xl ">Add a New Partner</p>
+            <p className="font-semibold text-xl ">{title}</p>
             <div className=" justify-end py-2 gap-2">
               <CloseIcon
                 onClick={() => setOpenModalPartner(!openModalPartner)}
@@ -102,6 +109,7 @@ const ModalPartner = () => {
                               isOptionEqualToValue={(option, val) => option.value === val?.value}
                               placeholder="Select partner type"
                               error={!!errors.type}
+                              disabled={mode === 'view'}
                             />
                           );
                         }}
@@ -120,6 +128,7 @@ const ModalPartner = () => {
                             {...field}
                             label="NPWP*"
                             className="w-full"
+                            disabled={mode === 'view'}
                             type="text"
                             placeholder="00.000.000.0-000.000"
                             error={!!errors.npwp}
@@ -163,6 +172,7 @@ const ModalPartner = () => {
                         <TextArea
                           {...field}
                           label="Alamat*"
+                          disabled={mode === 'view'}
                           placeholder="Jl. Contoh No. Contoh"
                           className="w-full"
                           type="text"
@@ -178,6 +188,7 @@ const ModalPartner = () => {
                           <CInput
                             {...field}
                             label="Kota*"
+                            disabled={mode === 'view'}
                             className="w-full"
                             type="text"
                             placeholder="Jakarta"
@@ -192,6 +203,7 @@ const ModalPartner = () => {
                           <CInput
                             {...field}
                             label="Provinsi*"
+                            disabled={mode === 'view'}
                             className="w-full"
                             type="text"
                             placeholder="DKI Jakarta"
@@ -215,6 +227,7 @@ const ModalPartner = () => {
                           <CInput
                             {...field}
                             label="Contact Person Name*"
+                            disabled={mode === 'view'}
                             className="w-full"
                             type="text"
                             placeholder="Full name"
@@ -229,6 +242,7 @@ const ModalPartner = () => {
                           <CInput
                             {...field}
                             label="Position*"
+                            disabled={mode === 'view'}
                             className="w-full"
                             type="text"
                             placeholder="CEO/Director"
@@ -246,6 +260,7 @@ const ModalPartner = () => {
                             {...field}
                             label="Email*"
                             className="w-full"
+                            disabled={mode === 'view'}
                             type="email"
                             placeholder="admin@example.com"
                             error={!!errors.email}
@@ -260,6 +275,7 @@ const ModalPartner = () => {
                             {...field}
                             label="Phone Number*"
                             className="w-full"
+                            disabled={mode === 'view'}
                             type="text"
                             placeholder="021-876543212"
                             error={!!errors.phone_number}

@@ -8,7 +8,7 @@ import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import { useEffect, useState } from 'react';
 import { Clock } from 'lucide-react';
 import { Button } from '@mui/material';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import Link from 'next/link';
 import useLogin from '../login/hooks';
 import { Controller } from 'react-hook-form';

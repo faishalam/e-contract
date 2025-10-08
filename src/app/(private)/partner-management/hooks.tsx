@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useModalWarningInfo } from '@/components/atoms/modal-warning';
 import useCreatePartner from '@/services/partner/useCreatePartner';
 import { useQueryClient } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import usePartnerList from '@/services/partner/usePartnerList';
 import { useDebounce } from '@/utils/useDebounce';
 import useUpdatePartner from '@/services/partner/useUpdatePartner';
@@ -153,7 +153,7 @@ const usePartnerManagementHooks = () => {
         headerName: 'No',
         cellRenderer: (params: ICellRendererParams<TPartnerList>) => {
           const rowIndex = params.node?.rowIndex ?? 0;
-          return <span>{rowIndex + 1}</span>;
+          return (page - 1) * limit + rowIndex + 1;
         },
       },
       {

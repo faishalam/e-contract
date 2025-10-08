@@ -7,7 +7,7 @@ import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import { Button } from '@mui/material';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 
 export default function RightPanel() {
   return (
