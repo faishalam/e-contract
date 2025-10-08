@@ -152,7 +152,6 @@ const useLoginHooks = () => {
         email: valuesActivate.email,
       });
       setOpenModalCreateNewPassword(true);
-      resetActivate();
     },
     onError: error => {
       toast.error(error as string);
@@ -182,7 +181,7 @@ const useLoginHooks = () => {
   const { mutate: mutateCreatePassword, isPending: isLoadingCreatePassword } = useCreatePassword({
     onSuccess: () => {
       toast.success('Password berhasil di ubah, silahkan login kembali');
-      router.push('/login-password');
+      router.push('/login');
       setOpenModalCreateNewPassword(false);
     },
     onError: error => {

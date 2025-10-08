@@ -2,11 +2,10 @@ import { useMutation } from '@tanstack/react-query';
 import { NetworkAPIError, TResponseType } from '@/utils/response-type';
 import { AxiosError } from 'axios';
 import { AuthServices } from '../authServices';
-import { TLoginResponse } from './types';
 import { TCreateNewPasswordForm } from '@/app/(public)/login/validator';
 
 type TUseCreatePasswordProps = {
-  onSuccess?: (data: TLoginResponse) => void;
+  onSuccess?: (data: null) => void;
   onError?: (error: unknown) => void;
 };
 
@@ -18,11 +17,11 @@ const useCreatePassword = (props?: TUseCreatePasswordProps) => {
         payload,
       );
 
-      const { status, data } = response;
+      const { status } = response;
 
       if (status !== 200) return;
 
-      return data?.data;
+      return null;
     } catch (error) {
       const err = error as AxiosError<NetworkAPIError>;
       throw err?.response?.data;
@@ -33,9 +32,7 @@ const useCreatePassword = (props?: TUseCreatePasswordProps) => {
     mutationKey: ['useCreatePassword'],
     mutationFn: useCreatePasswordFn,
     onSuccess: response => {
-      if (response) {
-        props?.onSuccess?.(response);
-      }
+      props?.onSuccess?.(response ?? null);
     },
     onError: error => {
       if (props?.onError) {
