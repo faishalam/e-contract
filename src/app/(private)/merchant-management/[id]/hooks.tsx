@@ -169,7 +169,7 @@ const useCreateMerchantValue = () => {
     if (errorMerchantById) {
       router.push('/merchant-management');
     }
-  }, [errorMerchantById]);
+  }, [errorMerchantById, router]);
 
   return {
     loadingMerchant,
