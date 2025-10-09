@@ -163,6 +163,10 @@ const useCreateMerchantValue = () => {
     if (id && dataMerchantById) {
       reset(dataMerchantById);
     }
+
+    if (!id) {
+      reset();
+    }
   }, [id, dataMerchantById, reset]);
 
   useEffect(() => {
