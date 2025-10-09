@@ -3,10 +3,28 @@ import type { NextRequest } from 'next/server';
 
 const PUBLIC_ROUTES = ['/login', '/activation', '/reset-password'];
 
-async function verifyToken(token: string): Promise<boolean> {
+export const runtime = 'experimental-edge';
+
+function base64UrlDecode(str: string) {
+  let s = str.replace(/-/g, '+').replace(/_/g, '/');
+  while (s.length % 4) s += '=';
   try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload.exp * 1000 > Date.now();
+    return globalThis.atob(s);
+  } catch {
+    return '';
+  }
+}
+
+async function verifyToken(token: string | undefined): Promise<boolean> {
+  if (!token) return false;
+  try {
+    const parts = token.split('.');
+    if (parts.length < 2) return false;
+    const payloadStr = base64UrlDecode(parts[1]);
+    if (!payloadStr) return false;
+    const payload = JSON.parse(payloadStr);
+    if (!payload.exp) return false;
+    return Number(payload.exp) * 1000 > Date.now();
   } catch {
     return false;
   }
@@ -36,7 +54,10 @@ export async function middleware(request: NextRequest) {
   const isValid = await verifyToken(token);
   if (!isValid) {
     const response = NextResponse.redirect(new URL('/login', request.url));
-    response.cookies.delete('accessToken');
+    try {
+      response.cookies.delete('accessToken');
+      response.cookies.delete('refreshToken');
+    } catch {}
     return response;
   }
 
@@ -44,5 +65,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
+  matcher: ['/((?!_next|api|static|favicon.ico).*)'],
 };
