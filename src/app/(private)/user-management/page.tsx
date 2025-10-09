@@ -12,6 +12,8 @@ import useUserManagement from './hooks';
 import DataGrid from '@/components/molecules/datagrid';
 import UserModal from './components/userModal';
 import TablePagination from '@/components/molecules/pagination';
+import useProfileProvider from '@/context/profileProvider/hooks';
+import UserListSkeleton from './components/userListSkeleton';
 
 export default function UserManagementPage() {
   const {
@@ -30,6 +32,8 @@ export default function UserManagementPage() {
     filter,
     setLimit,
   } = useUserManagement();
+
+  const { isLoadingDataProfile } = useProfileProvider();
 
   return (
     <>
@@ -137,22 +141,26 @@ export default function UserManagementPage() {
               </div>
             </div>
 
-            <div className="w-full overflow-y-scroll bg-white rounded-md shadow mb-4">
-              <DataGrid
-                rowData={usersData?.data ?? []}
-                columnDefs={usersColumnsDef}
-                pagination={false}
-                loading={globalLoading}
-              />
-              <TablePagination
-                meta={usersData?.meta}
-                onPageChange={setPage}
-                onLimitChange={newLimit => {
-                  setLimit(newLimit);
-                  setPage(1);
-                }}
-              />
-            </div>
+            {isLoadingDataProfile ? (
+              <UserListSkeleton />
+            ) : (
+              <div className="w-full overflow-y-scroll bg-white rounded-md shadow mb-4">
+                <DataGrid
+                  rowData={usersData?.data ?? []}
+                  columnDefs={usersColumnsDef}
+                  pagination={false}
+                  loading={globalLoading}
+                />
+                <TablePagination
+                  meta={usersData?.meta}
+                  onPageChange={setPage}
+                  onLimitChange={newLimit => {
+                    setLimit(newLimit);
+                    setPage(1);
+                  }}
+                />
+              </div>
+            )}
           </>
         )}
         {openModalUser && <UserModal />}

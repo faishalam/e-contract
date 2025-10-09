@@ -3,10 +3,26 @@ import type { NextRequest } from 'next/server';
 
 const PUBLIC_ROUTES = ['/login', '/activation', '/reset-password'];
 
-async function verifyToken(token: string): Promise<boolean> {
+function base64UrlDecode(str: string) {
+  let s = str.replace(/-/g, '+').replace(/_/g, '/');
+  while (s.length % 4) s += '=';
   try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload.exp * 1000 > Date.now();
+    return globalThis.atob(s);
+  } catch {
+    return '';
+  }
+}
+
+function verifyToken(token?: string): boolean {
+  if (!token) return false;
+  try {
+    const parts = token.split('.');
+    if (parts.length < 2) return false;
+    const payloadStr = base64UrlDecode(parts[1]);
+    if (!payloadStr) return false;
+    const payload = JSON.parse(payloadStr);
+    if (!payload.exp) return false;
+    return Number(payload.exp) * 1000 > Date.now();
   } catch {
     return false;
   }
@@ -15,34 +31,32 @@ async function verifyToken(token: string): Promise<boolean> {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('accessToken')?.value;
+  const isValid = verifyToken(token);
+  const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
 
   if (pathname.startsWith('/_next') || pathname.startsWith('/api') || pathname === '/favicon.ico') {
     return NextResponse.next();
   }
 
-  const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
+  if (pathname === '/') {
+    return NextResponse.redirect(new URL(isValid ? '/dashboard' : '/login', request.url));
+  }
+
+  if (pathname === '/login' && isValid) {
+    return NextResponse.redirect(new URL('/dashboard', request.url));
+  }
 
   if (isPublicRoute) {
-    if (token && (await verifyToken(token))) {
-      return NextResponse.redirect(new URL('/dashboard', request.url));
-    }
     return NextResponse.next();
   }
 
-  if (!token) {
-    return NextResponse.redirect(new URL('/login', request.url));
-  }
-
-  const isValid = await verifyToken(token);
   if (!isValid) {
-    const response = NextResponse.redirect(new URL('/login', request.url));
-    response.cookies.delete('accessToken');
-    return response;
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
+  matcher: ['/((?!_next|api|static|favicon.ico).*)'],
 };
