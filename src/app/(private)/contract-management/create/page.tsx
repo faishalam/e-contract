@@ -12,7 +12,7 @@ export default function Page() {
     <>
       <div className="w-full h-full flex flex-col gap-6">
         {/* Stepper full width, keluar dari padding */}
-        <div className="-mx-6 -my-4 bg-white border-b border-t p-4">
+        <div className="-mx-6 -my-6 bg-white border-b border-t p-4 mb-1">
           <div className="max-w-full w-full">
             <StepperNav />
           </div>
@@ -25,7 +25,7 @@ export default function Page() {
           {/* {step === 'final' && <FinalForm />} */}
 
           <div className="w-full flex justify-center items-center">
-            <div className="lg:max-w-6xl md:max-w-lg max-w-full w-full flex justify-center">
+            <div className="lg:max-w-full md:max-w-lg max-w-full w-full flex justify-center">
               <StepButtons />
             </div>
           </div>

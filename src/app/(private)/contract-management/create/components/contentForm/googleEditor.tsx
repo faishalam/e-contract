@@ -15,6 +15,7 @@ export default function GoogleEditor() {
     getAccessToken,
     clearTokens,
     deleteGoogleDoc,
+    // getGoogleDoc,
   } = useGoogleDocs();
   const modalWarningInfo = useModalWarningInfo();
 
@@ -43,29 +44,15 @@ export default function GoogleEditor() {
     });
   };
 
+  // const fetchDoc = async () => {
+  //   if (!googleToken || !documentId) return;
+
+  //   const textContent = await getGoogleDoc(googleToken, documentId, 'html');
+  // };
+
   return (
     <>
       <div className="w-full h-full rounded-md shadow bg-white">
-        {/* {authError && (
-          <div className="absolute top-16 left-4 right-4 z-40 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-red-600 mb-2">{authError}</p>
-            <div className="flex gap-2">
-              <button
-                onClick={() => window.location.reload()}
-                className="px-3 py-1 bg-red-600 text-white rounded text-sm"
-              >
-                Refresh
-              </button>
-              <button
-                onClick={handleSignOut}
-                className="px-3 py-1 bg-gray-600 text-white rounded text-sm"
-              >
-                Sign Out
-              </button>
-            </div>
-          </div>
-        )} */}
-
         {(isLoading || isCreatingDoc) && (
           <div className="w-full h-full flex justify-center">
             <div className="text-center mt-20">

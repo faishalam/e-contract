@@ -284,7 +284,6 @@ const useGoogleDocsHooks = () => {
       }
     };
 
-    console.log(formData.party1, formData.party2, 'Generating template variables with form data');
     return {
       FIRST_PARTY_NAME: formData.party1?.label || 'PT. POS Indonesia',
       SECOND_PARTY_NAME: formData.party2?.label || '[Nama Perusahaan Partner]',
@@ -388,8 +387,6 @@ const useGoogleDocsHooks = () => {
         const processedContent = templateContent
           ? replaceTemplateVariables(templateContent, variables)
           : null;
-
-        console.log('Inserting content to document...');
 
         // Simple approach: just insert content at the beginning
         const res = await fetch(`https://docs.googleapis.com/v1/documents/${docId}:batchUpdate`, {
@@ -513,6 +510,189 @@ const useGoogleDocsHooks = () => {
     };
   }, []);
 
+  // Simple parser: convert Docs JSON to plain text
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const docToPlainText = useCallback((doc: any) => {
+    if (!doc?.body?.content) return '';
+    const out: string[] = [];
+    for (const element of doc.body.content) {
+      if (element.paragraph) {
+        const parts: string[] = [];
+        for (const elem of element.paragraph.elements || []) {
+          if (elem.textRun?.content) parts.push(elem.textRun.content);
+        }
+        out.push(parts.join(''));
+      }
+      if (element.table) {
+        const rows: string[] = [];
+        for (const r of element.table.tableRows || []) {
+          const cells: string[] = [];
+          for (const c of r.tableCells || []) {
+            const cellTexts: string[] = [];
+            for (const ce of c.content || []) {
+              if (ce.paragraph) {
+                const pParts: string[] = [];
+                for (const pe of ce.paragraph.elements || []) {
+                  if (pe.textRun?.content) pParts.push(pe.textRun.content);
+                }
+                cellTexts.push(pParts.join(''));
+              }
+            }
+            cells.push(cellTexts.join('\n'));
+          }
+          rows.push(cells.join('\t'));
+        }
+        out.push(rows.join('\n'));
+      }
+    }
+    return out.join('\n\n');
+  }, []);
+
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const docToHTML = useCallback((doc: any) => {
+    if (!doc?.body?.content) return '';
+    const escapeHtml = (s: string) =>
+      s
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    //eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const renderTextRun = (elem: any) => {
+      const text = elem.textRun?.content ?? '';
+      if (!text) return '';
+      let out = escapeHtml(text);
+      const style = elem.textRun?.textStyle || {};
+      if (style.link && style.link.url) {
+        out = `<a href="${escapeHtml(style.link.url)}" target="_blank" rel="noopener noreferrer">${out}</a>`;
+      }
+      if (style.bold) out = `<strong>${out}</strong>`;
+      if (style.italic) out = `<em>${out}</em>`;
+      if (style.underline) out = `<u>${out}</u>`;
+      return out;
+    };
+
+    const parts: string[] = [];
+    let currentList: { type: 'ul' | 'ol'; items: string[] } | null = null;
+    const flushList = () => {
+      if (!currentList) return;
+      const tag = currentList.type === 'ol' ? 'ol' : 'ul';
+      parts.push(`<${tag}>${currentList.items.map(i => `<li>${i}</li>`).join('')}</${tag}>`);
+      currentList = null;
+    };
+
+    for (const element of doc.body.content) {
+      if (element.table) {
+        flushList();
+        const rows: string[] = [];
+        for (const r of element.table.tableRows || []) {
+          const cells: string[] = [];
+          for (const c of r.tableCells || []) {
+            const cellParts: string[] = [];
+            for (const ce of c.content || []) {
+              if (ce.paragraph) {
+                const pHtml: string[] = [];
+                for (const pe of ce.paragraph.elements || []) {
+                  pHtml.push(renderTextRun(pe));
+                }
+                cellParts.push(`<p>${pHtml.join('')}</p>`);
+              }
+            }
+            cells.push(`<td>${cellParts.join('')}</td>`);
+          }
+          rows.push(`<tr>${cells.join('')}</tr>`);
+        }
+        parts.push(`<table border="1">${rows.join('')}</table>`);
+        continue;
+      }
+
+      if (element.paragraph) {
+        const p = element.paragraph;
+        if (p.bullet) {
+          const glyphType = p.bullet?.glyphType || '';
+          const listType: 'ul' | 'ol' = /NUMBER|DECIMAL|ROMAN/i.test(glyphType) ? 'ol' : 'ul';
+          const itemParts: string[] = [];
+          for (const elem of p.elements || []) {
+            itemParts.push(renderTextRun(elem));
+          }
+          if (!currentList) {
+            currentList = { type: listType, items: [itemParts.join('')] };
+          } else if (currentList.type === listType) {
+            currentList.items.push(itemParts.join(''));
+          } else {
+            flushList();
+            currentList = { type: listType, items: [itemParts.join('')] };
+          }
+          continue;
+        }
+
+        flushList();
+        const namedStyle = p.paragraphStyle?.namedStyleType || '';
+        const inlineParts: string[] = [];
+        for (const elem of p.elements || []) {
+          inlineParts.push(renderTextRun(elem));
+        }
+        const innerHtml = inlineParts.join('');
+        if (/HEADING_1/.test(namedStyle)) parts.push(`<h1>${innerHtml}</h1>`);
+        else if (/HEADING_2/.test(namedStyle)) parts.push(`<h2>${innerHtml}</h2>`);
+        else if (/HEADING_3/.test(namedStyle)) parts.push(`<h3>${innerHtml}</h3>`);
+        else parts.push(`<p>${innerHtml}</p>`);
+      }
+    }
+
+    flushList();
+    return parts.join('\n');
+  }, []);
+
+  const getGoogleDoc = useCallback(
+    async (
+      accessToken: string,
+      docId: string,
+      format: 'json' | 'html' | 'text' = 'json',
+      //eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ): Promise<any | string | null> => {
+      if (!accessToken || !docId) {
+        console.warn('Missing accessToken or documentId for getGoogleDoc');
+        return null;
+      }
+      try {
+        // Always use Docs REST API to avoid CORS/redirect issues from web-export URLs
+        const url = `https://docs.googleapis.com/v1/documents/${docId}`;
+        const res = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
+
+        if (!res.ok) {
+          const text = await res.text();
+          // surface auth errors to UI
+          if (res.status === 401 || res.status === 403) {
+            setAuthError('Unauthorized to access this Google Document. Please reconnect.');
+          }
+          throw new Error(`Failed to get document: ${res.status} - ${text}`);
+        }
+
+        const data = await res.json();
+        if (format === 'json') return data;
+
+        // convert JSON to requested format
+        if (format === 'html') {
+          const html = docToHTML(data);
+          return html;
+        }
+
+        if (format === 'text') {
+          const txt = docToPlainText(data);
+          return txt;
+        }
+
+        return data;
+      } catch (error) {
+        console.error('❌ Error fetching Google Doc:', error);
+        return null;
+      }
+    },
+    [docToHTML, docToPlainText],
+  );
+
   // Handle document creation - terpisah dari update
   useEffect(() => {
     const createDocumentIfNeeded = async () => {
@@ -591,6 +771,7 @@ const useGoogleDocsHooks = () => {
     isUpdatingDoc,
     googleToken,
     setGoogleToken,
+    getGoogleDoc,
     getAccessToken,
     createGoogleDoc,
     updateGoogleDoc,
