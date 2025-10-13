@@ -12,8 +12,8 @@ import useUserManagement from './hooks';
 import DataGrid from '@/components/molecules/datagrid';
 import UserModal from './components/userModal';
 import TablePagination from '@/components/molecules/pagination';
-import useProfileProvider from '@/context/profileProvider/hooks';
 import UserListSkeleton from './components/userListSkeleton';
+import useProfileGlobal from '@/context/profileProvider/hooks';
 
 export default function UserManagementPage() {
   const {
@@ -33,7 +33,7 @@ export default function UserManagementPage() {
     setLimit,
   } = useUserManagement();
 
-  const { isLoadingDataProfile } = useProfileProvider();
+  const { isLoadingDataProfile } = useProfileGlobal();
 
   return (
     <>

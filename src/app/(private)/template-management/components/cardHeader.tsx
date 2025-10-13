@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import CardSkeleton from './cardLoadingSkeleton';
+import CardHeaderSkeleton from './cardHeaderSkeleton';
 import useProfileGlobal from '@/context/profileProvider/hooks';
 // import useMerchantManagement from '../hooks';
 // import CardSkeleton from './cardLoadingSkeleton';
@@ -28,7 +28,7 @@ export default function CardHeader({
   return (
     <>
       {isLoadingDataProfile ? (
-        <CardSkeleton />
+        <CardHeaderSkeleton />
       ) : (
         <div className="w-full bg-white rounded-md shadow-sm p-6 flex flex-col">
           {/* Header */}

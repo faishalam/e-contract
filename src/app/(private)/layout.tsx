@@ -2,9 +2,6 @@
 import Navbar from '@/components/molecules/navbar';
 import Sidebar from '@/components/molecules/sidebar';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
-import { useEffect } from 'react';
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/navigation';
 import { UserProfileProvider } from '@/context/profileProvider/hooks';
 
 export default function PrivateLayout({
@@ -12,16 +9,16 @@ export default function PrivateLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const router = useRouter();
-  const accessToken = Cookies.get('accessToken');
-  const refreshToken = Cookies.get('refreshToken');
+  // const router = useRouter();
+  // const accessToken = Cookies.get('accessToken');
+  // const refreshToken = Cookies.get('refreshToken');
 
-  useEffect(() => {
-    if (!accessToken && !refreshToken) {
-      router.replace('/login');
-      return;
-    }
-  }, [accessToken, refreshToken, router]);
+  // useEffect(() => {
+  //   if (!accessToken && !refreshToken) {
+  //     router.replace('/login');
+  //     return;
+  //   }
+  // }, [accessToken, refreshToken, router]);
 
   return (
     <AppRouterCacheProvider>

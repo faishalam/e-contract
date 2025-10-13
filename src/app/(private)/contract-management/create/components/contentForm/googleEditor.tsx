@@ -15,7 +15,6 @@ export default function GoogleEditor() {
     getAccessToken,
     clearTokens,
     deleteGoogleDoc,
-    // getGoogleDoc,
   } = useGoogleDocs();
   const modalWarningInfo = useModalWarningInfo();
 
@@ -43,12 +42,6 @@ export default function GoogleEditor() {
       },
     });
   };
-
-  // const fetchDoc = async () => {
-  //   if (!googleToken || !documentId) return;
-
-  //   const textContent = await getGoogleDoc(googleToken, documentId, 'html');
-  // };
 
   return (
     <>
