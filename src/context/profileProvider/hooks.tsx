@@ -160,12 +160,12 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ c
   return <UserProfileContext.Provider value={value}>{children}</UserProfileContext.Provider>;
 };
 
-export const useProfileProvider = () => {
+export const useProfileGlobal = () => {
   const context = useContext(UserProfileContext);
   if (context === undefined) {
-    throw new Error('useProfileProvider must be used within a UserProfileProvider');
+    throw new Error('useProfileGlobal must be used within a UserProfileProvider');
   }
   return context;
 };
 
-export default useProfileProvider;
+export default useProfileGlobal;

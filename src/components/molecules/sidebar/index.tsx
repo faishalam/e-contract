@@ -141,6 +141,12 @@ const Sidebar: React.FC = () => {
             />
             <MenuItems
               Icon={DescriptionIcon}
+              title="Template Management"
+              selected={pathname.startsWith('/template-management')}
+              href="/template-management"
+            />
+            <MenuItems
+              Icon={DescriptionIcon}
               title="e-Sign & e-stamp Quota"
               selected={pathname.startsWith('/e-sign')}
               href="/e-sign"

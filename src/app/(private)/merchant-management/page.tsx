@@ -7,8 +7,8 @@ import ButtonHeader from './components/buttonHeader';
 import CAutoComplete from '@/components/atoms/auto-complete';
 import CInput from '@/components/atoms/input';
 import TablePagination from '@/components/molecules/pagination';
-import useProfileProvider from '@/context/profileProvider/hooks';
 import MerchantListSkeleton from './components/merchantListSkeleton';
+import useProfileGlobal from '@/context/profileProvider/hooks';
 
 export default function MarchantManaagementPage() {
   const {
@@ -23,7 +23,7 @@ export default function MarchantManaagementPage() {
     setPage,
     setLimit,
   } = useMerchantManagement();
-  const { isLoadingDataProfile } = useProfileProvider();
+  const { isLoadingDataProfile } = useProfileGlobal();
   return (
     <>
       <div className="w-full flex flex-col gap-6">

@@ -8,8 +8,8 @@ import DataGrid from '@/components/molecules/datagrid';
 import usePartnerManagement from './hooks';
 import ModalPartner from './components/modalPartner';
 import TablePagination from '@/components/molecules/pagination';
-import useProfileProvider from '@/context/profileProvider/hooks';
 import PartnerListSkeleton from './components/partnerListSkeleton';
+import useProfileGlobal from '@/context/profileProvider/hooks';
 
 export default function PartnerManagementPage() {
   const {
@@ -29,7 +29,7 @@ export default function PartnerManagementPage() {
     setLimit,
   } = usePartnerManagement();
 
-  const { isLoadingDataProfile } = useProfileProvider();
+  const { isLoadingDataProfile } = useProfileGlobal();
   return (
     <>
       <div className="w-full flex flex-col gap-4">
