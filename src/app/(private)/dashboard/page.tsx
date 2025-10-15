@@ -15,7 +15,7 @@ export default function DashboardPage() {
   return (
     <div className="w-full flex flex-col gap-6 pb-6">
       <div className="text-black flex flex-col gap-1">
-        <p className="text-2xl font-bold">Welcome Back, Anisa!</p>
+        <p className="text-2xl font-bold">Welcome Back, Anis</p>
         <p className="text-sm text-gray-700">{`Here's what's happening with your contract today.`}</p>
       </div>
 
